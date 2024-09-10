@@ -3,25 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment with File Upload</title>
+  <title>Payment Form</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Style to crop the Google Form and show only the file upload button */
-    .cropped-iframe {
-      width: 100%;
-      height: 130px; /* Adjust height to fit the file upload button */
-      border: none;
-      overflow: hidden;
-    }
-
-    .cropped-iframe iframe {
-      transform: scale(1.5); /* Zoom in to focus */
-      transform-origin: top left;
-      margin-top: -500px; /* Move the form to show only the file upload field */
-      width: 200%; /* Scale the width appropriately */
-      height: 600px; /* Ensure enough height for the form */
-    }
-  </style>
 </head>
 <body class="bg-gray-100">
 
@@ -52,12 +35,6 @@
     <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg text-center">
       <h1 class="text-2xl font-bold mb-4">Scan to Pay</h1>
       <img src="qr.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
-
-      <!-- File Upload Button (Cropped Google Form) -->
-      <h2 class="text-xl font-semibold mb-4">Upload Payment Screenshot</h2>
-      <div class="mb-6 cropped-iframe">
-        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeyfyassepAOrm9OAiFpINK8kA0g2rH8DC1G9nvGhrkEmGTmg/viewform?embedded=true"></iframe>
-      </div>
 
       <!-- Payment Form -->
       <form id="paymentForm" class="space-y-6">
