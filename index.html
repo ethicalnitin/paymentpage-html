@@ -38,6 +38,12 @@
 
       <!-- Payment Form (Using Formspree) -->
       <form id="paymentForm" action="https://formspree.io/f/mdknjrro" method="POST" class="space-y-6">
+        <!-- Amount (Readonly) -->
+        <div class="text-left">
+          <label for="amount" class="block text-sm font-medium text-gray-700">Amount*</label>
+          <input type="text" id="amount" name="amount" value="₹499" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2 bg-gray-100 text-gray-700" readonly>
+        </div>
+
         <!-- UTR/UPI Transaction ID -->
         <div class="text-left">
           <label for="utr" class="block text-sm font-medium text-gray-700">UTR / UPI Transaction ID*</label>
