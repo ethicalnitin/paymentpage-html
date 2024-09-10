@@ -36,8 +36,8 @@
       <h1 class="text-2xl font-bold mb-4">Scan to Pay</h1>
       <img src="qr.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
 
-      <!-- Payment Form -->
-      <form id="paymentForm" class="space-y-6">
+      <!-- Payment Form (Using Formspree) -->
+      <form id="paymentForm" action="https://formspree.io/f/mdknjrro" method="POST" class="space-y-6">
         <!-- UTR/UPI Transaction ID -->
         <div class="text-left">
           <label for="utr" class="block text-sm font-medium text-gray-700">UTR / UPI Transaction ID*</label>
@@ -47,7 +47,7 @@
         <!-- Email -->
         <div class="text-left">
           <label for="email" class="block text-sm font-medium text-gray-700">Email*</label>
-          <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email" required>
+          <input type="email" id="email" name="_replyto" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email" required>
         </div>
 
         <!-- TradingView Username -->
@@ -61,41 +61,6 @@
       </form>
     </div>
   </div>
-
-  <script>
-    document.getElementById('paymentForm').addEventListener('submit', async function(event) {
-      event.preventDefault(); // Prevent default form submission
-
-      // Get form data
-      const utr = document.getElementById('utr').value;
-      const email = document.getElementById('email').value;
-      const username = document.getElementById('username').value;
-
-      // Create FormData object to send to Google Form
-      const formData = new FormData();
-      formData.append('entry.2005620554', utr); // UTR/UPI Transaction ID
-      formData.append('entry.1045781291', email); // Email
-      formData.append('entry.1065046570', username); // TradingView Username
-
-      try {
-        // Send data to Google Form
-        const response = await fetch('https://docs.google.com/forms/d/e/1FAIpQLSek8CwS0bDFbiQL6Gwc5bE6qduH9svF8xpDQL7a-ls3sQGC_w/formResponse', {
-          method: 'POST',
-          body: formData
-        });
-
-        if (response.ok) {
-          alert('Payment details submitted successfully!');
-          // Optionally, redirect to a success page or WhatsApp
-        } else {
-          alert('There was an issue submitting the payment details.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('There was an error submitting your payment. Please try again.');
-      }
-    });
-  </script>
 
 </body>
 </html>
