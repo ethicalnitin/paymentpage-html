@@ -65,35 +65,36 @@
 
   <script>
     document.getElementById('paymentForm').addEventListener('submit', async function(event) {
-      event.preventDefault(); // Prevent form from submitting normally
+  event.preventDefault(); // Prevent form from submitting normally
 
-      const formData = new FormData(this);
-      
-      // Replace {your_form_id} with your actual Formspree form ID
-      const formspreeURL = 'https://formspree.io/f/mdknjrro';
-      
-      try {
-        // Submit form data to Formspree
-        const response = await fetch(formspreeURL, {
-          method: 'POST',
-          body: formData,
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
-        
-        if (response.ok) {
-          // If successful, redirect to WhatsApp with a specific message
-          const whatsappMessage = "I've submitted my payment, here's the info.";
-          window.location.href = `https://wa.me/9557338330?text=${encodeURIComponent(whatsappMessage)}`;
-        } else {
-          alert('There was an issue submitting the form. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('There was an issue submitting the form. Please try again.');
+  const formData = new FormData(this);
+  
+  // Replace {your_form_id} with your actual Formspree form ID
+  const formspreeURL = 'https://formspree.io/f/mdknjrro';
+  
+  try {
+    // Submit form data to Formspree
+    const response = await fetch(formspreeURL, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'application/json'
       }
     });
+    
+    if (response.ok) {
+      // If successful, redirect to WhatsApp with a specific message
+      const whatsappMessage = "I've submitted my payment, here's the info.";
+      window.location.href = `https://wa.me/9557338330?text=${encodeURIComponent(whatsappMessage)}`;
+    } else {
+      alert('There was an issue submitting the form. Please try again.');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    alert('There was an issue submitting the form. Please try again.');
+  }
+});
+
   </script>
 
 </body>
