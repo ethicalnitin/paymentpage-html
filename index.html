@@ -6,21 +6,20 @@
   <title>Payment with File Upload</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* Hide unwanted parts of the embedded Google Form */
-    .cropped-iframe {
-      width: 100%;
-      height: 80px; /* Adjust height as needed */
-      border: none;
-      overflow: hidden;
-    }
+   .cropped-iframe {
+  width: 100%;
+  height: 120px; /* Adjust height to fit only the file upload field */
+  border: none;
+  overflow: hidden;
+}
 
-    /* Zoom into the form to show only the file upload button */
-    .cropped-iframe iframe {
-      transform: scale(1.7); /* Adjust the scale value as needed */
-      transform-origin: top left;
-      width: 200%; /* Adjust width for scaling */
-      height: 200px; /* Adjust height as needed */
-    }
+.cropped-iframe iframe {
+  transform: scale(1.5); /* Adjust scale to focus better */
+  transform-origin: top left;
+  margin-top: -450px; /* Adjust this to bring the file upload button into focus */
+  width: 200%;
+  height: 600px; /* Ensure enough height to accommodate zoom */
+}
   </style>
 </head>
 <body class="bg-gray-100">
