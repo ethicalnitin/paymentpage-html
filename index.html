@@ -37,23 +37,29 @@
       <img src="qr.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
 
       <!-- Payment Form -->
-     <form id="paymentForm" class="space-y-4">
+     <form action="https://docs.google.com/forms/d/e/1FAIpQLSek8CwS0bDFbiQL6Gwc5bE6qduH9svF8xpDQL7a-ls3sQGC_w/formResponse" method="POST" enctype="multipart/form-data">
   <!-- UTR/UPI Transaction ID -->
   <div class="text-left">
     <label for="utr" class="block text-sm font-medium text-gray-700">UTR / UPI Transaction ID*</label>
-    <input type="text" id="utr" name="utr" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter UTR or Transaction ID" required>
+    <input type="text" id="utr" name="entry.2005620554" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter UTR or Transaction ID" required>
   </div>
 
   <!-- Email -->
   <div class="text-left">
     <label for="email" class="block text-sm font-medium text-gray-700">Email*</label>
-    <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email" required>
+    <input type="email" id="email" name="entry.1045781291" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email" required>
   </div>
 
   <!-- TradingView Username -->
   <div class="text-left">
     <label for="username" class="block text-sm font-medium text-gray-700">TradingView Username</label>
-    <input type="text" id="username" name="username" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter TradingView Username">
+    <input type="text" id="username" name="entry.1065046570" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter TradingView Username">
+  </div>
+
+  <!-- Payment Screenshot Upload -->
+  <div class="text-left">
+    <label for="screenshot" class="block text-sm font-medium text-gray-700">Upload Payment Screenshot</label>
+    <input type="file" id="screenshot" name="entry.XXXXXXXX" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" required> <!-- Replace XXXXXXXX with the correct entry ID for file upload -->
   </div>
 
   <!-- Submit Button -->
@@ -64,37 +70,12 @@
   </div>
 
   <script>
-    document.getElementById('paymentForm').addEventListener('submit', async function(event) {
-  event.preventDefault(); // Prevent form from submitting normally
+    document.getElementById('paymentForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent form from submitting normally
 
-  const formData = new FormData(this);
-  
-  // Replace {your_form_id} with your actual Formspree form ID
-  const formspreeURL = 'https://formspree.io/f/mdknjrro';
-  
-  try {
-    // Submit form data to Formspree
-    const response = await fetch(formspreeURL, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
-      }
+      // Submit the form to Google Forms directly
+      this.submit();
     });
-    
-    if (response.ok) {
-      // If successful, redirect to WhatsApp with a specific message
-      const whatsappMessage = "I've submitted my payment, here's the info.";
-      window.location.href = `https://wa.me/9557338330?text=${encodeURIComponent(whatsappMessage)}`;
-    } else {
-      alert('There was an issue submitting the form. Please try again.');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-    alert('There was an issue submitting the form. Please try again.');
-  }
-});
-
   </script>
 
 </body>
