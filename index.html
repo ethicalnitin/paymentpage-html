@@ -6,21 +6,21 @@
   <title>Payment with File Upload</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-   .cropped-iframe {
-  width: 100%;
-  height: 160px; /* Adjust height to fit only the file upload field */
-  border: none;
-  overflow: hidden; /* Ensures that the top part is hidden */
-}
+    /* Style to crop the Google Form and show only the file upload button */
+    .cropped-iframe {
+      width: 100%;
+      height: 130px; /* Adjust height to fit the file upload button */
+      border: none;
+      overflow: hidden;
+    }
 
-.cropped-iframe iframe {
-  transform: scale(1.4); /* Adjust scale to zoom in */
-  transform-origin: top left;
-  margin-top: -300px; /* Adjust to move the form up and focus on the file upload section */
-  width: 200%;
-  height: 500px; /* Ensures enough height for zooming */
-}
-
+    .cropped-iframe iframe {
+      transform: scale(1.5); /* Zoom in to focus */
+      transform-origin: top left;
+      margin-top: -500px; /* Move the form to show only the file upload field */
+      width: 200%; /* Scale the width appropriately */
+      height: 600px; /* Ensure enough height for the form */
+    }
   </style>
 </head>
 <body class="bg-gray-100">
@@ -30,16 +30,16 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
       <!-- Logo and Brand -->
       <div class="flex items-center">
-        <img src="logo.jpeg" alt="Dexter Luxuries Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-full mr-3"> <!-- Replace with your logo -->
+        <img src="logo.jpeg" alt="Dexter Luxuries Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-full mr-3">
         <h1 class="text-xl font-bold text-gray-800 uppercase tracking-wide">Dexter Luxuries</h1>
       </div>
       <!-- Icons: WhatsApp & Telegram -->
       <div class="flex space-x-4">
         <a href="https://wa.me/9557338330" target="_blank" class="text-green-500 text-2xl hover:text-green-600 transition">
-          <i class="fab fa-whatsapp"></i> <!-- Replace with your WhatsApp icon -->
+          <i class="fab fa-whatsapp"></i>
         </a>
         <a href="https://t.me/dextersenior" target="_blank" class="text-blue-500 text-2xl hover:text-blue-600 transition">
-          <i class="fab fa-telegram"></i> <!-- Replace with your Telegram icon -->
+          <i class="fab fa-telegram"></i>
         </a>
       </div>
     </div>
@@ -53,12 +53,10 @@
       <h1 class="text-2xl font-bold mb-4">Scan to Pay</h1>
       <img src="qr.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
 
-      <!-- Embedded and Cropped Google Form for File Upload -->
-      <div class="mb-6">
-        <h2 class="text-lg font-bold">Upload Payment Screenshot</h2>
-        <div class="cropped-iframe">
-          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeyfyassepAOrm9OAiFpINK8kA0g2rH8DC1G9nvGhrkEmGTmg/viewform?embedded=true"></iframe>
-        </div>
+      <!-- File Upload Button (Cropped Google Form) -->
+      <h2 class="text-xl font-semibold mb-4">Upload Payment Screenshot</h2>
+      <div class="mb-6 cropped-iframe">
+        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeyfyassepAOrm9OAiFpINK8kA0g2rH8DC1G9nvGhrkEmGTmg/viewform?embedded=true"></iframe>
       </div>
 
       <!-- Payment Form -->
