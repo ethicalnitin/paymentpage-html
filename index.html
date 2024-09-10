@@ -53,6 +53,14 @@
       <h1 class="text-2xl font-bold mb-4">Scan to Pay</h1>
       <img src="qr.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
 
+      <!-- Embedded and Cropped Google Form for File Upload -->
+      <div class="mb-6">
+        <h2 class="text-lg font-bold">Upload Payment Screenshot</h2>
+        <div class="cropped-iframe">
+          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeyfyassepAOrm9OAiFpINK8kA0g2rH8DC1G9nvGhrkEmGTmg/viewform?embedded=true"></iframe>
+        </div>
+      </div>
+
       <!-- Payment Form -->
       <form id="paymentForm" class="space-y-6">
         <!-- UTR/UPI Transaction ID -->
@@ -76,14 +84,6 @@
         <!-- Submit Button -->
         <button type="submit" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition">Submit Payment</button>
       </form>
-
-      <!-- Embedded and Cropped Google Form for File Upload -->
-      <div class="mt-6">
-        <h2 class="text-lg font-bold">Upload Payment Screenshot</h2>
-        <div class="cropped-iframe">
-          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeyfyassepAOrm9OAiFpINK8kA0g2rH8DC1G9nvGhrkEmGTmg/viewform?embedded=true"></iframe>
-        </div>
-      </div>
     </div>
   </div>
 
