@@ -100,78 +100,115 @@
       </form>
 
       <script>
-        // Function to get query parameters from the URL
-        function getQueryParam(param) {
-          const urlParams = new URLSearchParams(window.location.search);
-          return urlParams.get(param);
+       <script>
+    // Function to get query parameters from the URL
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    // Set the amount based on URL parameter
+    const amountParam = getQueryParam('amount');
+    const amountDropdown = document.getElementById('amountDropdown');
+    const customAmountContainer = document.getElementById('customAmountContainer');
+    const customAmountInput = document.getElementById('customAmount');
+
+    if (amountParam) {
+      if (['495', '995', '1795'].includes(amountParam)) {
+        amountDropdown.value = amountParam;
+        customAmountContainer.classList.add('hidden');
+      } else {
+        amountDropdown.value = 'other';
+        customAmountInput.value = amountParam;
+        customAmountContainer.classList.remove('hidden');
+      }
+    }
+
+    // Event Listener for Dropdown
+    amountDropdown.addEventListener('change', function() {
+      if (amountDropdown.value === 'other') {
+        customAmountContainer.classList.remove('hidden');
+      } else {
+        customAmountContainer.classList.add('hidden');
+      }
+    });
+
+    // WhatsApp Click Tracking (ViewContent Event)
+    document.getElementById('whatsappBtn').addEventListener('click', function() {
+      if (window.fbq) {
+        window.fbq('track', 'ViewContent', {
+          content_name: 'WhatsApp Contact',
+          content_category: 'Contact',
+        });
+      }
+    });
+
+    // Event listener for form submission
+    document.getElementById('paymentForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      // Track the Purchase event before form submission
+      const amount = amountDropdown.value === 'other' 
+                     ? customAmountInput.value 
+                     : amountDropdown.value;
+
+      if (window.fbq) {
+        window.fbq('track', 'Purchase', {
+          value: amount,
+          currency: 'INR'
+        });
+      }
+
+      // Send data to backend via fetch or axios to track event with Conversion API
+      const utr = document.getElementById('utr').value;
+      const email = document.getElementById('email').value;
+      const username = document.getElementById('username').value;
+      const clientIpAddress = 'YOUR_CLIENT_IP'; // You'll get this server-side
+      const clientUserAgent = navigator.userAgent; // Get the user agent string
+
+      // Backend URL for tracking event
+      const backendUrl = 'https://your-backend-url.com/track-event'; // Replace with your actual backend URL
+
+      const postData = {
+        event_name: 'Purchase',
+        event_time: Math.floor(Date.now() / 1000), // Unix timestamp
+        event_id: 'purchase_' + utr, // Use UTR for event ID
+        event_source_url: window.location.href, 
+        action_source: 'website',
+        user_data: {
+          email: email,
+          client_ip_address: clientIpAddress, // Not hashed
+          client_user_agent: clientUserAgent // Not hashed
+        },
+        custom_data: {
+          value: amount,
+          currency: 'INR',
+          utr: utr,
+          username: username
         }
+      };
 
-        // Set the amount based on URL parameter
-        const amountParam = getQueryParam('amount');
-        const amountDropdown = document.getElementById('amountDropdown');
-        const customAmountContainer = document.getElementById('customAmountContainer');
-        const customAmountInput = document.getElementById('customAmount');
-
-        if (amountParam) {
-          // Check if the amount is one of the preset values, else set it to "Other"
-          if (['495', '995', '1795'].includes(amountParam)) {
-            amountDropdown.value = amountParam;
-            customAmountContainer.classList.add('hidden'); // Hide custom amount field
-          } else {
-            amountDropdown.value = 'other'; // Set dropdown to "Other"
-            customAmountInput.value = amountParam; // Fill custom amount
-            customAmountContainer.classList.remove('hidden'); // Show custom amount field
-          }
-        }
-
-        // Event Listener for Dropdown to show custom amount field if "Other" is selected
-        amountDropdown.addEventListener('change', function() {
-          if (amountDropdown.value === 'other') {
-            customAmountContainer.classList.remove('hidden');
-          } else {
-            customAmountContainer.classList.add('hidden');
-          }
+      try {
+        // Send to backend
+        const response = await fetch(backendUrl, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(postData)
         });
 
-        document.getElementById('paymentForm').addEventListener('submit', async function(event) {
-          event.preventDefault(); // Prevent default form submission
-
-          // Track the Purchase event before form submission
-          const amount = amountDropdown.value === 'other' 
-                         ? customAmountInput.value 
-                         : amountDropdown.value;
-
-          if (window.fbq) {
-            window.fbq('track', 'Purchase', {
-              value: amount,
-              currency: 'INR'
-            });
-          }
-
-          // Proceed with form submission
-          const form = event.target;
-          const formData = new FormData(form);
-
-          try {
-            const response = await fetch(form.action, {
-              method: 'POST',
-              body: formData,
-              headers: {
-                'Accept': 'application/json'
-              }
-            });
-
-            if (response.ok) {
-              // Redirect to WhatsApp after successful form submission
-              window.location.href = 'https://wa.me/9557338330?text=I%20have%20submitted%20my%20payment%20details';
-            } else {
-              alert('There was an issue submitting the form. Please try again.');
-            }
-          } catch (error) {
-            console.error('Error:', error);
-            alert('There was an error submitting your payment. Please try again.');
-          }
-        });
+        if (response.ok) {
+          window.location.href = 'https://wa.me/9557338330?text=I%20have%20submitted%20my%20payment%20details';
+        } else {
+          alert('There was an issue submitting the form. Please try again.');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('There was an error submitting your payment. Please try again.');
+      }
+    });
+</script>
       </script>
 
     </div>
