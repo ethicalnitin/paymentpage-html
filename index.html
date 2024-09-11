@@ -162,11 +162,13 @@
           const utr = document.getElementById('utr').value;
           const email = document.getElementById('email').value;
           const username = document.getElementById('username').value;
-          const clientIpAddress = 'YOUR_CLIENT_IP'; // You'll get this server-side
+          
+          // Get the client IP dynamically
+          const clientIpAddress = await fetch('https://api64.ipify.org?format=json').then(res => res.json()).then(data => data.ip);
           const clientUserAgent = navigator.userAgent; // Get the user agent string
 
           // Backend URL for tracking event
-          const backendUrl = 'https://backend-six-lyart-34.vercel.app/track-event'; // Replace with your actual backend URL
+          const backendUrl = 'https://backend1-ztvf.onrender.com/track-event'; // Replace with your actual backend URL
 
           const postData = {
             event_name: 'Purchase',
