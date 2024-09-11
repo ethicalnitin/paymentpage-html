@@ -58,9 +58,9 @@
         <div class="text-left">
           <label for="amountDropdown" class="block text-sm font-medium text-gray-700">Amount*</label>
           <select id="amountDropdown" name="amountDropdown" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2 bg-gray-100 text-gray-700" required>
-            <option value="399">₹399</option>
-            <option value="499" selected>₹499</option>
-            <option value="999">₹999</option>
+            <option value="495">₹495 - 3 Month Plan</option>
+            <option value="995">₹995 - 6 Month Plan</option>
+            <option value="1795">₹1795 - 12 Month Plan (Limited Offer)</option>
             <option value="other">Others</option>
           </select>
         </div>
@@ -100,15 +100,36 @@
       </form>
 
       <script>
-        // Event Listener for Dropdown
-        document.getElementById('amountDropdown').addEventListener('change', function() {
-          const amountDropdown = document.getElementById('amountDropdown');
-          const customAmountContainer = document.getElementById('customAmountContainer');
-          
-          if (amountDropdown.value === 'other') {
-            customAmountContainer.classList.remove('hidden');  // Show custom amount input
+        // Function to get query parameters from the URL
+        function getQueryParam(param) {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get(param);
+        }
+
+        // Set the amount based on URL parameter
+        const amountParam = getQueryParam('amount');
+        const amountDropdown = document.getElementById('amountDropdown');
+        const customAmountContainer = document.getElementById('customAmountContainer');
+        const customAmountInput = document.getElementById('customAmount');
+
+        if (amountParam) {
+          // Check if the amount is one of the preset values, else set it to "Other"
+          if (['495', '995', '1795'].includes(amountParam)) {
+            amountDropdown.value = amountParam;
+            customAmountContainer.classList.add('hidden'); // Hide custom amount field
           } else {
-            customAmountContainer.classList.add('hidden');  // Hide custom amount input
+            amountDropdown.value = 'other'; // Set dropdown to "Other"
+            customAmountInput.value = amountParam; // Fill custom amount
+            customAmountContainer.classList.remove('hidden'); // Show custom amount field
+          }
+        }
+
+        // Event Listener for Dropdown to show custom amount field if "Other" is selected
+        amountDropdown.addEventListener('change', function() {
+          if (amountDropdown.value === 'other') {
+            customAmountContainer.classList.remove('hidden');
+          } else {
+            customAmountContainer.classList.add('hidden');
           }
         });
 
@@ -116,9 +137,9 @@
           event.preventDefault(); // Prevent default form submission
 
           // Track the Purchase event before form submission
-          const amount = document.getElementById('amountDropdown').value === 'other' 
-                         ? document.getElementById('customAmount').value 
-                         : document.getElementById('amountDropdown').value;
+          const amount = amountDropdown.value === 'other' 
+                         ? customAmountInput.value 
+                         : amountDropdown.value;
 
           if (window.fbq) {
             window.fbq('track', 'Purchase', {
