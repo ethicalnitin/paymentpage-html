@@ -33,7 +33,7 @@
       </div>
       <!-- Icons: WhatsApp & Telegram -->
       <div class="flex space-x-4">
-        <a href="https://wa.me/9557338330" target="_blank" class="text-green-500 text-2xl hover:text-green-600 transition">
+        <a href="https://wa.me/9557338330" id="whatsappBtn" target="_blank" class="text-green-500 text-2xl hover:text-green-600 transition">
           <i class="fab fa-whatsapp"></i>
         </a>
         <a href="https://t.me/dextersenior" target="_blank" class="text-blue-500 text-2xl hover:text-blue-600 transition">
@@ -51,8 +51,8 @@
       <h1 class="text-2xl font-bold mb-4">Dexter Luxuries-Secure Payment Page🟩</h1>
       <img src="qr.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
 
-      <!-- Payment Form (Using Formspree) -->
-      <form id="paymentForm" action="https://formspree.io/f/mdknjrro" method="POST" class="space-y-6">
+      <!-- Payment Form -->
+      <form id="paymentForm" class="space-y-6">
         
         <!-- Amount Section with Dropdown -->
         <div class="text-left">
@@ -80,7 +80,7 @@
         <!-- Email -->
         <div class="text-left">
           <label for="email" class="block text-sm font-medium text-gray-700">Email*</label>
-          <input type="email" id="email" name="_replyto" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email" required>
+          <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email" required>
         </div>
 
         <!-- TradingView Username -->
@@ -100,115 +100,113 @@
       </form>
 
       <script>
-       <script>
-    // Function to get query parameters from the URL
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
-
-    // Set the amount based on URL parameter
-    const amountParam = getQueryParam('amount');
-    const amountDropdown = document.getElementById('amountDropdown');
-    const customAmountContainer = document.getElementById('customAmountContainer');
-    const customAmountInput = document.getElementById('customAmount');
-
-    if (amountParam) {
-      if (['495', '995', '1795'].includes(amountParam)) {
-        amountDropdown.value = amountParam;
-        customAmountContainer.classList.add('hidden');
-      } else {
-        amountDropdown.value = 'other';
-        customAmountInput.value = amountParam;
-        customAmountContainer.classList.remove('hidden');
-      }
-    }
-
-    // Event Listener for Dropdown
-    amountDropdown.addEventListener('change', function() {
-      if (amountDropdown.value === 'other') {
-        customAmountContainer.classList.remove('hidden');
-      } else {
-        customAmountContainer.classList.add('hidden');
-      }
-    });
-
-    // WhatsApp Click Tracking (ViewContent Event)
-    document.getElementById('whatsappBtn').addEventListener('click', function() {
-      if (window.fbq) {
-        window.fbq('track', 'ViewContent', {
-          content_name: 'WhatsApp Contact',
-          content_category: 'Contact',
-        });
-      }
-    });
-
-    // Event listener for form submission
-    document.getElementById('paymentForm').addEventListener('submit', async function(event) {
-      event.preventDefault();
-
-      // Track the Purchase event before form submission
-      const amount = amountDropdown.value === 'other' 
-                     ? customAmountInput.value 
-                     : amountDropdown.value;
-
-      if (window.fbq) {
-        window.fbq('track', 'Purchase', {
-          value: amount,
-          currency: 'INR'
-        });
-      }
-
-      // Send data to backend via fetch or axios to track event with Conversion API
-      const utr = document.getElementById('utr').value;
-      const email = document.getElementById('email').value;
-      const username = document.getElementById('username').value;
-      const clientIpAddress = 'YOUR_CLIENT_IP'; // You'll get this server-side
-      const clientUserAgent = navigator.userAgent; // Get the user agent string
-
-      // Backend URL for tracking event
-      const backendUrl = 'https://your-backend-url.com/track-event'; // Replace with your actual backend URL
-
-      const postData = {
-        event_name: 'Purchase',
-        event_time: Math.floor(Date.now() / 1000), // Unix timestamp
-        event_id: 'purchase_' + utr, // Use UTR for event ID
-        event_source_url: window.location.href, 
-        action_source: 'website',
-        user_data: {
-          email: email,
-          client_ip_address: clientIpAddress, // Not hashed
-          client_user_agent: clientUserAgent // Not hashed
-        },
-        custom_data: {
-          value: amount,
-          currency: 'INR',
-          utr: utr,
-          username: username
+        // Function to get query parameters from the URL
+        function getQueryParam(param) {
+          const urlParams = new URLSearchParams(window.location.search);
+          return urlParams.get(param);
         }
-      };
 
-      try {
-        // Send to backend
-        const response = await fetch(backendUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(postData)
+        // Set the amount based on URL parameter
+        const amountParam = getQueryParam('amount');
+        const amountDropdown = document.getElementById('amountDropdown');
+        const customAmountContainer = document.getElementById('customAmountContainer');
+        const customAmountInput = document.getElementById('customAmount');
+
+        if (amountParam) {
+          if (['495', '995', '1795'].includes(amountParam)) {
+            amountDropdown.value = amountParam;
+            customAmountContainer.classList.add('hidden');
+          } else {
+            amountDropdown.value = 'other';
+            customAmountInput.value = amountParam;
+            customAmountContainer.classList.remove('hidden');
+          }
+        }
+
+        // Event Listener for Dropdown
+        amountDropdown.addEventListener('change', function() {
+          if (amountDropdown.value === 'other') {
+            customAmountContainer.classList.remove('hidden');
+          } else {
+            customAmountContainer.classList.add('hidden');
+          }
         });
 
-        if (response.ok) {
-          window.location.href = 'https://wa.me/9557338330?text=I%20have%20submitted%20my%20payment%20details';
-        } else {
-          alert('There was an issue submitting the form. Please try again.');
-        }
-      } catch (error) {
-        console.error('Error:', error);
-        alert('There was an error submitting your payment. Please try again.');
-      }
-    });
-</script>
+        // WhatsApp Click Tracking (ViewContent Event)
+        document.getElementById('whatsappBtn').addEventListener('click', function() {
+          if (window.fbq) {
+            window.fbq('track', 'ViewContent', {
+              content_name: 'WhatsApp Contact',
+              content_category: 'Contact',
+            });
+          }
+        });
+
+        // Event listener for form submission
+        document.getElementById('paymentForm').addEventListener('submit', async function(event) {
+          event.preventDefault();
+
+          // Track the Purchase event before form submission
+          const amount = amountDropdown.value === 'other' 
+                         ? customAmountInput.value 
+                         : amountDropdown.value;
+
+          if (window.fbq) {
+            window.fbq('track', 'Purchase', {
+              value: amount,
+              currency: 'INR'
+            });
+          }
+
+          // Send data to backend via fetch to track event with Conversion API
+          const utr = document.getElementById('utr').value;
+          const email = document.getElementById('email').value;
+          const username = document.getElementById('username').value;
+          const clientIpAddress = 'YOUR_CLIENT_IP'; // You'll get this server-side
+          const clientUserAgent = navigator.userAgent; // Get the user agent string
+
+          // Backend URL for tracking event
+          const backendUrl = 'https://backend-six-lyart-34.vercel.app/track-event'; // Replace with your actual backend URL
+
+          const postData = {
+            event_name: 'Purchase',
+            event_time: Math.floor(Date.now() / 1000), // Unix timestamp
+            event_id: 'purchase_' + utr, // Use UTR for event ID
+            event_source_url: window.location.href, 
+            action_source: 'website',
+            user_data: {
+              email: email,
+              client_ip_address: clientIpAddress, // Not hashed
+              client_user_agent: clientUserAgent // Not hashed
+            },
+            custom_data: {
+              value: amount,
+              currency: 'INR',
+              utr: utr,
+              username: username
+            }
+          };
+
+          try {
+            // Send to backend
+            const response = await fetch(backendUrl, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(postData)
+            });
+
+            if (response.ok) {
+              window.location.href = 'https://wa.me/9557338330?text=I%20have%20submitted%20my%20payment%20details';
+            } else {
+              alert('There was an issue submitting the form. Please try again.');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            alert('There was an error submitting your payment. Please try again.');
+          }
+        });
       </script>
 
     </div>
