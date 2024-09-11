@@ -53,10 +53,22 @@
 
       <!-- Payment Form (Using Formspree) -->
       <form id="paymentForm" action="https://formspree.io/f/mdknjrro" method="POST" class="space-y-6">
-        <!-- Amount (Readonly and Uneditable) -->
+        
+        <!-- Amount Section with Dropdown -->
         <div class="text-left">
-          <label for="amount" class="block text-sm font-medium text-gray-700">Amount*</label>
-          <input type="text" id="amount" name="amount" value="₹499" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2 bg-gray-100 text-gray-700" readonly>
+          <label for="amountDropdown" class="block text-sm font-medium text-gray-700">Amount*</label>
+          <select id="amountDropdown" name="amountDropdown" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2 bg-gray-100 text-gray-700" required>
+            <option value="399">₹399</option>
+            <option value="499" selected>₹499</option>
+            <option value="999">₹999</option>
+            <option value="other">Others</option>
+          </select>
+        </div>
+
+        <!-- Custom Amount Input (Initially Hidden) -->
+        <div id="customAmountContainer" class="text-left hidden">
+          <label for="customAmount" class="block text-sm font-medium text-gray-700">Custom Amount*</label>
+          <input type="number" id="customAmount" name="customAmount" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter custom amount">
         </div>
 
         <!-- UTR/UPI Transaction ID -->
@@ -88,13 +100,29 @@
       </form>
 
       <script>
+        // Event Listener for Dropdown
+        document.getElementById('amountDropdown').addEventListener('change', function() {
+          const amountDropdown = document.getElementById('amountDropdown');
+          const customAmountContainer = document.getElementById('customAmountContainer');
+          
+          if (amountDropdown.value === 'other') {
+            customAmountContainer.classList.remove('hidden');  // Show custom amount input
+          } else {
+            customAmountContainer.classList.add('hidden');  // Hide custom amount input
+          }
+        });
+
         document.getElementById('paymentForm').addEventListener('submit', async function(event) {
           event.preventDefault(); // Prevent default form submission
 
           // Track the Purchase event before form submission
+          const amount = document.getElementById('amountDropdown').value === 'other' 
+                         ? document.getElementById('customAmount').value 
+                         : document.getElementById('amountDropdown').value;
+
           if (window.fbq) {
             window.fbq('track', 'Purchase', {
-              value: 499,
+              value: amount,
               currency: 'INR'
             });
           }
