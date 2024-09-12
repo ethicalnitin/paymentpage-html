@@ -99,7 +99,7 @@
         </button>
       </form>
 
-      <script>
+            <script>
         // Set the amount based on URL parameter
         const amountDropdown = document.getElementById('amountDropdown');
         const customAmountContainer = document.getElementById('customAmountContainer');
@@ -125,18 +125,45 @@
         });
 
         // Event listener for form submission
-        document.getElementById('paymentForm').addEventListener('submit', function() {
+        document.getElementById('paymentForm').addEventListener('submit', async function(event) {
+          event.preventDefault(); // Prevent default form submission
+
+          const form = event.target;
           const amount = amountDropdown.value === 'other' 
                          ? customAmountInput.value 
                          : amountDropdown.value;
 
+          // Facebook Pixel Purchase Tracking
           if (window.fbq) {
             window.fbq('track', 'Purchase', {
               value: amount,
               currency: 'INR'
             });
           }
-          // Allow Formspree to handle the form submission
+
+          // Prepare form data for submission
+          const formData = new FormData(form);
+
+          // Send the form data using Fetch to Formspree
+          try {
+            const response = await fetch(form.action, {
+              method: form.method,
+              body: formData,
+              headers: {
+                'Accept': 'application/json'
+              }
+            });
+
+            if (response.ok) {
+              // Redirect to WhatsApp after successful form submission
+              window.location.href = 'https://wa.me/9557338330?text=I%20have%20submitted%20my%20payment%20details';
+            } else {
+              alert('There was an issue submitting the form. Please try again.');
+            }
+          } catch (error) {
+            console.error('Error:', error);
+            alert('There was an error submitting your payment. Please try again.');
+          }
         });
       </script>
 
