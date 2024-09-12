@@ -52,7 +52,7 @@
       <img src="qr.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
 
       <!-- Payment Form -->
-     <form id="paymentForm" action="https://formspree.io/f/xdknjepv" method="POST" class="space-y-6">
+     <form id="paymentForm" action="https://formspree.io/f/mdknjrro" method="POST" class="space-y-6">
         
         <!-- Amount Section with Dropdown -->
         <div class="text-left">
@@ -80,4 +80,68 @@
         <!-- Email -->
         <div class="text-left">
           <label for="email" class="block text-sm font-medium text-gray-700">Email*</label>
-          <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-
+          <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email" required>
+        </div>
+
+        <!-- TradingView Username -->
+        <div class="text-left">
+          <label for="username" class="block text-sm font-medium text-gray-700">TradingView Username</label>
+          <input type="text" id="username" name="username" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your TradingView Username">
+        </div>
+
+        <!-- Submit Button with Event Tracking -->
+        <button 
+          type="submit" 
+          id="submitPaymentBtn" 
+          class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition"
+        >
+          Submit Payment
+        </button>
+      </form>
+
+      <script>
+        // Set the amount based on URL parameter
+        const amountDropdown = document.getElementById('amountDropdown');
+        const customAmountContainer = document.getElementById('customAmountContainer');
+        const customAmountInput = document.getElementById('customAmount');
+
+        // Event Listener for Dropdown
+        amountDropdown.addEventListener('change', function() {
+          if (amountDropdown.value === 'other') {
+            customAmountContainer.classList.remove('hidden');
+          } else {
+            customAmountContainer.classList.add('hidden');
+          }
+        });
+
+        // WhatsApp Click Tracking (ViewContent Event)
+        document.getElementById('whatsappBtn').addEventListener('click', function() {
+          if (window.fbq) {
+            window.fbq('track', 'ViewContent', {
+              content_name: 'WhatsApp Contact',
+              content_category: 'Contact',
+            });
+          }
+        });
+
+        // Event listener for form submission
+        document.getElementById('paymentForm').addEventListener('submit', function() {
+          const amount = amountDropdown.value === 'other' 
+                         ? customAmountInput.value 
+                         : amountDropdown.value;
+
+          if (window.fbq) {
+            window.fbq('track', 'Purchase', {
+              value: amount,
+              currency: 'INR'
+            });
+          }
+          // Allow Formspree to handle the form submission
+        });
+      </script>
+
+    </div>
+  </div>
+
+</body>
+</html>
