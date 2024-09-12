@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Payment Form</title>
+  <title>Dexter Payments</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <!-- Facebook Pixel Setup for PageView -->
@@ -26,7 +26,7 @@
     window.onload = async function() {
       const userAgent = navigator.userAgent;
       try {
-        const response = await fetch('https://your-backend-url.com/track-event', {
+        const response = await fetch('https://backend1-ztvf.onrender.com/track-event', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
