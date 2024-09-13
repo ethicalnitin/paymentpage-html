@@ -135,7 +135,16 @@
       </div>
 
      <script>
-  // Form Submission Event Listener
+  // Show/Hide Custom Amount Field
+  document.getElementById('amountDropdown').addEventListener('change', function(event) {
+    const customAmountContainer = document.getElementById('customAmountContainer');
+    if (event.target.value === 'custom') {
+      customAmountContainer.classList.remove('hidden');
+    } else {
+      customAmountContainer.classList.add('hidden');
+    }
+  });
+
   // Form Submission Event Listener
 document.getElementById('paymentForm').addEventListener('submit', async function(event) {
   event.preventDefault(); // Prevent default form submission
@@ -233,8 +242,6 @@ document.getElementById('paymentForm').addEventListener('submit', async function
   submitPaymentBtn.innerHTML = 'Submit Payment';
   submitPaymentBtn.disabled = false;
 });
- // Decrease countdown every second
- 
 </script>
 
     </div>
