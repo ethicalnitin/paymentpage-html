@@ -140,8 +140,6 @@
       username: formData.get('username'),
     };
 
- 
-
     // Facebook Pixel Purchase Tracking (Browser-Side)
     if (window.fbq) {
       window.fbq('track', 'Purchase', {
@@ -153,7 +151,7 @@
     // Conversion API (CAPI) Purchase Event
     try {
       const userAgent = navigator.userAgent;
-      const response = await fetch('https://backend1-ztvf.onrender.com/track-event', {
+      const capiResponse = await fetch('https://backend1-ztvf.onrender.com/track-event', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -172,9 +170,29 @@
           }
         }),
       });
-      console.log('Purchase event sent via CAPI:', await response.json());
+      const capiResult = await capiResponse.json();
+      console.log('Purchase event sent via CAPI:', capiResult);
     } catch (error) {
       console.error('Error sending Purchase via CAPI:', error);
+    }
+
+    // Send form data to backend for Telegram notification
+    try {
+      const telegramResponse = await fetch('https://backend1-ztvf.onrender.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (telegramResponse.ok) {
+        console.log('Form data sent to Telegram successfully');
+      } else {
+        console.error('Error sending form data to Telegram:', await telegramResponse.json());
+      }
+    } catch (error) {
+      console.error('Error processing form submission:', error);
     }
 
     // Display Modal on Successful Payment Submission
@@ -189,11 +207,12 @@
       countdownElement.textContent = countdown;
       if (countdown === 0) {
         clearInterval(countdownInterval);
-        window.location.href = 'https://wa.me/9557338330?text=I%20have%20submitted%20my%20payment%20details';
+        window.location.href = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details';
       }
     }, 1000); // Decrease countdown every second
   });
 </script>
+
     </div>
   </div>
 
