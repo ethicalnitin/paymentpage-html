@@ -79,7 +79,7 @@
       <img src="qr.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
 
       <!-- Payment Form -->
-     <form id="paymentForm" class="space-y-6">
+    <form id="paymentForm" class="space-y-6">
     <!-- Amount Section with Dropdown --> 
     <div class="text-left">
         <label for="amountDropdown" class="block text-sm font-medium text-gray-700">Amount*</label>
@@ -87,7 +87,14 @@
             <option value="495">₹495 - 3 Month Plan</option>
             <option value="995">₹995 - 6 Month Plan</option>
             <option value="1795">₹1795 - 12 Month Plan (Limited Offer)</option>
+            <option value="custom">Custom Amount</option>
         </select>
+    </div>
+
+    <!-- Custom Amount Input (Hidden by Default) -->
+    <div id="customAmountContainer" class="text-left hidden">
+        <label for="customAmount" class="block text-sm font-medium text-gray-700">Custom Amount*</label>
+        <input type="number" id="customAmount" name="customAmount" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter custom amount">
     </div>
 
     <!-- UTR/UPI Transaction ID -->
@@ -108,9 +115,10 @@
         <input type="text" id="username" name="username" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your TradingView Username">
     </div>
 
-    <!-- Submit Button with Event Tracking -->
+    <!-- Submit Button with Event Tracking and Loading Indicator -->
     <button type="submit" id="submitPaymentBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition">Submit Payment</button>
 </form>
+
 
       <!-- Modal for Payment Successful Message -->
       <div id="paymentSuccessModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
@@ -128,90 +136,105 @@
 
      <script>
   // Form Submission Event Listener
-  document.getElementById('paymentForm').addEventListener('submit', async function(event) {
-    event.preventDefault(); // Prevent default form submission
+  // Form Submission Event Listener
+document.getElementById('paymentForm').addEventListener('submit', async function(event) {
+  event.preventDefault(); // Prevent default form submission
 
-    const form = event.target;
-    const formData = new FormData(form);
-    const data = {
-      amountDropdown: formData.get('amountDropdown'),
-      utr: formData.get('utr'),
-      email: formData.get('email'),
-      username: formData.get('username'),
-    };
+  const submitPaymentBtn = document.getElementById('submitPaymentBtn');
+  submitPaymentBtn.innerHTML = 'Processing...'; // Show loading state
+  submitPaymentBtn.disabled = true; // Disable button to prevent multiple submissions
 
-    // Facebook Pixel Purchase Tracking (Browser-Side)
-    if (window.fbq) {
-      window.fbq('track', 'Purchase', {
-        value: formData.get('amountDropdown'),
-        currency: 'INR'
-      });
-    }
+  const form = event.target;
+  const formData = new FormData(form);
+  
+  // Check if the custom amount is selected
+  const selectedAmount = formData.get('amountDropdown') === 'custom' ? formData.get('customAmount') : formData.get('amountDropdown');
+  
+  const data = {
+    amountDropdown: selectedAmount,
+    utr: formData.get('utr'),
+    email: formData.get('email'),
+    username: formData.get('username'),
+  };
 
-    // Conversion API (CAPI) Purchase Event
-    try {
-      const userAgent = navigator.userAgent;
-      const capiResponse = await fetch('https://backend1-ztvf.onrender.com/track-event', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+  // Facebook Pixel Purchase Tracking (Browser-Side)
+  if (window.fbq) {
+    window.fbq('track', 'Purchase', {
+      value: selectedAmount,
+      currency: 'INR'
+    });
+  }
+
+  // Conversion API (CAPI) Purchase Event
+  try {
+    const userAgent = navigator.userAgent;
+    const capiResponse = await fetch('https://backend1-ztvf.onrender.com/track-event', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        event_name: 'Purchase',
+        event_time: Math.floor(Date.now() / 1000),
+        action_source: 'website',
+        event_source_url: window.location.href,
+        custom_data: {
+          value: selectedAmount,
+          currency: 'INR'
         },
-        body: JSON.stringify({
-          event_name: 'Purchase',
-          event_time: Math.floor(Date.now() / 1000),
-          action_source: 'website',
-          event_source_url: window.location.href,
-          custom_data: {
-            value: formData.get('amountDropdown'),
-            currency: 'INR'
-          },
-          user_data: {
-            client_user_agent: userAgent,
-          }
-        }),
-      });
-      const capiResult = await capiResponse.json();
-      console.log('Purchase event sent via CAPI:', capiResult);
-    } catch (error) {
-      console.error('Error sending Purchase via CAPI:', error);
+        user_data: {
+          client_user_agent: userAgent,
+        }
+      }),
+    });
+    const capiResult = await capiResponse.json();
+    console.log('Purchase event sent via CAPI:', capiResult);
+  } catch (error) {
+    console.error('Error sending Purchase via CAPI:', error);
+  }
+
+  // Send form data to backend for Telegram notification
+  try {
+    const telegramResponse = await fetch('https://backend1-ztvf.onrender.com/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (telegramResponse.ok) {
+      console.log('Form data sent to Telegram successfully');
+    } else {
+      console.error('Error sending form data to Telegram:', await telegramResponse.json());
     }
+  } catch (error) {
+    console.error('Error processing form submission:', error);
+  }
 
-    // Send form data to backend for Telegram notification
-    try {
-      const telegramResponse = await fetch('https://backend1-ztvf.onrender.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+  // Display Modal on Successful Payment Submission
+  const modal = document.getElementById('paymentSuccessModal');
+  modal.classList.remove('hidden');
 
-      if (telegramResponse.ok) {
-        console.log('Form data sent to Telegram successfully');
-      } else {
-        console.error('Error sending form data to Telegram:', await telegramResponse.json());
-      }
-    } catch (error) {
-      console.error('Error processing form submission:', error);
+  // Countdown Timer
+  let countdown = 3;
+  const countdownElement = document.getElementById('countdown');
+  const countdownInterval = setInterval(() => {
+    countdown -= 1;
+    countdownElement.textContent = countdown;
+    if (countdown === 0) {
+      clearInterval(countdownInterval);
+      modal.classList.add('hidden'); // Close the modal
+      window.location.href = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details';
     }
+  }, 1000); // Decrease countdown every second
 
-    // Display Modal on Successful Payment Submission
-    const modal = document.getElementById('paymentSuccessModal');
-    modal.classList.remove('hidden');
-
-    // Countdown Timer
-    let countdown = 3;
-    const countdownElement = document.getElementById('countdown');
-    const countdownInterval = setInterval(() => {
-      countdown -= 1;
-      countdownElement.textContent = countdown;
-      if (countdown === 0) {
-        clearInterval(countdownInterval);
-         modal.classList.add('hidden');
-        window.location.href = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details';
-      }
-    }, 1000); // Decrease countdown every second
-  });
+  // Reset the button
+  submitPaymentBtn.innerHTML = 'Submit Payment';
+  submitPaymentBtn.disabled = false;
+});
+ // Decrease countdown every second
+ 
 </script>
 
     </div>
