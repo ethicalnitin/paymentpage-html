@@ -140,6 +140,11 @@
       username: formData.get('username'),
     };
 
+  console.log('Response from backend:', await response.json());
+   } catch (error) {
+      console.error('Error submitting form:', error);
+   }
+
     // Facebook Pixel Purchase Tracking (Browser-Side)
     if (window.fbq) {
       window.fbq('track', 'Purchase', {
