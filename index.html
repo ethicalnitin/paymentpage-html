@@ -22,7 +22,6 @@
 
   <!-- PageView via Conversion API (CAPI) -->
   <script>
-    // Send PageView event to backend for Conversion API
     window.onload = async function() {
       const userAgent = navigator.userAgent;
       try {
@@ -48,9 +47,6 @@
     };
   </script>
 
-  <noscript><img height="1" width="1" style="display:none"
-  src="https://www.facebook.com/tr?id=1055377212772927&ev=PageView&noscript=1"
-  /></noscript>
 </head>
 <body class="bg-gray-100">
 
@@ -83,7 +79,7 @@
       <img src="qr.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
 
       <!-- Payment Form -->
-     <form id="paymentForm" action="https://script.google.com/macros/s/AKfycbwVhub-3O8IKNt4lUzltq3Q8tkUgSc6xiOlNu9X89Uasu6BkovbPBQdbjSK7G2TrHgL/exec" method="POST" class="space-y-6">
+     <form id="paymentForm" class="space-y-6">
     <!-- Amount Section with Dropdown --> 
     <div class="text-left">
         <label for="amountDropdown" class="block text-sm font-medium text-gray-700">Amount*</label>
@@ -91,14 +87,7 @@
             <option value="495">₹495 - 3 Month Plan</option>
             <option value="995">₹995 - 6 Month Plan</option>
             <option value="1795">₹1795 - 12 Month Plan (Limited Offer)</option>
-            <option value="other">Others</option>
         </select>
-    </div>
-
-    <!-- Custom Amount Input (Initially Hidden) -->
-    <div id="customAmountContainer" class="text-left hidden">
-        <label for="customAmount" class="block text-sm font-medium text-gray-700">Custom Amount*</label>
-        <input type="number" id="customAmount" name="customAmount" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter custom amount">
     </div>
 
     <!-- UTR/UPI Transaction ID -->
@@ -143,12 +132,18 @@
     event.preventDefault(); // Prevent default form submission
 
     const form = event.target;
-    const amount = document.getElementById('amountDropdown').value;
+    const formData = new FormData(form);
+    const data = {
+      amountDropdown: formData.get('amountDropdown'),
+      utr: formData.get('utr'),
+      email: formData.get('email'),
+      username: formData.get('username'),
+    };
 
     // Facebook Pixel Purchase Tracking (Browser-Side)
     if (window.fbq) {
       window.fbq('track', 'Purchase', {
-        value: amount,
+        value: formData.get('amountDropdown'),
         currency: 'INR'
       });
     }
@@ -167,7 +162,7 @@
           action_source: 'website',
           event_source_url: window.location.href,
           custom_data: {
-            value: amount,
+            value: formData.get('amountDropdown'),
             currency: 'INR'
           },
           user_data: {
@@ -195,8 +190,6 @@
         window.location.href = 'https://wa.me/9557338330?text=I%20have%20submitted%20my%20payment%20details';
       }
     }, 1000); // Decrease countdown every second
-
-    // Simulate form submission (you already submitted it with the fetch, so we handle the redirection only)
   });
 </script>
     </div>
