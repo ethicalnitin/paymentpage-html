@@ -162,6 +162,29 @@
       });
 
       if (response.ok) {
+        // Track the Purchase event via CAPI
+        const userAgent = navigator.userAgent;
+        const amount = formData.get('amountDropdown');
+        await fetch('https://backend1-ztvf.onrender.com/track-event', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            event_name: 'Purchase',
+            event_time: Math.floor(Date.now() / 1000),
+            action_source: 'website',
+            event_source_url: window.location.href,
+            user_data: {
+              client_user_agent: userAgent,
+            },
+            custom_data: {
+              value: amount,
+              currency: 'INR',
+            }
+          }),
+        });
+
         // Display Modal on Successful Payment Submission
         const modal = document.getElementById('paymentSuccessModal');
         modal.classList.remove('hidden');
