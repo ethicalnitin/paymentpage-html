@@ -167,7 +167,7 @@
             client_user_agent: navigator.userAgent,
           },
           custom_data: {
-            value: formData.get('amountDropdown'),  // Send the purchase value (amount)
+            value: parseFloat(formData.get('amountDropdown')), // Send the purchase value (amount)
             currency: 'INR'  // Include the currency
           }
         }),
