@@ -207,6 +207,7 @@
       countdownElement.textContent = countdown;
       if (countdown === 0) {
         clearInterval(countdownInterval);
+         modal.classList.add('hidden');
         window.location.href = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details';
       }
     }, 1000); // Decrease countdown every second
