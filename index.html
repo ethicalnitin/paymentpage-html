@@ -234,23 +234,20 @@
     }
 
     // Send form data to backend for Telegram notification
-    try {
-      const telegramResponse = await fetch('https://backend1-ztvf.onrender.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+   try {
+  const telegramResponse = await fetch('https://backend1-ztvf.onrender.com/submit', {
+    method: 'POST',
+    body: formData // Send the FormData object directly, including file upload
+  });
 
-      if (telegramResponse.ok) {
-        console.log('Form data sent to Telegram successfully');
-      } else {
-        console.error('Error sending form data to Telegram:', await telegramResponse.json());
-      }
-    } catch (error) {
-      console.error('Error processing form submission:', error);
-    }
+  if (telegramResponse.ok) {
+    console.log('Form data sent to Telegram successfully');
+  } else {
+    console.error('Error sending form data to Telegram:', await telegramResponse.json());
+  }
+} catch (error) {
+  console.error('Error processing form submission:', error);
+}
 
     // Display Modal on Successful Payment Submission
     const modal = document.getElementById('paymentSuccessModal');
