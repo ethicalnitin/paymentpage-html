@@ -78,6 +78,21 @@
       <h1 class="text-2xl font-bold mb-4">Dexter Luxuries-Secure Payment Page🟩</h1>
       <img src="qrhaiji.jpeg" alt="QR Code" class="w-48 h-48 mx-auto mb-6"> <!-- Replace with your QR code -->
 
+<p class="text-blue-500 cursor-pointer mb-4" onclick="openModal()">How will I get access?</p>
+
+  <!-- Modal -->
+  <div id="accessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm">
+      <h2 class="text-xl font-bold mb-4">How to Gain Access</h2>
+      <ol class="list-decimal list-inside text-left space-y-2">
+        <li>Complete the payment and submit your details✅</li>
+        <li>Submit your registered email and username.</li>
+        <li>You will be redirected to WhatsApp for instant access✅</li>
+      </ol>
+      <button class="mt-4 bg-green-500 text-white py-2 px-4 rounded" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
       <!-- Payment Form -->
    <form id="paymentForm" class="space-y-6"  enctype="multipart/form-data">
     <!-- Amount Section with Dropdown --> 
@@ -140,6 +155,20 @@
       </div>
 
      <script>
+  // Function to open the modal
+  function openModal() {
+    const modal = document.getElementById('accessModal');
+    modal.classList.remove('hidden');
+
+    // Automatically close the modal after 4 seconds
+    setTimeout(closeModal, 4000);
+  }
+
+  // Function to close the modal
+  function closeModal() {
+    const modal = document.getElementById('accessModal');
+    modal.classList.add('hidden');
+  }
   // Get the amount from the URL parameters
   function getUrlParameter(name) {
     const urlParams = new URLSearchParams(window.location.search);
