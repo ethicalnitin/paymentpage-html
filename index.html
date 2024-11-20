@@ -80,18 +80,29 @@ src="https://www.facebook.com/tr?id=516632391281089&ev=PageView&noscript=1"
       <h1 class="text-2xl font-bold mb-4">Dexter Luxuries - Secure Payment Page</h1>
 
       <!-- Payment Buttons -->
-      <div class="flex justify-center space-x-4 mb-6">
-        <button 
-          id="payWithCrypto" 
-          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition">
-          Pay with Crypto
-        </button>
-       <button 
-  id="payWithUPI" 
-  class="py-2 px-4 rounded-lg transition flex items-center justify-center">
-  <img src="https://i.ibb.co/tp2GKDG/upi-icon-1.png" alt="Pay with UPI" class="h-6">
-</button>
-      </div>
+     <div class="flex space-x-4">
+  <!-- Pay with Crypto Button -->
+  <button  
+    id="payWithCrypto" 
+    class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition flex items-center justify-center space-x-2">
+    <img 
+      src="https://i.ibb.co/0hFcL3Z/bitcoin-icon.png" 
+      alt="Bitcoin Icon" 
+      class="h-6 w-6">
+   
+  </button>
+
+  <!-- Pay with UPI Button -->
+  <button 
+    id="payWithUPI" 
+    class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition flex items-center justify-center space-x-2">
+    <img 
+      src="https://i.ibb.co/tp2GKDG/upi-icon-1.png" 
+      alt="UPI Icon" 
+      class="h-6 w-6">
+    
+  </button>
+</div>
 
       <!-- QR Code Display Section -->
       <div id="qrCodeContainer" class="hidden">
