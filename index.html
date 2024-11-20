@@ -185,13 +185,37 @@ src="https://www.facebook.com/tr?id=516632391281089&ev=PageView&noscript=1"
   payWithCryptoButton.addEventListener('click', () => {
     qrCodeContainer.classList.remove('hidden');
     qrCodeImage.src = cryptoQRCode;
+    
+    // Center the QR code container dynamically
+    centerQRCode();
   });
 
   // Event listener for "Pay with UPI"
   payWithUPIButton.addEventListener('click', () => {
     qrCodeContainer.classList.remove('hidden');
     qrCodeImage.src = upiQRCode;
+    
+    // Center the QR code container dynamically
+    centerQRCode();
   });
+
+  // Function to center the QR code container
+  function centerQRCode() {
+    const containerWidth = qrCodeContainer.offsetWidth;
+    const containerHeight = qrCodeContainer.offsetHeight;
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // Calculate the position to center the QR code
+    const left = (windowWidth - containerWidth) / 2;
+    const top = (windowHeight - containerHeight) / 2;
+
+    // Set the position of the QR code container
+    qrCodeContainer.style.position = 'fixed';
+    qrCodeContainer.style.left = `${left}px`;
+    qrCodeContainer.style.top = `${top}px`;
+    qrCodeContainer.style.zIndex = '9999'; // Ensure it appears on top
+  }
 
   // Function to open the modal
   function openModal() {
@@ -302,20 +326,20 @@ src="https://www.facebook.com/tr?id=516632391281089&ev=PageView&noscript=1"
     }
 
     // Send form data to backend for Telegram notification
-   try {
-    const telegramResponse = await fetch('https://backend1-ztvf.onrender.com/submit', {
-      method: 'POST',
-      body: formData // Send the FormData object directly, including file upload
-    });
+    try {
+      const telegramResponse = await fetch('https://backend1-ztvf.onrender.com/submit', {
+        method: 'POST',
+        body: formData // Send the FormData object directly, including file upload
+      });
 
-    if (telegramResponse.ok) {
-      console.log('Form data sent to Telegram successfully');
-    } else {
-      console.error('Error sending form data to Telegram:', await telegramResponse.json());
+      if (telegramResponse.ok) {
+        console.log('Form data sent to Telegram successfully');
+      } else {
+        console.error('Error sending form data to Telegram:', await telegramResponse.json());
+      }
+    } catch (error) {
+      console.error('Error processing form submission:', error);
     }
-  } catch (error) {
-    console.error('Error processing form submission:', error);
-  }
 
     // Display Modal on Successful Payment Submission
     const modal = document.getElementById('paymentSuccessModal');
@@ -339,6 +363,7 @@ src="https://www.facebook.com/tr?id=516632391281089&ev=PageView&noscript=1"
     submitPaymentBtn.disabled = false;
   });
 </script>
+
 
 
     </div>
