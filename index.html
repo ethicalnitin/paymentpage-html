@@ -51,36 +51,7 @@ src="https://www.facebook.com/tr?id=516632391281089&ev=PageView&noscript=1"
       }
     };
   </script>
- <style>
-  /* Center QR code container */
-  #qrCodeContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh; /* Full viewport height to center vertically */
-    position: fixed; /* Fix it on screen */
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    z-index: 20;
-    display: none; /* Hide by default */
-  }
 
-  #qrCodeContainer img {
-    width: 70%; /* Adjust as needed */
-    max-width: 300px; /* Max size of the QR code */
-  }
-
-  @media (max-width: 600px) {
-    /* For smaller screens (like mobile), adjust the size */
-    #qrCodeContainer img {
-      width: 80%; /* Use 80% width for mobile screens */
-    }
-  }
-
-</style>
 </head>
 <body class="bg-gray-100">
 
@@ -126,9 +97,9 @@ src="https://www.facebook.com/tr?id=516632391281089&ev=PageView&noscript=1"
       </div>
 
      <div id="qrCodeContainer" class="hidden">
-  <img id="qrCodeImage" src="" alt="QR Code" class="mx-2 mb-4">
-  <p class="text-white">Scan the QR code above to complete your payment.</p>
-</div>
+        <img id="qrCodeImage" src="" alt="QR Code" class="mx-2 mb-4" style="width: 80%; height: auto;">
+        <p class="text-gray-600">Scan the QR code above to complete your payment.</p>
+      </div>
 
 
 <p class="text-blue-500 cursor-pointer mb-4" onclick="openModal()">How will I get access?</p>
