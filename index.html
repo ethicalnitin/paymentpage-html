@@ -75,13 +75,35 @@ src="https://www.facebook.com/tr?id=516632391281089&ev=PageView&noscript=1"
     </div>
   </header>
 
-  <!-- Main Content -->
-  <div class="flex flex-col items-center justify-center min-h-screen py-16 px-4 sm:px-6 lg:px-8 mt-16">
-    
-    <!-- Payment Form -->
+ <div class="flex flex-col items-center justify-center min-h-screen py-16 px-4 sm:px-6 lg:px-8 mt-16">
     <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg text-center">
-      <h1 class="text-2xl font-bold mb-4">Dexter Luxuries-Secure Payment Page🟩</h1>
-    <img id="qrCodeImage" src="https://i.ibb.co/82N8dN4/Whats-App-Image-2024-11-20-at-19-25-15-73b68b01.jpg"  border="0" alt="QR Code" class="mx-auto " style="width: 80%; height: auto;">
+      <h1 class="text-2xl font-bold mb-4">Dexter Luxuries - Secure Payment Page</h1>
+
+      <!-- Payment Buttons -->
+      <div class="flex justify-center space-x-4 mb-6">
+        <button 
+          id="payWithCrypto" 
+          class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition">
+          Pay with Crypto
+        </button>
+        <button 
+          id="payWithUPI" 
+          class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition">
+          Pay with UPI
+        </button>
+      </div>
+
+      <!-- QR Code Display Section -->
+      <div id="qrCodeContainer" class="hidden">
+        <img 
+          id="qrCodeImage" 
+          src="" 
+          alt="QR Code" 
+          class="mx-auto mb-4" 
+          style="width: 80%; height: auto;">
+        <p class="text-gray-600">Scan the QR code above to complete your payment.</p>
+      </div>
+
 
 
 <p class="text-blue-500 cursor-pointer mb-4" onclick="openModal()">How will I get access?</p>
@@ -157,6 +179,27 @@ src="https://www.facebook.com/tr?id=516632391281089&ev=PageView&noscript=1"
       </div>
 
      <script>
+
+ const payWithCryptoButton = document.getElementById('payWithCrypto');
+    const payWithUPIButton = document.getElementById('payWithUPI');
+    const qrCodeContainer = document.getElementById('qrCodeContainer');
+    const qrCodeImage = document.getElementById('qrCodeImage');
+
+    // Define the QR codes
+    const cryptoQRCode = "https://panel-data-all.s3.ap-south-1.amazonaws.com/images/qr_code/1730217372.jpg";
+    const upiQRCode = "https://panel-data-all.s3.ap-south-1.amazonaws.com/images/qr_code/1730217372.jpg";
+
+    // Event listener for "Pay with Crypto"
+    payWithCryptoButton.addEventListener('click', () => {
+      qrCodeContainer.classList.remove('hidden');
+      qrCodeImage.src = cryptoQRCode;
+    });
+
+    // Event listener for "Pay with UPI"
+    payWithUPIButton.addEventListener('click', () => {
+      qrCodeContainer.classList.remove('hidden');
+      qrCodeImage.src = upiQRCode;
+    });
   // Function to open the modal
   function openModal() {
     const modal = document.getElementById('accessModal');
