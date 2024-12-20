@@ -121,22 +121,11 @@ src="https://www.facebook.com/tr?id=1726634221453397&ev=PageView&noscript=1"
   </div>
 
       <!-- Payment Form -->
-   <form id="paymentForm" class="space-y-6"  enctype="multipart/form-data">
-    <!-- Amount Section with Dropdown --> 
+   <form id="paymentForm" class="space-y-6" enctype="multipart/form-data">
+    <!-- Amount Section -->
     <div class="text-left">
-        <label for="amountDropdown" class="block text-sm font-medium text-gray-700">Amount*</label>
-        <select id="amountDropdown" name="amountDropdown" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2 bg-gray-100 text-gray-700" required>
-            <option value="495"> ₹695 - (3 Months) (Limited Offer)</option>
-          <option value="995"> ₹1295 - (6 Months) (Limited Offer)</option>
-          <option value="1795"> ₹2195 - (12 Months) (Limited Offer)</option>
-            <option value="custom">Custom Amount</option>
-        </select>
-    </div>
-
-    <!-- Custom Amount Input (Hidden by Default) -->
-    <div id="customAmountContainer" class="text-left hidden">
-        <label for="customAmount" class="block text-sm font-medium text-gray-700">Custom Amount*</label>
-        <input type="number" id="customAmount" name="customAmount" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter custom amount">
+        <label for="amount" class="block text-sm font-medium text-gray-700">Amount (₹)*</label>
+        <input type="number" id="amount" name="amount" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2 bg-gray-100 text-gray-700" value="49999" readonly required>
     </div>
 
     <!-- UTR/UPI Transaction ID -->
@@ -151,6 +140,17 @@ src="https://www.facebook.com/tr?id=1726634221453397&ev=PageView&noscript=1"
         <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email" required>
     </div>
 
+    <!-- Contact Number -->
+    <div class="text-left">
+        <label for="contactNumber" class="block text-sm font-medium text-gray-700">Contact Number*</label>
+        <input type="tel" id="contactNumber" name="contactNumber" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your contact number" required>
+    </div>
+
+    <!-- Shipping Address -->
+    <div class="text-left">
+        <label for="shippingAddress" class="block text-sm font-medium text-gray-700">Shipping Address*</label>
+        <textarea id="shippingAddress" name="shippingAddress" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your full shipping address" rows="4" required></textarea>
+    </div>
 
     <!-- File Upload Section for Payment Screenshot -->
     <div class="text-left">
@@ -158,9 +158,10 @@ src="https://www.facebook.com/tr?id=1726634221453397&ev=PageView&noscript=1"
         <input type="file" id="paymentScreenshot" name="paymentScreenshot" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" accept="image/*" required>
     </div>
 
-    <!-- Submit Button with Event Tracking and Loading Indicator -->
+    <!-- Submit Button -->
     <button type="submit" id="submitPaymentBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg transition">Submit Payment</button>
 </form>
+
 
       <!-- Modal for Payment Successful Message -->
       <div id="paymentSuccessModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center">
