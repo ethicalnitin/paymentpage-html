@@ -57,17 +57,6 @@
                 <p class="text-gray-600 text-sm">Scan the QR code above to complete your payment.</p>
             </div>
 
-            <div id="upiDeepLinkContainer" class="hidden mt-4">
-                <img id="upiQRCodeImage" src="" alt="UPI QR Code" class="mx-auto mb-3" style="max-width: 200px; height: auto;">
-                <form id="upiDeepLinkForm" class="mt-2">
-                    <div class="mb-2">
-                        <label for="upiEmail" class="block text-sm font-medium text-gray-700">Email Address</label>
-                        <input type="email" id="upiEmail" name="upiEmail" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email">
-                    </div>
-                    <button type="button" id="payNowButton" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition">Pay Now</button>
-                </form>
-            </div>
-
 
             <p class="text-blue-500 cursor-pointer mt-4 mb-2" onclick="openModal()">How will I get access?</p>
            <p class="text-red-500 cursor-pointer mb-4">
@@ -150,12 +139,9 @@
             const payWithUPI3Button = document.getElementById('payWithUPI3');
             const qrCodeContainer = document.getElementById('qrCodeContainer');
             const qrCodeImage = document.getElementById('qrCodeImage');
-            const upiDeepLinkContainer = document.getElementById('upiDeepLinkContainer');
-            const upiQRCodeImage = document.getElementById('upiQRCodeImage');
-            const payNowButton = document.getElementById('payNowButton');
 
             // Define the QR codes
-            const upiQRCode = "https://panel-data-all.s3.ap-south-1.amazonaws.com/images/qr_code/1735459603.jpeg";
+            const upiQRCode ="https://i.ibb.co/LX9wnKNN/Whats-App-Image-2025-04-16-at-1-05-03-AM.jpg";
             // If you have different QR codes for each UPI option, define them here:
             // const upi1QRCode = "URL_FOR_UPI_1_QR_CODE";
             // const upi2QRCode = "URL_FOR_UPI_2_QR_CODE";
@@ -164,62 +150,26 @@
             // Event listener for "Pay with Bank Account"
             payWithBankAccountButton.addEventListener('click', () => {
                 qrCodeContainer.classList.remove('hidden');
-                upiDeepLinkContainer.classList.add('hidden');
                 qrCodeImage.src = upiQRCode;
             });
 
-            // Event listener for "Pay with UPI-1" (Deep Link)
+            // Event listener for "Pay with UPI-1"
             payWithUPI1Button.addEventListener('click', () => {
-                qrCodeContainer.classList.add('hidden');
-                upiDeepLinkContainer.classList.remove('hidden');
-                upiQRCodeImage.src = upiQRCode; // You can use a specific QR code if needed
+                qrCodeContainer.classList.remove('hidden');
+                qrCodeImage.src = upiQRCode; // Replace with upi1QRCode if available
             });
 
             // Event listener for "Pay with UPI-2"
             payWithUPI2Button.addEventListener('click', () => {
                 qrCodeContainer.classList.remove('hidden');
-                upiDeepLinkContainer.classList.add('hidden');
                 qrCodeImage.src = upiQRCode; // Replace with upi2QRCode if available
             });
 
             // Event listener for "Pay with UPI-3"
             payWithUPI3Button.addEventListener('click', () => {
                 qrCodeContainer.classList.remove('hidden');
-                upiDeepLinkContainer.classList.add('hidden');
                 qrCodeImage.src = upiQRCode; // Replace with upi3QRCode if available
             });
-
-            // Event listener for the "Pay Now" button (UPI Deep Link)
-            payNowButton.addEventListener('click', () => {
-                const upiId = "7007705158@pthdfc";
-                const payeeName = "Dexter Luxuries"; // Optional
-                const currency = "INR"; // Optional
-                const amountDropdown = document.getElementById('amountDropdown');
-                const customAmountInput = document.getElementById('customAmount');
-                let amount = '';
-
-                if (amountDropdown.value === 'custom') {
-                    amount = customAmountInput.value;
-                } else {
-                    amount = amountDropdown.value;
-                }
-
-                if (!amount) {
-                    alert('Please select an amount or enter a custom amount.');
-                    return;
-                }
-
-                const upiUri = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&cu=${currency}&am=${amount}`;
-
-                // Attempt to open the UPI app
-                window.location.href = upiUri;
-
-                // Optionally, you can also submit the form data (including the email) to your backend here
-                const email = document.getElementById('upiEmail').value;
-                console.log('Email submitted for UPI deep link:', email);
-                // You would typically use a fetch request here to send the data to your server
-            });
-
 
             // Function to open the modal
             function openModal() {
@@ -276,7 +226,7 @@
                 });
             });
 
-            // Form Submission Event Listener (for the main payment form)
+            // Form Submission Event Listener
             document.getElementById('paymentForm').addEventListener('submit', async function(event) {
                 event.preventDefault(); // Prevent default form submission
 
