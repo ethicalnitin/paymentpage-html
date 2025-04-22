@@ -133,195 +133,261 @@
             </div>
 
         <script>
-            const payWithBankAccountButton = document.getElementById('payWithBankAccount');
-            const payWithUPI1Button = document.getElementById('payWithUPI1');
-            const payWithUPI2Button = document.getElementById('payWithUPI2');
-            const payWithUPI3Button = document.getElementById('payWithUPI3');
-            const qrCodeContainer = document.getElementById('qrCodeContainer');
-            const qrCodeImage = document.getElementById('qrCodeImage');
+        // --- Payment Method Button Handlers (Keep as is) ---
+        const payWithBankAccountButton = document.getElementById('payWithBankAccount');
+        const payWithUPI1Button = document.getElementById('payWithUPI1');
+        const payWithUPI2Button = document.getElementById('payWithUPI2');
+        const payWithUPI3Button = document.getElementById('payWithUPI3');
+        const qrCodeContainer = document.getElementById('qrCodeContainer');
+        const qrCodeImage = document.getElementById('qrCodeImage');
 
-            // Define the QR codes
-            const upiQRCode ="https://branch-panel-data.s3.ap-south-1.amazonaws.com/images/qr_code/1744903445.png";
-            // If you have different QR codes for each UPI option, define them here:
-             const upi1QRCode = "https://branch-panel-data.s3.ap-south-1.amazonaws.com/images/qr_code/1744903445.png";
-             const upi2QRCode = "https://branch-panel-data.s3.ap-south-1.amazonaws.com/images/qr_code/1743184787.jpeg";
-             const upi3QRCode = "https://branch-panel-data.s3.ap-south-1.amazonaws.com/images/qr_code/1743864642.jpeg";
+        // Define the QR codes (Keep as is)
+        const upiQRCode ="https://branch-panel-data.s3.ap-south-1.amazonaws.com/images/qr_code/1744903445.png";
+        const upi1QRCode = "https://branch-panel-data.s3.ap-south-1.amazonaws.com/images/qr_code/1744903445.png"; // Example different QR
+        const upi2QRCode = "https://branch-panel-data.s3.ap-south-1.amazonaws.com/images/qr_code/1743184787.jpeg"; // Example different QR
+        const upi3QRCode = "https://branch-panel-data.s3.ap-south-1.amazonaws.com/images/qr_code/1743864642.jpeg"; // Example different QR
 
-            // Event listener for "Pay with Bank Account"
-            payWithBankAccountButton.addEventListener('click', () => {
-                qrCodeContainer.classList.remove('hidden');
-                qrCodeImage.src = upiQRCode;
-            });
 
-            // Event listener for "Pay with UPI-1"
-            payWithUPI1Button.addEventListener('click', () => {
-                qrCodeContainer.classList.remove('hidden');
-                qrCodeImage.src = upi1QRCode ; // Replace with upi1QRCode if available
-            });
+        // Event listeners for "Pay with..." buttons (Keep as is)
+        payWithBankAccountButton.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            qrCodeContainer.classList.remove('hidden');
+            qrCodeImage.src = upiQRCode;
+             // Optional: Hide other buttons if needed
+        });
 
-            // Event listener for "Pay with UPI-2"
-            payWithUPI2Button.addEventListener('click', () => {
-                qrCodeContainer.classList.remove('hidden');
-                qrCodeImage.src = upi2QRCode; // Replace with upi2QRCode if available
-            });
+        payWithUPI1Button.addEventListener('click', (e) => {
+             e.preventDefault();
+            qrCodeContainer.classList.remove('hidden');
+            qrCodeImage.src = upi1QRCode ;
+        });
 
-            // Event listener for "Pay with UPI-3"
-            payWithUPI3Button.addEventListener('click', () => {
-                qrCodeContainer.classList.remove('hidden');
-                qrCodeImage.src = upi3QRCode; // Replace with upi3QRCode if available
-            });
+        payWithUPI2Button.addEventListener('click', (e) => {
+             e.preventDefault();
+            qrCodeContainer.classList.remove('hidden');
+            qrCodeImage.src = upi2QRCode;
+        });
 
-            // Function to open the modal
-            function openModal() {
-                const modal = document.getElementById('accessModal');
-                modal.classList.remove('hidden');
+        payWithUPI3Button.addEventListener('click', (e) => {
+             e.preventDefault();
+            qrCodeContainer.classList.remove('hidden');
+            qrCodeImage.src = upi3QRCode;
+        });
 
-                // Automatically close the modal after 4 seconds
-                setTimeout(closeModal, 4000);
-            }
 
-            // Function to close the modal
-            function closeModal() {
-                const modal = document.getElementById('accessModal');
-                modal.classList.add('hidden');
-            }
+        // --- Modal Functions (Keep as is) ---
+        function openModal() {
+            const modal = document.getElementById('accessModal');
+            modal.classList.remove('hidden');
+            // Automatically close the modal after 4 seconds (adjust timing)
+            // Removed the automatic close as it might be annoying, user can click Close
+            // setTimeout(closeModal, 4000);
+        }
 
-            // Get the amount from the URL parameters
-            function getUrlParameter(name) {
-                const urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(name);
-            }
+        function closeModal() {
+            const modal = document.getElementById('accessModal');
+            modal.classList.add('hidden');
+        }
 
-            // Show/Hide Custom Amount Field and Set Default Amount
-            document.addEventListener('DOMContentLoaded', function() {
-                const amountDropdown = document.getElementById('amountDropdown');
-                const customAmountContainer = document.getElementById('customAmountContainer');
-                const urlAmount = getUrlParameter('amount');
-                const amountInput = document.getElementById('amount'); // Get the readonly amount input
+        // --- URL Parameter Function (Keep as is) ---
+        function getUrlParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
 
-                if (urlAmount) {
-                    // Check if the amount passed in the URL matches one of the dropdown values
-                    const isPreset = [...amountDropdown.options].some(option => option.value === urlAmount);
+        // --- DOM Content Loaded: Handle Amount Pre-filling ---
+        document.addEventListener('DOMContentLoaded', function() {
+            const amountDropdown = document.getElementById('amountDropdown');
+            const customAmountContainer = document.getElementById('customAmountContainer');
+            const customAmountInput = document.getElementById('customAmount'); // Get the custom amount input
+            const urlAmount = getUrlParameter('amount'); // Get amount from URL
 
-                    if (isPreset) {
-                        amountDropdown.value = urlAmount;
-                    } else {
-                        // If the amount isn't preset, show custom amount input
-                        amountDropdown.value = 'custom';
-                        customAmountContainer.classList.remove('hidden');
-                        document.getElementById('customAmount').value = urlAmount;
+            console.log("Page loaded. URL amount:", urlAmount); // Debug log
+
+            if (urlAmount) {
+                // Check if the amount passed in the URL matches one of the dropdown values
+                let isPreset = false;
+                for (let i = 0; i < amountDropdown.options.length; i++) {
+                    if (amountDropdown.options[i].value === urlAmount) {
+                        amountDropdown.value = urlAmount; // Select the preset amount
+                        isPreset = true;
+                        console.log(`Preset amount found: ${urlAmount}. Dropdown set.`); // Debug log
+                        break; // Found a match, exit loop
                     }
+                }
+
+                if (!isPreset) {
+                    // If the amount isn't a preset, show custom amount input and populate it
+                    amountDropdown.value = 'custom'; // Select the 'Custom Amount' option
+                    customAmountContainer.classList.remove('hidden');
+                    customAmountInput.value = urlAmount; // Set the custom input value
+                    console.log(`Amount ${urlAmount} is not preset. Custom field shown.`); // Debug log
+                     // Make the custom amount input required if using it
+                    customAmountInput.required = true;
                 } else {
-                    // Set the default value of the dropdown
-                    amountDropdown.value = '399';
+                     // If a preset was found and selected, ensure custom field is hidden
+                     customAmountContainer.classList.add('hidden');
+                     customAmountInput.required = false; // Make custom input not required
                 }
+            } else {
+                // If no amount in URL, set the default value of the dropdown
+                amountDropdown.value = '399';
+                customAmountContainer.classList.add('hidden'); // Ensure custom is hidden by default
+                 customAmountInput.required = false; // Make custom input not required
+                console.log("No amount in URL. Defaulting to 399."); // Debug log
+            }
 
-                // Show the custom amount field when 'custom' is selected
-                amountDropdown.addEventListener('change', function() {
-                    if (amountDropdown.value === 'custom') {
-                        customAmountContainer.classList.remove('hidden');
-                    } else {
-                        customAmountContainer.classList.add('hidden');
-                    }
+            // Show the custom amount field when 'custom' is selected in the dropdown
+            amountDropdown.addEventListener('change', function() {
+                if (amountDropdown.value === 'custom') {
+                    customAmountContainer.classList.remove('hidden');
+                    customAmountInput.required = true; // Make required when shown
+                } else {
+                    customAmountContainer.classList.add('hidden');
+                     customAmountInput.required = false; // Make not required when hidden
+                }
+                 // Clear custom amount input if hiding it
+                 if (customAmountContainer.classList.contains('hidden')) {
+                      customAmountInput.value = '';
+                 }
+            });
+        });
+
+        // --- Form Submission Event Listener ---
+        document.getElementById('paymentForm').addEventListener('submit', async function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            const submitPaymentBtn = document.getElementById('submitPaymentBtn');
+            submitPaymentBtn.innerHTML = 'Processing...'; // Show loading state
+            submitPaymentBtn.disabled = true; // Disable button to prevent multiple submissions
+
+            const form = event.target;
+            const formData = new FormData(form);
+
+            // Get the selected amount - Correctly gets from dropdown or custom input
+            const selectedAmount = formData.get('amountDropdown') === 'custom' ? formData.get('customAmount') : formData.get('amountDropdown');
+
+            // Add the selected amount to the formData if you need to send it explicitly
+            // The form already includes amountDropdown and customAmount, backend needs to handle which one to use
+            // If you want a single 'amount' field in formData for the backend:
+            // formData.set('amount', selectedAmount);
+
+
+            // --- Facebook Pixel & CAPI Tracking (Keep as is) ---
+            // Ensure selectedAmount is used for tracking
+            if (window.fbq) {
+                window.fbq('track', 'Purchase', {
+                    value: parseFloat(selectedAmount), // Use parseFloat for value
+                    currency: 'INR'
                 });
-            });
+            }
 
-            // Form Submission Event Listener
-            document.getElementById('paymentForm').addEventListener('submit', async function(event) {
-                event.preventDefault(); // Prevent default form submission
-
-                const submitPaymentBtn = document.getElementById('submitPaymentBtn');
-                submitPaymentBtn.innerHTML = 'Processing...'; // Show loading state
-                submitPaymentBtn.disabled = true; // Disable button to prevent multiple submissions
-
-                const form = event.target;
-                const formData = new FormData(form);
-
-                // Get the selected amount
-                const selectedAmount = formData.get('amountDropdown') === 'custom' ? formData.get('customAmount') : formData.get('amountDropdown');
-
-                const data = {
-                    amountDropdown: selectedAmount,
-                    utr: formData.get('utr'),
-                    email: formData.get('email'),
-                    username: formData.get('username'),
-                    paymentScreenshot: formData.get('paymentScreenshot') // Include the file
-                };
-
-                // Facebook Pixel Purchase Tracking (Browser-Side)
-                if (window.fbq) {
-                    window.fbq('track', 'Purchase', {
-                        value: selectedAmount,
-                        currency: 'INR'
-                    });
-                }
-
-                // Conversion API (CAPI) Purchase Event
-                try {
-                    const userAgent = navigator.userAgent;
-                    const capiResponse = await fetch('https://backend-cmfshop.onrender.com/track-event', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
+            try {
+                const userAgent = navigator.userAgent;
+                const capiResponse = await fetch('https://backend-cmfshop.onrender.com/track-event', { // Ensure this URL is correct
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json', // Use application/json for CAPI endpoint
+                    },
+                    body: JSON.stringify({
+                        event_name: 'Purchase',
+                        event_time: Math.floor(Date.now() / 1000),
+                        action_source: 'website',
+                        event_source_url: window.location.href,
+                        custom_data: {
+                            value: parseFloat(selectedAmount), // Use parseFloat for value
+                            currency: 'INR'
                         },
-                        body: JSON.stringify({
-                            event_name: 'Purchase',
-                            event_time: Math.floor(Date.now() / 1000),
-                            action_source: 'website',
-                            event_source_url: window.location.href,
-                            custom_data: {
-                                value: selectedAmount,
-                                currency: 'INR'
-                            },
-                            user_data: {
-                                client_user_agent: userAgent,
-                            }
-                        }),
-                    });
-                    const capiResult = await capiResponse.json();
-                    console.log('Purchase event sent via CAPI:', capiResult);
-                } catch (error) {
-                    console.error('Error sending Purchase via CAPI:', error);
+                        user_data: {
+                            client_user_agent: userAgent,
+                             // You might want to add email or other user data here if available and hashed
+                             email: data.email ? CryptoJS.SHA256(data.email.toLowerCase()).toString() : undefined, // Example Hashing
+                             phone: undefined, // Add if you collect phone
+                             client_ip_address: undefined, // Should get on backend typically
+                        }
+                         // context: {...} // Add context if needed
+                    }),
+                });
+                const capiResult = await capiResponse.json();
+                console.log('Purchase event sent via CAPI:', capiResult);
+            } catch (error) {
+                console.error('Error sending Purchase via CAPI:', error);
+            }
+
+            // --- Send Form data to backend for Telegram/Verification ---
+            // This assumes your backend '/submit' endpoint is expecting FormData including the file.
+            try {
+                 // Create a new FormData object to potentially add selectedAmount explicitly
+                 const dataToSend = new FormData(form); // Start with the original form data
+                 dataToSend.set('amount', selectedAmount); // Explicitly add the determined amount
+
+                const telegramResponse = await fetch('https://backend-cmfshop.onrender.com/submit', { // Ensure this URL is correct
+                    method: 'POST',
+                    // Do NOT set Content-Type header for FormData with file uploads; browser does it.
+                    body: dataToSend // Send the FormData object directly, including file upload
+                });
+
+                if (telegramResponse.ok) {
+                    console.log('Form data sent successfully');
+                    // You might want to show a different success message or redirect based on backend response
+                } else {
+                    console.error('Error sending form data:', await telegramResponse.text()); // Log text response on error
+                    alert("Failed to submit payment details. Please try again."); // Alert user
+                     submitPaymentBtn.innerHTML = 'Submit Payment'; // Reset button text
+                     submitPaymentBtn.disabled = false; // Re-enable button
+                    return; // Stop here if form submission failed
                 }
+            } catch (error) {
+                console.error('Error processing form submission:', error);
+                 alert("Failed to submit payment details. Please try again."); // Alert user
+                 submitPaymentBtn.innerHTML = 'Submit Payment'; // Reset button text
+                 submitPaymentBtn.disabled = false; // Re-enable button
+                 return; // Stop here if form submission failed
+            }
 
-                // Send form data to backend for Telegram notification
-                try {
-                    const telegramResponse = await fetch('https://backend-cmfshop.onrender.com/submit', {
-                        method: 'POST',
-                        body: formData // Send the FormData object directly, including file upload
-                    });
 
-                    if (telegramResponse.ok) {
-                        console.log('Form data sent to Telegram successfully');
-                    } else {
-                        console.error('Error sending form data to Telegram:', await telegramResponse.json());
-                    }
-                } catch (error) {
-                    console.error('Error processing form submission:', error);
+            // --- Display Success Modal and Redirect (Keep as is) ---
+            // This part runs IF the fetch requests above completed without throwing errors.
+            const successModal = document.getElementById('paymentSuccessModal');
+            const countdownElement = document.getElementById('countdown');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+
+
+            successModal.classList.remove('hidden');
+
+            let countdown = 3;
+            countdownElement.textContent = countdown; // Set initial countdown
+            const countdownInterval = setInterval(() => {
+                countdown -= 1;
+                countdownElement.textContent = countdown;
+                if (countdown === 0) {
+                    clearInterval(countdownInterval);
+                    // Remove the modal (optional, redirect happens next)
+                    // successModal.classList.add('hidden');
+                    // Redirect to WhatsApp
+                    window.location.href = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details%20with%20UTR%20' + encodeURIComponent(data.utr || ''); // Include UTR in WhatsApp message
                 }
+            }, 1000); // Decrease countdown every second
 
-                // Display Modal on Successful Payment Submission
-                const modal = document.getElementById('paymentSuccessModal');
-                modal.classList.remove('hidden');
+            // Allow closing the modal early
+             closeModalBtn.addEventListener('click', () => {
+                 clearInterval(countdownInterval); // Stop countdown
+                 successModal.classList.add('hidden'); // Hide modal
+                  window.location.href = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details%20with%20UTR%20' + encodeURIComponent(data.utr || ''); // Redirect on close
+             });
 
-                // Countdown Timer
-                let countdown = 3;
-                const countdownElement = document.getElementById('countdown');
-                const countdownInterval = setInterval(() => {
-                    countdown -= 1;
-                    countdownElement.textContent = countdown;
-                    if (countdown === 0) {
-                        clearInterval(countdownInterval);
-                        modal.classList.add('hidden'); // Close the modal
-                        window.location.href = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details';
-                    }
-                }, 1000); // Decrease countdown every second
 
-                // Reset the button
-                submitPaymentBtn.innerHTML = 'Submit Payment';
-                submitPaymentBtn.disabled = false;
-            });
-        </script>
+            // Reset the button state after redirect/modal logic starts
+            // (These lines might be redundant if redirect happens fast, but good practice)
+            submitPaymentBtn.innerHTML = 'Submit Payment';
+            submitPaymentBtn.disabled = false;
+        });
+
+        // --- Manual Modal Trigger ---
+        document.querySelector('.text-blue-500.cursor-pointer.mt-4.mb-2').onclick = openModal;
+
+
+    </script>
         </div>
     </div>
 
