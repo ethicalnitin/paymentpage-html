@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dexter Payments - Secure UPI Payment</title>
+    <title>Dexter Luxuries - Secure UPI Payment</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
@@ -22,6 +22,56 @@
         }
         html {
             scroll-behavior: smooth; /* Enable smooth scrolling */
+        }
+        /* Custom styles for app buttons */
+        .app-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            color: white;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Make buttons full width in their container */
+            max-width: 250px; /* Limit max width for larger screens */
+            margin: 0 auto; /* Center buttons */
+        }
+        .app-button img {
+            height: 28px; /* Adjust icon size within button */
+            margin-right: 10px;
+            filter: brightness(0) invert(1); /* Make icons white for dark backgrounds */
+        }
+        .app-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        /* Specific colors for each app */
+        .phonepe-btn { background-color: #6739B7; }
+        .phonepe-btn:hover { background-color: #5b32a2; }
+        .gpay-btn { background-color: #4285F4; }
+        .gpay-btn:hover { background-color: #357ae8; }
+        .paytm-btn { background-color: #00B9F1; }
+        .paytm-btn:hover { background-color: #00a4d8; }
+
+        /* Styles for dropdown and QR section */
+        .payment-method-section {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #f8fafc;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .payment-method-section h3 {
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #edf2f7;
+            padding-bottom: 10px;
         }
     </style>
 </head>
@@ -47,47 +97,48 @@
    <div class="flex flex-col items-center justify-center min-h-screen py-16 px-4 sm:px-6 lg:px-8 mt-16">
         <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg text-center">
             <h1 class="text-2xl font-bold mb-4">Dexter Luxuries - Secure Payment</h1>
-            <p class="text-gray-600 mb-4">Step 1: Complete payment using your favorite UPI app or Scan QR Code</p>
+            <p class="text-gray-600 mb-6">Complete your payment for: <strong id="productNameDisplay">Product Name</strong></p>
+            <p class="text-3xl font-extrabold text-green-600 mb-8">₹ <span id="displayAmount">0.00</span></p>
 
-             <div class="text-left mb-6">
-                <label for="amountDropdown" class="block text-sm font-medium text-gray-700">Select Amount (₹)*</label>
-                <select id="amountDropdown" name="amountDropdown_display" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2 bg-gray-50 text-gray-700" required>
-                    <option value="399">₹ 399</option>
-                    <option value="499">₹ 499</option>
-                    <option value="999">₹ 999</option>
-                    <option value="1999">₹ 1999</option>
-                    <option value="1599">₹ 1599</option>
-                    <option value="3999">₹ 3999</option>
-                    <option value="5999">₹ 5999</option>
-                    <option value="custom">Custom Amount</option>
-                </select>
-            </div>
-             <div id="customAmountContainer" class="hidden text-left mb-6">
-                 <label for="customAmount" class="block text-sm font-medium text-gray-700">Enter Custom Amount (₹)*</label>
-                 <input type="number" id="customAmount" name="customAmount_display" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter amount" min="1">
-             </div>
-
-
-            <div class="payment-icons flex flex-wrap gap-6 items-center justify-center mb-6">
-                <a id="payWithPhonePe" href="#" target="_blank" class="flex flex-col items-center transition-transform transform hover:scale-110 w-16">
-                    <img src="https://i.ibb.co/Q70drskJ/image.png" alt="Pay with PhonePe" />
-                    <span class="text-xs mt-1">PhonePe</span>
-                </a>
-                <a id="payWithGPay" href="#" target="_blank" class="flex flex-col items-center transition-transform transform hover:scale-110 w-16">
-                    <img src="https://cdn.iconscout.com/icon/free/png-256/free-google-pay-2038779-1721670.png" alt="Pay with Google Pay" />
-                    <span class="text-xs mt-1">GPay</span>
-                </a>
-                 <a id="payWithPaytm" href="#" target="_blank" class="flex flex-col items-center transition-transform transform hover:scale-110 w-16">
-                    <img src="https://cdn.iconscout.com/icon/free/png-256/free-paytm-226448.png" alt="Pay with Paytm" />
-                   <span class="text-xs mt-1">Paytm</span>
-                </a>
+            <div class="text-left mb-6 bg-blue-50 p-4 rounded-md border border-blue-200">
+                <p class="block text-sm font-medium text-blue-800 mb-1">Your Selected Amount:</p>
+                <p class="text-xl font-bold text-blue-700">₹ <span id="fixedAmountDisplay">0.00</span></p>
+                <input type="hidden" id="finalAmount" name="amount" value="0">
+                <input type="hidden" id="finalProductName" name="productName" value="">
+                <input type="hidden" id="finalProductId" name="productId" value="">
             </div>
 
-            <div id="qrCodeContainer" class="mt-4">
-                <p class="text-gray-700 font-semibold mb-2">Or Scan QR Code</p>
-                <img id="qrCodeImage" src="https://i.ibb.co/VYjq2vyd/qr1.jpg" alt="UPI QR Code" class="mx-auto mb-3 border border-gray-300 p-1" style="max-width: 180px; height: auto;">
-                <p id="upiIdDisplay" class="text-gray-600 text-sm font-mono break-all"></p>
-                <p class="text-gray-500 text-xs mt-1">Scan using any UPI app</p>
+            <p class="text-gray-700 font-semibold mb-4">Step 1: Choose your preferred UPI app or Scan QR Code</p>
+
+            <div class="mb-6 payment-method-section">
+                <h3>Pay Directly with UPI App:</h3>
+                <div class="relative mb-4">
+                    <label for="upiAppSelect" class="sr-only">Select UPI App</label>
+                    <select id="upiAppSelect" class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2 bg-white text-gray-700">
+                        <option value="">Select UPI App</option>
+                        <option value="phonepe">PhonePe</option>
+                        <option value="gpay">Google Pay</option>
+                        <option value="paytm">Paytm</option>
+                        </select>
+                </div>
+                <div id="upiAppButtons" class="space-y-4">
+                    <a id="phonepeAppBtn" href="#" target="_blank" class="app-button phonepe-btn hidden">
+                        <img src="https://i.ibb.co/Q70drskJ/image.png" alt="PhonePe Icon" /> Pay with PhonePe
+                    </a>
+                    <a id="gpayAppBtn" href="#" target="_blank" class="app-button gpay-btn hidden">
+                        <img src="https://cdn.iconscout.com/icon/free/png-256/free-google-pay-2038779-1721670.png" alt="Google Pay Icon" /> Pay with Google Pay
+                    </a>
+                    <a id="paytmAppBtn" href="#" target="_blank" class="app-button paytm-btn hidden">
+                        <img src="https://cdn.iconscout.com/icon/free/png-256/free-paytm-226448.png" alt="Paytm Icon" /> Pay with Paytm
+                    </a>
+                </div>
+            </div>
+
+            <div id="qrCodeContainer" class="mt-4 payment-method-section">
+                <h3>Or Scan QR Code:</h3>
+                <img id="qrCodeImage" src="https://i.ibb.co/VYjq2vyd/qr1.jpg" alt="UPI QR Code" class="mx-auto mb-3 border border-gray-300 p-1 rounded-lg" style="max-width: 180px; height: auto;">
+                <p id="upiIdDisplay" class="text-gray-600 text-sm font-mono break-all mb-1"></p>
+                <p class="text-gray-500 text-xs mt-1">Scan using any UPI app on your device.</p>
             </div>
 
             <hr class="my-6 border-gray-300">
@@ -97,30 +148,32 @@
                 Proceed to Enter Details
             </button>
 
-           <p class="text-blue-500 cursor-pointer mt-4 mb-2 text-sm" onclick="openModal()">How will I get access?</p>
-           <p class="text-red-500 cursor-pointer mb-4 text-sm">
-               <a href="https://wa.me/+919557338330?text=Payment%20error%20on%20Dexter%20Luxuries" target="_blank">Click here if payment error exists</a>
-           </p>
+            <p class="text-blue-500 cursor-pointer mt-4 mb-2 text-sm" onclick="openModal()">How will I get access?</p>
+            <p class="text-red-500 cursor-pointer mb-4 text-sm">
+                <a href="https://wa.me/+919557338330?text=Payment%20error%20on%20Dexter%20Luxuries" target="_blank">Click here if payment error exists</a>
+            </p>
 
-           <div id="accessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
+            <div id="accessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-11/12">
                    <h2 class="text-xl font-bold mb-4">How to Gain Access</h2>
                    <ol class="list-decimal list-inside text-left space-y-2 text-sm">
-                        <li>Complete the payment using UPI or QR Code for the selected amount.</li>
-                       <li>Click 'Proceed to Enter Details'.</li>
-                       <li>Enter the 12-digit UTR/Reference ID from your payment confirmation.</li>
-                       <li>Enter your email and optionally a username.</li>
-                       <li>Upload the payment screenshot.</li>
-                       <li>Click 'Submit Payment'.</li>
-                       <li>You will be redirected to WhatsApp for access confirmation.</li>
+                        <li>Complete the payment using UPI or QR Code for the <strong class="text-green-600">selected product's amount</strong>.</li>
+                        <li>Click 'Proceed to Enter Details'.</li>
+                        <li>Enter the 12-digit UTR/Reference ID from your payment confirmation.</li>
+                        <li>Enter your email and optionally a username.</li>
+                        <li>Upload the payment screenshot.</li>
+                        <li>Click 'Submit Payment'.</li>
+                        <li>You will be redirected to WhatsApp for access confirmation.</li>
                    </ol>
                    <button class="mt-4 bg-green-500 text-white py-2 px-4 rounded w-full" onclick="closeModal()">Close</button>
-               </div>
-           </div>
+                </div>
+            </div>
 
-           <form id="paymentForm" class="space-y-4 mt-6 hidden" enctype="multipart/form-data">
+            <form id="paymentForm" class="space-y-4 mt-6 hidden" enctype="multipart/form-data">
                 <h2 class="text-xl font-semibold text-gray-700 mb-4 pt-4 border-t border-gray-300">Step 3: Submit Payment Details</h2>
-                <input type="hidden" id="finalAmount" name="amount">
+                <input type="hidden" id="formAmount" name="amount" value="">
+                <input type="hidden" id="formProductName" name="productName" value="">
+                <input type="hidden" id="formProductId" name="productId" value="">
 
                <div class="text-left">
                    <label for="utr" class="block text-sm font-medium text-gray-700">UTR / UPI Reference ID*</label>
@@ -145,7 +198,7 @@
                </div>
 
                <button type="submit" id="submitPaymentBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 px-4 rounded-lg transition">Submit Payment</button>
-           </form>
+            </form>
 
 
             <div id="paymentSuccessModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
@@ -154,32 +207,39 @@
                     <p class="mb-4">Your details are received. You will be redirected to WhatsApp for access confirmation in <span id="countdown" class="font-bold">5</span> seconds...</p>
                     <button id="redirectNowBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg w-full mb-2">Redirect Now</button>
                    <button id="closeModalBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg w-full">Close</button>
-               </div>
-           </div>
+                </div>
+            </div>
 
-       <script>
+        <script>
             // --- Configuration ---
             const UPI_ID = "BHARATPE.8WOQON5G1054747@fbpe"; // <--- *** REPLACE WITH YOUR UPI ID ***
             const PAYEE_NAME = "Digital Duniya"; // Or your registered business name
             const TRANSACTION_NOTE = "Payment for Dexter Luxuries Order";
             const QR_CODE_URL = "https://i.ibb.co/VYjq2vyd/qr1.jpg"; // <--- *** REPLACE WITH YOUR QR CODE IMAGE URL ***
             const WHATSAPP_REDIRECT_URL = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details.'; // Base URL for redirection
+            const DEFAULT_AMOUNT = '399'; // Default amount if no 'amount' parameter is provided
+            const DEFAULT_PRODUCT_NAME = 'Selected Product';
+            const DEFAULT_PRODUCT_ID = 'N/A';
 
             // --- Get Elements ---
-            const amountDropdown = document.getElementById('amountDropdown');
-            const customAmountContainer = document.getElementById('customAmountContainer');
-            const customAmountInput = document.getElementById('customAmount');
+            const fixedAmountDisplay = document.getElementById('fixedAmountDisplay');
+            const productNameDisplay = document.getElementById('productNameDisplay');
+            const displayAmount = document.getElementById('displayAmount'); // New element to show amount prominently
+
+            const upiAppSelect = document.getElementById('upiAppSelect');
+            const upiAppButtons = document.getElementById('upiAppButtons');
+            const phonepeAppBtn = document.getElementById('phonepeAppBtn');
+            const gpayAppBtn = document.getElementById('gpayAppBtn');
+            const paytmAppBtn = document.getElementById('paytmAppBtn');
+
             const qrCodeImage = document.getElementById('qrCodeImage');
             const upiIdDisplay = document.getElementById('upiIdDisplay');
 
-            const payWithPhonePeLink = document.getElementById('payWithPhonePe');
-            const payWithGPayLink = document.getElementById('payWithGPay');
-            const payWithPaytmLink = document.getElementById('payWithPaytm');
-            // Removed BHIM and Amazon Pay links
-
-            const proceedBtn = document.getElementById('proceedBtn'); // New button
-            const paymentForm = document.getElementById('paymentForm'); // The form itself
-            const finalAmountInput = document.getElementById('finalAmount'); // Hidden input in form
+            const proceedBtn = document.getElementById('proceedBtn');
+            const paymentForm = document.getElementById('paymentForm');
+            const formAmountInput = document.getElementById('formAmount'); // Hidden input in form for amount
+            const formProductNameInput = document.getElementById('formProductName'); // Hidden input in form for product name
+            const formProductIdInput = document.getElementById('formProductId'); // Hidden input in form for product ID
 
             const submitPaymentBtn = document.getElementById('submitPaymentBtn');
             const successModal = document.getElementById('paymentSuccessModal');
@@ -195,14 +255,13 @@
                 accessModal.classList.remove('hidden');
             }
             function closeModal() {
-                 accessModal.classList.add('hidden');
+                accessModal.classList.add('hidden');
             }
             accessModal.addEventListener('click', function(event) {
                 if (event.target === accessModal) closeModal();
             });
-             successModal.addEventListener('click', function(event) {
-                 // Prevent closing success modal by clicking outside for now
-                 // if (event.target === successModal) stopCountdownAndRedirect(false);
+            successModal.addEventListener('click', function(event) {
+                // Prevent closing success modal by clicking outside for now
             });
 
 
@@ -212,193 +271,200 @@
                 return urlParams.get(name);
             }
 
-            function getCurrentAmount() {
-                 if (amountDropdown.value === 'custom') {
-                    return parseFloat(customAmountInput.value) > 0 ? customAmountInput.value : '1.00';
-                 }
-                 return amountDropdown.value;
+            function getProductDetailsFromURL() {
+                const amount = getUrlParameter('amount') || DEFAULT_AMOUNT;
+                const productName = decodeURIComponent(getUrlParameter('productName') || DEFAULT_PRODUCT_NAME);
+                const productId = getUrlParameter('productId') || DEFAULT_PRODUCT_ID;
+                return { amount, productName, productId };
             }
 
             // --- Function to Update UPI Deep Links ---
-            function updateUpiLinks() {
-                const amount = getCurrentAmount();
+            function updateUpiLinks(amount) {
                 if (!UPI_ID || UPI_ID === "YOUR_UPI_ID_HERE") {
-                    console.warn("UPI ID not set.");
+                    console.warn("UPI ID not set. UPI links may not work.");
+                    // Optionally disable links if UPI_ID is not set
                     return;
                 }
                 if (!amount || parseFloat(amount) <= 0) {
                     console.warn("Invalid amount for UPI link:", amount);
-                     // Optionally disable links if amount is invalid
-                     if (payWithPhonePeLink) payWithPhonePeLink.href = '#';
-                     if (payWithGPayLink) payWithGPayLink.href = '#';
-                     if (payWithPaytmLink) payWithPaytmLink.href = '#';
-                     return;
-                 }; // Don't update if amount is invalid
+                    // Disable links if amount is invalid
+                    [phonepeAppBtn, gpayAppBtn, paytmAppBtn].forEach(btn => {
+                        if (btn) btn.href = '#';
+                        btn.classList.add('opacity-50', 'pointer-events-none'); // Visually disable
+                    });
+                    return;
+                }
 
-                let baseUpiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`;
+                // Construct a base UPI URL
+                const baseUpiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`;
 
-                // Update href for remaining payment icons
-                if (payWithPhonePeLink) payWithPhonePeLink.href = baseUpiUrl;
-                if (payWithGPayLink) payWithGPayLink.href = baseUpiUrl;
-                if (payWithPaytmLink) payWithPaytmLink.href = baseUpiUrl; // Paytm uses standard link
+                // Set href for direct app buttons
+                if (phonepeAppBtn) phonepeAppBtn.href = `https://phonepe.com/send-request/${encodeURIComponent(UPI_ID)}/${amount}/?${new URLSearchParams({
+                    amount: amount,
+                    pa: UPI_ID,
+                    pn: PAYEE_NAME,
+                    tn: TRANSACTION_NOTE
+                }).toString()}`; // PhonePe often has a specific deep link scheme
 
-                 console.log("Updated UPI Links with amount:", amount); // Debug log
+                if (gpayAppBtn) gpayAppBtn.href = baseUpiUrl; // Google Pay generally works with the standard UPI deep link
+                if (paytmAppBtn) paytmAppBtn.href = `paytmmp://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`; // Paytm also has a specific scheme
+
+                // Ensure buttons are enabled if links are valid
+                [phonepeAppBtn, gpayAppBtn, paytmAppBtn].forEach(btn => {
+                    if (btn) btn.classList.remove('opacity-50', 'pointer-events-none');
+                });
             }
+
+            // --- Event Listener for UPI App Dropdown ---
+            upiAppSelect.addEventListener('change', function() {
+                // Hide all buttons first
+                [phonepeAppBtn, gpayAppBtn, paytmAppBtn].forEach(btn => btn.classList.add('hidden'));
+
+                const selectedApp = this.value;
+                if (selectedApp === 'phonepe') {
+                    phonepeAppBtn.classList.remove('hidden');
+                } else if (selectedApp === 'gpay') {
+                    gpayAppBtn.classList.remove('hidden');
+                } else if (selectedApp === 'paytm') {
+                    paytmAppBtn.classList.remove('hidden');
+                }
+            });
 
 
             // --- Initialization on DOM Content Loaded ---
             document.addEventListener('DOMContentLoaded', function() {
+                const { amount, productName, productId } = getProductDetailsFromURL();
+
+                // Display fixed amount and product name
+                fixedAmountDisplay.textContent = parseFloat(amount).toFixed(2);
+                displayAmount.textContent = parseFloat(amount).toFixed(2); // Also update the larger display amount
+                productNameDisplay.textContent = productName;
+
+                // Set hidden form fields
+                formAmountInput.value = amount;
+                formProductNameInput.value = productName;
+                formProductIdInput.value = productId;
 
                 // Set QR Code and display UPI ID
                 if (QR_CODE_URL && QR_CODE_URL !== "YOUR_QR_CODE_IMAGE_URL_HERE") {
                     qrCodeImage.src = QR_CODE_URL;
                 } else {
-                     console.warn("QR Code URL not set.");
-                     qrCodeImage.alt = "QR Code Missing";
+                    console.warn("QR Code URL not set.");
+                    qrCodeImage.alt = "QR Code Missing";
                 }
-                 if (UPI_ID && UPI_ID !== "YOUR_UPI_ID_HERE") {
-                     upiIdDisplay.textContent = `UPI ID: ${UPI_ID}`;
-                 } else {
-                     upiIdDisplay.textContent = "UPI ID Not Configured";
-                     upiIdDisplay.classList.add('text-red-500');
-                 }
-
-                 // --- Amount Handling ---
-                const urlAmount = getUrlParameter('amount');
-                let isPreset = false;
-                if (urlAmount) {
-                    for (let i = 0; i < amountDropdown.options.length; i++) {
-                        if (amountDropdown.options[i].value === urlAmount) {
-                            amountDropdown.value = urlAmount; isPreset = true; break;
-                        }
-                    }
-                    if (!isPreset && parseFloat(urlAmount) > 0) {
-                        amountDropdown.value = 'custom';
-                        customAmountContainer.classList.remove('hidden');
-                        customAmountInput.value = urlAmount; customAmountInput.required = true;
-                    } else if (!isPreset) {
-                         amountDropdown.value = '399'; // Default
-                         customAmountContainer.classList.add('hidden'); customAmountInput.required = false;
-                    }
+                if (UPI_ID && UPI_ID !== "YOUR_UPI_ID_HERE") {
+                    upiIdDisplay.textContent = `UPI ID: ${UPI_ID}`;
                 } else {
-                    amountDropdown.value = '399'; // Default
-                    customAmountContainer.classList.add('hidden'); customAmountInput.required = false;
+                    upiIdDisplay.textContent = "UPI ID Not Configured";
+                    upiIdDisplay.classList.add('text-red-500');
                 }
 
-                 // --- Event Listeners for Amount Changes ---
-                amountDropdown.addEventListener('change', function() {
-                    if (amountDropdown.value === 'custom') {
-                        customAmountContainer.classList.remove('hidden');
-                        customAmountInput.required = true; customAmountInput.value = ''; customAmountInput.focus();
-                    } else {
-                        customAmountContainer.classList.add('hidden');
-                        customAmountInput.required = false; customAmountInput.value = '';
-                    }
-                    updateUpiLinks();
-                });
-                 customAmountInput.addEventListener('input', function() {
-                     if (parseFloat(customAmountInput.value) < 0) customAmountInput.value = '';
-                    updateUpiLinks();
-                 });
-
-                 // --- Event Listener for Proceed Button ---
-                 proceedBtn.addEventListener('click', function() {
-                     // Set the final amount in the hidden form field before showing the form
-                     const currentAmt = getCurrentAmount();
-                     if (!currentAmt || parseFloat(currentAmt) <= 0) {
-                        alert("Please select or enter a valid payment amount first.");
-                        // Optionally focus the amount field:
-                        // if (amountDropdown.value === 'custom') customAmountInput.focus(); else amountDropdown.focus();
-                        return; // Stop if amount is invalid
-                     }
-                     finalAmountInput.value = currentAmt; // Set the hidden input
-
-                     paymentForm.classList.remove('hidden'); // Show the form
-                     proceedBtn.classList.add('hidden'); // Hide the proceed button
-                     // Scroll to the form smoothly
-                     paymentForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                 });
-
-                 // Set initial UPI links
-                 updateUpiLinks();
+                // Update UPI deep links with the fixed amount
+                updateUpiLinks(amount);
             });
 
-           // --- Form Submission Event Listener (Attached to the form) ---
-           paymentForm.addEventListener('submit', async function(event) {
-               event.preventDefault();
+            // --- Event Listener for Proceed Button ---
+            proceedBtn.addEventListener('click', function() {
+                paymentForm.classList.remove('hidden'); // Show the form
+                proceedBtn.classList.add('hidden'); // Hide the proceed button
+                paymentForm.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Scroll to the form smoothly
+            });
 
-               // Basic UTR validation
-               const utrValue = utrInput.value.trim();
+            // --- Form Submission Event Listener (Attached to the form) ---
+            paymentForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                // Basic UTR validation
+                const utrValue = utrInput.value.trim();
                 if (!/^\d{12}$/.test(utrValue)) {
                     alert("Please enter a valid 12-digit UTR/Reference ID.");
-                    utrInput.focus(); return;
+                    utrInput.focus();
+                    return;
                 }
 
-               submitPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-               submitPaymentBtn.disabled = true;
+                submitPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+                submitPaymentBtn.disabled = true;
 
-               // **Important**: Use the hidden 'finalAmount' field value for submission and tracking
-               const formData = new FormData(paymentForm); // This captures all form fields, including the hidden 'finalAmount'
-               const selectedAmount = formData.get('amount'); // Get amount from the hidden field
+                const formData = new FormData(paymentForm); // This captures all form fields
+
+                // Values from hidden inputs (pre-filled from URL)
+                const selectedAmount = formData.get('amount');
+                const pName = formData.get('productName');
+                const pId = formData.get('productId');
 
                 if (!selectedAmount || parseFloat(selectedAmount) <= 0) {
                     console.error("Submission Error: Invalid amount detected in hidden field.", selectedAmount);
                     alert("An error occurred with the amount. Please refresh and try again.");
-                     submitPaymentBtn.innerHTML = 'Submit Payment';
-                     submitPaymentBtn.disabled = false;
-                     return;
+                    submitPaymentBtn.innerHTML = 'Submit Payment';
+                    submitPaymentBtn.disabled = false;
+                    return;
                 }
 
-                console.log("Submitting form with Amount:", selectedAmount); // Debug log
+                console.log("Submitting form with Amount:", selectedAmount, "Product:", pName, "ID:", pId); // Debug log
 
-
-               // --- Facebook Pixel & CAPI Tracking ---
+                // --- Facebook Pixel & CAPI Tracking ---
                 try {
-                     if (window.fbq) {
-                         window.fbq('track', 'Purchase', {
-                             value: parseFloat(selectedAmount), currency: 'INR' });
-                         console.log('FB Pixel Purchase tracked:', selectedAmount);
-                     }
+                    if (window.fbq) {
+                        window.fbq('track', 'Purchase', {
+                            value: parseFloat(selectedAmount),
+                            currency: 'INR',
+                            content_name: pName,
+                            content_ids: [pId],
+                            content_type: 'product'
+                        });
+                        console.log('FB Pixel Purchase tracked:', selectedAmount, pName);
+                    }
 
                     const userAgent = navigator.userAgent;
                     const emailInput = document.getElementById('email');
                     const emailValue = emailInput ? emailInput.value.trim().toLowerCase() : null;
 
-                    // Prepare CAPI Data (Hashing ideally on backend)
-                     const capiData = {
-                         event_name: 'Purchase', event_time: Math.floor(Date.now() / 1000), action_source: 'website',
-                         event_source_url: window.location.href,
-                         custom_data: { value: parseFloat(selectedAmount), currency: 'INR' },
-                         user_data: { client_user_agent: userAgent }
-                     };
-                     // Add email if present (consider hashing implications)
-                     // if (emailValue) capiData.user_data.em = emailValue; // Example: Sending raw email
+                    const capiData = {
+                        event_name: 'Purchase',
+                        event_time: Math.floor(Date.now() / 1000),
+                        action_source: 'website',
+                        event_source_url: window.location.href,
+                        custom_data: {
+                            value: parseFloat(selectedAmount),
+                            currency: 'INR',
+                            content_name: pName,
+                            content_ids: [pId],
+                            content_type: 'product'
+                        },
+                        user_data: { client_user_agent: userAgent }
+                    };
+                    // Add email if present (consider hashing implications for production)
+                    // if (emailValue) capiData.user_data.em = emailValue;
 
                     // Send CAPI event
-                     const capiResponse = await fetch('https://backend-cmfshop.onrender.com/track-event', {
-                         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(capiData),
-                     });
-                     if (!capiResponse.ok) console.error("CAPI Fetch Error:", capiResponse.statusText);
-                     else console.log('Purchase event sent via CAPI:', await capiResponse.json());
+                    const capiResponse = await fetch('https://backend-cmfshop.onrender.com/track-event', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(capiData),
+                    });
+                    if (!capiResponse.ok) console.error("CAPI Fetch Error:", capiResponse.statusText);
+                    else console.log('Purchase event sent via CAPI:', await capiResponse.json());
 
                 } catch (error) {
                     console.error('Error during FB Tracking:', error);
                 }
 
 
-               // --- Send Form data to backend (Telegram) ---
+                // --- Send Form data to backend (Telegram) ---
                 try {
                     const telegramResponse = await fetch('https://backend-cmfshop.onrender.com/submit', {
-                        method: 'POST', body: formData
+                        method: 'POST',
+                        body: formData
                     });
 
                     if (!telegramResponse.ok) {
-                         let errorMsg = "Failed to submit payment details.";
-                         try { errorMsg = (await telegramResponse.json()).message || errorMsg; }
-                         catch (parseError) { errorMsg = await telegramResponse.text() || errorMsg; }
+                        let errorMsg = "Failed to submit payment details.";
+                        try { errorMsg = (await telegramResponse.json()).message || errorMsg; }
+                        catch (parseError) { errorMsg = await telegramResponse.text() || errorMsg; }
                         console.error('Error sending form data:', errorMsg);
                         alert(errorMsg + " Please check details or contact support.");
-                        submitPaymentBtn.innerHTML = 'Submit Payment'; submitPaymentBtn.disabled = false;
+                        submitPaymentBtn.innerHTML = 'Submit Payment';
+                        submitPaymentBtn.disabled = false;
                         return;
                     }
 
@@ -406,38 +472,45 @@
 
                     // --- Display Success Modal and Redirect ---
                     successModal.classList.remove('hidden');
-                    let countdown = 5; countdownElement.textContent = countdown;
+                    let countdown = 5;
+                    countdownElement.textContent = countdown;
                     let countdownInterval = null;
                     const utrSubmitted = formData.get('utr') || '';
                     const redirectUrl = `${WHATSAPP_REDIRECT_URL} UTR: ${encodeURIComponent(utrSubmitted)}`;
 
                     const startCountdown = () => {
-                         countdownInterval = setInterval(() => {
-                             countdown -= 1; countdownElement.textContent = countdown;
-                             if (countdown <= 0) { clearInterval(countdownInterval); window.location.href = redirectUrl; }
-                         }, 1000);
+                        countdownInterval = setInterval(() => {
+                            countdown -= 1;
+                            countdownElement.textContent = countdown;
+                            if (countdown <= 0) {
+                                clearInterval(countdownInterval);
+                                window.location.href = redirectUrl;
+                            }
+                        }, 1000);
                     };
                     const stopCountdownAndRedirect = (shouldRedirect = true) => {
-                        clearInterval(countdownInterval); successModal.classList.add('hidden');
+                        clearInterval(countdownInterval);
+                        successModal.classList.add('hidden');
                         if (shouldRedirect) window.location.href = redirectUrl;
                     };
-                     closeModalBtn.onclick = () => stopCountdownAndRedirect(false);
-                     redirectNowBtn.onclick = () => stopCountdownAndRedirect(true);
+                    closeModalBtn.onclick = () => stopCountdownAndRedirect(false);
+                    redirectNowBtn.onclick = () => stopCountdownAndRedirect(true);
                     startCountdown();
 
                 } catch (error) {
                     console.error('Error processing form submission/success modal:', error);
                     alert("An unexpected error occurred. Please contact support.");
-                    submitPaymentBtn.innerHTML = 'Submit Payment'; submitPaymentBtn.disabled = false;
+                    submitPaymentBtn.innerHTML = 'Submit Payment';
+                    submitPaymentBtn.disabled = false;
                 }
-           });
+            });
 
-           // --- Manual Modal Trigger ---
-           document.querySelector('.text-blue-500.cursor-pointer').onclick = openModal;
+            // --- Manual Modal Trigger ---
+            document.querySelector('.text-blue-500.cursor-pointer').onclick = openModal;
 
         </script>
-       </div>
-   </div>
+        </div>
+    </div>
 
 </body>
 </html>
