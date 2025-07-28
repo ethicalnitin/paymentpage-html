@@ -7,40 +7,139 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Base styles for a modern, clean look */
+        /* Base styles for a clean, compact look */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f2f5; /* Lighter background */
-            color: #333;
+            font-family: 'Inter', sans-serif; /* A more modern, clean font */
+            background-color: #f8f9fa; /* Very light gray */
+            color: #343a40; /* Darker text for better contrast */
         }
 
-        /* Custom styles for app buttons */
+        /* Main card styling */
+        .payment-card {
+            background-color: #ffffff; /* Pure white background */
+            border-radius: 12px; /* Nicely rounded corners */
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Subtle, clear shadow */
+            padding: 25px;
+            max-width: 400px; /* More compact overall width */
+            margin: auto; /* Center the card */
+            border: 1px solid #e9ecef; /* Light border */
+        }
+
+        /* Heading styles */
+        h1 {
+            font-size: 1.8rem; /* Slightly smaller for compactness */
+            font-weight: 700;
+            color: #212529; /* Very dark heading */
+            margin-bottom: 1rem;
+        }
+
+        /* Verified Badge */
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #d4edda; /* Light green */
+            color: #155724; /* Dark green */
+            padding: 3px 9px; /* Smaller padding */
+            border-radius: 9999px; /* Pill shape */
+            font-size: 0.8rem; /* Smaller font */
+            font-weight: 600;
+            margin-left: 8px; /* Reduced margin */
+        }
+        .verified-badge i {
+            margin-right: 4px; /* Reduced margin */
+        }
+
+        /* Amount display */
+        #displayAmount {
+            font-size: 2.5rem; /* Slightly smaller, still prominent */
+            font-weight: 800; /* Extra bold */
+            color: #4c4d7e; /* A rich, deep purple-blue */
+            margin-bottom: 1.5rem;
+        }
+
+        /* Timer specific styles */
+        .timer-container {
+            background-color: #fff3cd; /* Light orange-yellow for warning */
+            border: 1px solid #ffeeba;
+            color: #856404; /* Darker yellow-orange text */
+            padding: 8px 12px; /* More compact padding */
+            border-radius: 8px;
+            margin-bottom: 18px;
+            font-size: 0.95rem; /* Slightly smaller font */
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px; /* Reduced gap */
+        }
+        .timer-container i {
+            color: #856404;
+        }
+
+        /* Selected amount section */
+        .selected-amount-section {
+            background-color: #e6f7ff; /* Very light blue */
+            padding: 15px; /* Reduced padding */
+            border-radius: 8px;
+            border: 1px solid #b3e0ff; /* Light blue border */
+            margin-bottom: 20px;
+        }
+        .selected-amount-section p {
+            font-size: 1rem; /* Standard text size */
+            color: #004085; /* Dark blue text */
+        }
+        .selected-amount-section strong {
+            font-size: 1.5rem; /* Prominent amount */
+            color: #0056b3; /* Slightly darker blue */
+        }
+
+        /* Payment method sections */
+        .payment-method-section {
+            border: 1px solid #dee2e6; /* Clear, light gray border */
+            border-radius: 10px; /* Nicely rounded */
+            padding: 20px; /* Reduced padding */
+            margin-bottom: 20px;
+            background-color: #fefefe; /* Off-white for sections */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Lighter shadow */
+        }
+        .payment-method-section h3 {
+            font-weight: 600;
+            color: #495057; /* Darker grey */
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e9ecef; /* Lighter border */
+            padding-bottom: 10px;
+            font-size: 1.15rem; /* Slightly smaller heading */
+        }
+
+        /* App buttons */
         .app-button {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 14px 20px; /* Increased padding for better tap target */
-            border-radius: 12px; /* More rounded corners */
-            font-weight: 700; /* Bolder font */
+            padding: 12px 18px; /* More compact button size */
+            border-radius: 10px; /* Slightly less rounded */
+            font-weight: 600; /* Standard font weight */
             color: white;
-            transition: all 0.3s ease-in-out;
+            transition: all 0.2s ease-in-out;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Lighter shadow */
             width: 100%;
-            max-width: 280px; /* Slightly wider buttons */
+            max-width: 250px; /* Slightly narrower buttons */
             margin: 0 auto;
-            position: relative; /* For the subtle animation */
-            overflow: hidden; /* Hide overflow for animation */
+            position: relative;
+            overflow: hidden;
+            border: none; /* Buttons will have solid color backgrounds, no external border */
         }
         .app-button img {
-            height: 32px; /* Larger icons within button */
-            margin-right: 12px;
-            filter: brightness(0) invert(1);
+            height: 26px; /* Smaller icons within button */
+            width: auto; /* Maintain aspect ratio */
+            margin-right: 10px;
+            filter: brightness(0) invert(1); /* Ensure white icon on colored background */
         }
         .app-button:hover {
-            transform: translateY(-3px); /* More pronounced lift effect */
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         .app-button::before {
             content: '';
@@ -49,106 +148,140 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.1); /* More subtle shine */
             transform: skewX(-30deg);
-            transition: all 0.7s ease;
+            transition: all 0.5s ease; /* Faster shine */
         }
         .app-button:hover::before {
             left: 100%;
         }
 
-        /* Specific colors for each app - Brighter, more modern shades */
-        .phonepe-btn { background-color: #5d2b86; } /* Darker purple */
-        .phonepe-btn:hover { background-color: #4a226c; }
-        .gpay-btn { background-color: #4285F4; } /* Standard Google Blue */
-        .gpay-btn:hover { background-color: #357ae8; }
-        .paytm-btn { background-color: #00baf2; } /* Brighter Paytm Blue */
-        .paytm-btn:hover { background-color: #00a0d8; }
+        /* Specific colors for each app - More vibrant and distinct */
+        .phonepe-btn { background-color: #6739B7; } /* Deep Purple */
+        .phonepe-btn:hover { background-color: #582f9d; }
+        .gpay-btn { background-color: #4285F4; } /* Google Blue */
+        .gpay-btn:hover { background-color: #3367d6; }
+        .paytm-btn { background-color: #00B9F1; } /* Paytm Blue */
+        .paytm-btn:hover { background-color: #009ad6; }
 
-        /* Styles for dropdown and QR section */
-        .payment-method-section {
-            border: 1px solid #e2e8f0;
-            border-radius: 12px; /* More rounded */
-            padding: 25px; /* More padding */
-            margin-bottom: 25px;
-            background-color: #ffffff; /* White background for sections */
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Stronger shadow */
+        /* QR Code section */
+        #qrCodeImage {
+            max-width: 160px; /* Smaller QR code */
+            height: auto;
+            border: 1px solid #ced4da; /* Subtle border */
+            padding: 3px;
+            border-radius: 6px;
         }
-        .payment-method-section h3 {
-            font-weight: 700; /* Bolder heading */
-            color: #1a202c; /* Darker text */
-            margin-bottom: 18px;
-            border-bottom: 2px solid #edf2f7; /* Thicker border */
-            padding-bottom: 12px;
-            font-size: 1.25rem; /* Larger font size */
+        #upiIdDisplay {
+            font-size: 0.9rem; /* Smaller font for UPI ID */
+            color: #6c757d; /* Muted grey */
         }
+
+        /* Proceed button */
+        #proceedBtn {
+            background-color: #28a745; /* Vibrant green for action */
+            border-radius: 8px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #proceedBtn:hover {
+            background-color: #218838;
+        }
+
+        /* Form elements */
+        input, select, button {
+            min-height: 40px; /* Slightly smaller minimum height */
+        }
+        .payment-form-section h2 {
+            font-size: 1.3rem; /* Adjusted form heading size */
+            color: #495057;
+        }
+        .payment-form-section label {
+            font-weight: 500;
+            color: #495057;
+        }
+        .payment-form-section input[type="file"] {
+            padding: 8px; /* Adjust padding for file input */
+        }
+        .payment-form-section input {
+            border: 1px solid #ced4da; /* Clear input borders */
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 0.95rem;
+        }
+        .payment-form-section input:focus {
+            border-color: #80bdff; /* Clear focus outline */
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+        #submitPaymentBtn {
+            background-color: #007bff; /* Primary blue for final submit */
+            border-radius: 8px;
+            font-weight: 700;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        #submitPaymentBtn:hover {
+            background-color: #0069d9;
+        }
+
+        /* Modal styles */
+        #accessModal h2, #paymentSuccessModal h2 {
+            font-size: 1.5rem;
+            color: #212529;
+        }
+        #accessModal button {
+            background-color: #6c757d; /* Muted grey for close */
+        }
+        #accessModal button:hover {
+            background-color: #5a6268;
+        }
+        #paymentSuccessModal button#redirectNowBtn {
+            background-color: #28a745; /* Success green */
+        }
+        #paymentSuccessModal button#redirectNowBtn:hover {
+            background-color: #218838;
+        }
+        #paymentSuccessModal button#closeModalBtn {
+            background-color: #6c757d;
+        }
+        #paymentSuccessModal button#closeModalBtn:hover {
+            background-color: #5a6268;
+        }
+
 
         /* Animated background for the main card */
+        /* Removed animated background for a cleaner, static look as per "clear things with decent colors" */
+        /* If you want to re-add, uncomment the .animated-bg class in HTML and these CSS rules: */
+        /*
         .animated-bg {
             background: linear-gradient(135deg, #e0f7fa 0%, #e8eaf6 100%);
             background-size: 200% 200%;
             animation: gradientAnimation 10s ease infinite alternate;
         }
-
         @keyframes gradientAnimation {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-
-        /* Timer specific styles */
-        .timer-container {
-            background-color: #ffdddd; /* Soft red for urgency */
-            border: 1px solid #ffaaaa;
-            color: #d80000; /* Darker red text */
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 1.1rem;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        .timer-container i {
-            color: #d80000;
-        }
-
-        /* Verified Badge */
-        .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            background-color: #e6ffed; /* Light green */
-            color: #2f855a; /* Dark green */
-            padding: 4px 10px;
-            border-radius: 9999px; /* Pill shape */
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-left: 10px;
-        }
-        .verified-badge i {
-            margin-right: 5px;
-        }
+        */
 
     </style>
 </head>
 <body class="bg-gray-100">
 
-    <header class="w-full bg-white shadow-md py-4 fixed top-0 left-0 z-10">
+    <header class="w-full bg-white shadow-sm py-3 fixed top-0 left-0 z-10 border-b border-gray-200">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
             <div class="flex items-center">
-                <img src="logo.jpeg" alt="Dexter Luxuries Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-full mr-3">
-                <h1 class="text-xl font-bold text-gray-800 uppercase tracking-wide">Dexter Luxuries</h1>
+                <img src="logo.jpeg" alt="Dexter Luxuries Logo" class="w-9 h-9 md:w-10 md:h-10 rounded-full mr-2">
+                <h1 class="text-lg font-bold text-gray-800 uppercase tracking-wide">Dexter Luxuries</h1>
                 <span class="verified-badge hidden sm:inline-flex">
-                    <i class="fas fa-check-circle"></i> Payment Verified
+                    <i class="fas fa-check-circle"></i> Verified
                 </span>
             </div>
-            <div class="flex space-x-4">
-                <a href="https://wa.me/9557338330" id="whatsappBtn" target="_blank" class="text-green-500 text-2xl hover:text-green-600 transition">
+            <div class="flex space-x-3">
+                <a href="https://wa.me/9557338330" id="whatsappBtn" target="_blank" class="text-green-500 text-xl hover:text-green-600 transition">
                     <i class="fab fa-whatsapp"></i>
                 </a>
-                <a href="https://t.me/dextersenior" target="_blank" class="text-blue-500 text-2xl hover:text-blue-600 transition">
+                <a href="https://t.me/dextersenior" target="_blank" class="text-blue-500 text-xl hover:text-blue-600 transition">
                     <i class="fab fa-telegram"></i>
                 </a>
             </div>
@@ -156,70 +289,70 @@
     </header>
 
    <div class="flex flex-col items-center justify-center min-h-screen py-16 px-4 sm:px-6 lg:px-8 mt-16">
-        <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg text-center animated-bg">
-            <h1 class="text-2xl font-bold mb-4 flex items-center justify-center">
+        <div class="payment-card text-center">
+            <h1 class="flex items-center justify-center">
                 Dexter Luxuries - Secure Payment
-                <span class="verified-badge ml-3">
+                <span class="verified-badge">
                     <i class="fas fa-check-circle"></i> Verified
                 </span>
             </h1>
-            <p class="text-gray-600 mb-3">Complete your payment for: <strong id="productNameDisplay">Product Name</strong></p>
-            <p class="text-3xl font-extrabold text-indigo-600 mb-6">₹ <span id="displayAmount">0.00</span></p>
+            <p class="text-gray-600 mb-2 text-sm">Complete your payment for: <strong id="productNameDisplay">Product Name</strong></p>
+            <p class="font-extrabold" id="displayAmount">₹ 0.00</p>
 
             <div class="timer-container">
                 <i class="far fa-clock"></i>
                 <span id="paymentTimer">20:00</span> remaining to complete payment
             </div>
 
-            <div class="text-left mb-6 bg-blue-50 p-4 rounded-md border border-blue-200">
-                <p class="block text-sm font-medium text-blue-800 mb-1">Your Selected Amount:</p>
-                <p class="text-xl font-bold text-blue-700">₹ <span id="fixedAmountDisplay">0.00</span></p>
+            <div class="text-left selected-amount-section">
+                <p class="block text-sm font-medium">Your Selected Amount:</p>
+                <p class="font-bold">₹ <span id="fixedAmountDisplay">0.00</span></p>
                 <input type="hidden" id="finalAmount" name="amount" value="0">
                 <input type="hidden" id="finalProductName" name="productName" value="">
                 <input type="hidden" id="finalProductId" name="productId" value="">
             </div>
 
-            <p class="text-gray-700 font-semibold mb-4">Step 1: Choose your preferred UPI app or Scan QR Code</p>
+            <p class="text-gray-700 font-semibold mb-4 text-sm">Step 1: Choose your preferred UPI app or Scan QR Code</p>
 
-            <div class="mb-6 payment-method-section">
+            <div class="payment-method-section">
                 <h3>Click to Pay:</h3>
-                <div class="space-y-4">
+                <div class="space-y-3">
                     <a id="phonepeAppBtn" href="#" target="_blank" class="app-button phonepe-btn">
-                        <img src="https://i.ibb.co/Q70drskJ/image.png" alt="PhonePe Icon" /> Pay with PhonePe
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNzUiIGhlaWdodD0iMTE1IiB2aWV3Qm94PSIwIDAgMTc1IDExNSI+CiAgPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTE2Ny4yMyA1MC42OGMtLjAyLS4wMi0uMDctLjAzLS4wOS0uMDVsLTU1Ljk2LTM4LjAxYy0zLjc0LTIuNTMtOC42MS0uMzktOC42MSA0LjcydjE1LjQ4bC03Ljk2IDcuNjhjLS41OC41Ni0uNjQgMS40NS0uMTkgMi4wOWw2LjgxIDkuNjVsLTY2Ljc2IDc2LjY4LTE4LjM4LTMwLjgyYy0uNDktLjgyLS4zNS0xLjg1LjMyLTIuNTIuNTctLjU3IDEuNTQtLjU5IDIuMTQtLjA0bDE0Ljk0IDEzLjczIDIuMDctMi4wMWMuNjUtLjY0IDEuNi0uNzQgMi4zMy0uMjdMMTAwIDExNXM3LjItNy4wOSA4LjMtOC4xOGMzLjUzLTMuNTEgMy4xOC04LjI5LS43OC0xMS4zN0wxMzUuMjIgNzZsLTc2LjY4LTY2Ljc3TDU1Ljk3IDQ1LjI5VjMwLjI3Yy4wMS0xLjczLjk1LTMuMjMgMi4zOC00LjExbDYyLjczLTQxLjY0Yy45Ni0uNjQgMi4yMS0uNjMgMy4xNS4wMmw1Mi44MiAzNS45NmM0LjE0IDIuODMgNS40IDguNTEgMi45IDExLjU3bC0zNC4yOSA0MC41OHY3LjQ5Yy42OSAyLjA5LS4zOSAzLjIyLjc0LDIuODMuNjUgMy41MS0uNzYgMi4wNi01LjM2Ljg3bC0xOS42MyA4LjY0Yy0uMTcuMDktLjUxLjIzLS41MS4yM2ExNC41OCAxNC41OCAwIDAgMC00LjUtLjcybC0yMy4xNyA0Ljg1Yy01LjEuNzUtOS4wMi0xLjcyLTkuNzMtNi44OGwtMy4yMi0yMy41NWMtLjYxLTQuNTYgMi4wMy02LjI1IDIuMDMtNi4yNWwxLjQ1LTEuMzljLjM4LS4yOC42My0uNzYuNjYtMS4yNCA1LTIuOTcgNi4zOS0xMS41MyAxLjU4LTIwLjkzLS4wMy0uMTEtLjA2LS4yMS0uMDktLjMzYy0xLjQyLTMuODctNS40Mi02LjUyLTkuNTQtNS45MWwtMTQuODkgMi4yOGMtLTYuMDUuOTMtMTIuNjYtMi41Ni0xNC40Ny05LjUzTDU1Ljk2IDQ1LjI5VjE0LjM3Yy0uMDItMS4wNS0xLjIxLTEuNi0yLjA1LS42NkwyOC4yMSA0MS43NWMtLjM3LjM3LTEuMDkuNzQtMS40OC43Mi0uNDEuMzItLjcyLS4xNC0uNzItLjE0bC02LjExLTguMTFjLS44OS0xLjE4LTMuNzQtMS4wOS00LjU5LjM2bC04LjQ1IDE2LjA0Yy0uNjMuNTctLjU3IDEuNDkuMDggMi4wOWwzLjE3IDIuODljLjg3LjQzIDEuNjQuMDcgMi4wNi0uNzZsNi4xMS04LjEyYy40Ni0uNTkuNzMtMS40OC41OS0yLjMzbDIuNDEtMTYuNTcgNC45MyA4LjQ1Yy4xNS4yNi4wMi41OC0uMzEuNjVMLjA0IDU1LjQyYy0xLjczIDEuMDQtMS4wMSAyLjU3LjE4IDMuMzhsMi44OSAxLjczYy4xNC4wOC4yNC4xOC4zNy4yMy42Ny4zMiAxLjQ4LjAyIDEuNzQtLjc2Ljc5LTIuMzMgMy41NC0xLjM2IDMuNTQtMS4zNmwuNzUtLjQ1Yy4wOC0uMDQuMzUtLjA2LjU1LS4wNmwzLjYyLS4xOGMxLjYxLS4xMiAyLjc2IDEuMyAyLjcyIDIuOTFsLS41OSAxMC42MWMtLjExIDIuMTUuNTcgMy4yNyAyLjI1IDIuODFsMTcuOTItMy40MWMxLjcxLS4zMiAyLjg4IDEuMDYgMi45NiAyLjc1bC41OCAxMS41M2MuMzEgMi4yMi0uOTYgMy44OS0yLjQxIDQuODVjLTIuNzkgMS43MS02Ljc0LTIuMjgtNi43NC0yLjI4bC0xLjYtMS42OWMtLjU4LS42MS0xLjQ0LS42Ny0yLjA1LS4xMWwtMi43MiAyLjQxYy0uNTcuNTEtLjU1IDEuNDguMDUgMS45MWwxLjU0IDEuMjZjMy4xOCAyLjUxIDIuMDMgNC44Mi0xLjg1IDMuNTRsLTIyLjA3LTEwLjMzYy01LjUxLTQuNzQtMi40MS0xMS41MyAyLjAyLTEzLjM4bDEuNjktLjc2Yy43LS4zMiAxLjEzLS45MiAxLjE4LTEuNjYgLjM0LTQuMjcgMS45Mi02LjggMi43Mi01Ljc0LjM2LjQ1LjUyLjg2LjQ3IDEuMzRsLS4zNiA4LjE2Yy0uMTEuOTYuNjQgMS44MSAxLjQ4IDIuMTVsOC4xMyAyLjQ1Yy43Ny4yMyAxLjU2LjE2IDIuMTQtLjI3bDIuMzgtMS4xNmwxLjYtLjcxYy44NS0uMzggMS4xMi0xLjQ0LjY0LTIuMmwtMS4xNC0xLjk3Yy0uNDktLjgx-.NTQtMS45OC4wMy0yLjg1bDIuNy00LjUzYy41MS0uODUuNDktMS45OC0uMDItMi44MmwtMS40NS0yLjM5Yy0uNDYtLjc0LS41Mi0xLjc3LS4xNi0yLjY3TDI2LjQ3IDc4LjE5YzIuNDEtNC4xNiA3LjAyLTYuOTggMTEuNTQtNi41MmwxMi42NSAxLjg3Yy0uOTUtMi4wOS0xLjEzLTMuMjktLjcyLTQuMDZsMS4zMi0uNDZjLS40Ni0uMTktLjcyLS42Ni0uNzMtMS4xNWwtLjIxLTcuNzJjLS4xMi01LjIzIDMuMDctOS42MiA4LjMzLTkuMDVsOC42LjA2Yy41LjAxIDEuMDYuMjUgMS40Ni41OEw2Ni44MiA4OC4zOWMxLjU2IDEuMjUgMi4xNCAzLjEgMS42NSAzLjk1bC0yLjg5IDQuODdjLS40OS44My0xLjU1IDEuNDItMi41MiAxLjEzbC0xOC44OS01LjQyYy02LjI3LTEuODEtOS42MiA0LjY0LTkuNjIgNC42NHY2LjEyYy40NSAyLjc5IDMuNDMgNC43MiA1LjUxIDQuMDFsMTQuMTItMy43NGMuNjQtLjMyIDEuMzItLjE4IDEuNzMuMzZsMi40MSAyLjIxYy42MS41My42NiAxLjU5LjEzIDIuMjlsLTIuNyAyLjg5Yy0uNjMuNjgtMS42OS44OS0yLjUyLjQxbC0xMi44My03Ljk2Yy0zLjkzLTEuOTctOC43NC0uNDktMTEuNjEgMi42OWwtMTIuNzIgMTQuNDhjLTQuMzUgNS4wNy0xLjYzIDEyLjUgNi44IDE1LjQ4TDQ2LjI0IDExNGMzLjU5IDEuMDYgNy40Mi4wNiA5LjM5LTJoMjIuNDJjMi41Mi0uMzggNC43Ni0yLjMyIDQuODctNC44NWwuMjctMTUuNDhjLjQ2LTIuMzktMS4xOS0zLjU2LTIuODktMy41Nmw2OC4yMSAyLjQxYy42LjAyIDEuMTUtLjA1IDEuNi0uMTRsMjEuNzctMy4xNGMuNjEtLjA5IDEuMjYtLjEgMS44OS4wMUwxNzMuNzYgNTYuNzZjMy42MS0yLjUxIDQuMDQtNy44NS42NC0xMC41em0tMTA3LjY0IDU1LjA5bDEwLjQ3LTEyLjQ4IDEyLjgyIDQuODktMTAuNDcgMTIuNDhjLTEuNDEuMzItMy4zNC0uNzItMy4zNC0uNzJsLS40Mi0uNDhjLTEuMjItMS4yMy0xLjAyLTMuMjcuOTUtNC40N3oiLz4KPC9zdmc+Cg==" alt="PhonePe Icon" /> Pay with PhonePe
                     </a>
                     <a id="gpayAppBtn" href="#" target="_blank" class="app-button gpay-btn">
-                        <img src="https://cdn.iconscout.com/icon/free/png-256/free-google-pay-2038779-1721670.png" alt="Google Pay Icon" /> Pay with Google Pay
+                        <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTU1IDU2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0zMi4xNCAyMy40MWMwLTYuNzctNS43MS0xMi4xNi0xMi42NS0xMi4xNi02Ljk2IDAtMTIuNjkgNS4xNi0xMi42OSAxMi4xNiAwIDYuNjUgNS45NSAxMi4xNyAxMi43NyAxMi4xNyA1LjQ2IDAgOS4wNy0yLjc0IDEwLjk0LTYuNTdsMi42IDMuNzFjLTEuOTkgMy45MS02LjMyIDYuNzgtMTMuNTQgNi43OC04LjU5IDAtMTUuMTMtNi41My0xNS4xMy0xOS4zNiAwLTcuOTggNS44My0xMy41OCAxMy44OS0xMy41OCA2LjI5IDAgMTEuNjIgMy43NiAxNC4wNiA4Ljg1bC0xLjA0LjgyLTIuMTMgNC44NGE4Ljg3IDguODcgMCAwIDEtMS41Ny0yLjQ2YzEuNzctMi43MyA0Ljc5LTQuMDQgNy4zNi00LjA0IDIuMzQgMCA1LjQ1IDEuNzcgNC45IDQuNTNoLTExLjkyeiIvPgogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik03Ni40IDIzLjY4YzAtNy40My01Ljg3LTEyLjUzLTEzLjI2LTEyLjUzLTcuMzQgMC0xMy4xMiA1LjA1LTEzLjEyIDEyLjUzIDAgNy42OSA1LjggMTIuNTUgMTMuMjkgMTIuNTUgNy4wNiAwIDExLjUzLTMuODUgMTMuMDktNi41NWwtMi43My00LjIyYy0xLjQ2IDIuNDktNC4xNiA0LjQ2LTguNzUgNC40Ni00Ljk2IDAtOC43NS0yLjY3LTguNzUtNi4zMiAwLTUuNjcgOS4xNS02LjQ3IDkuMTUtOS44MSAwLS41My0uMTctLjg3LS45OS0uODctLTIuNjkgMC03LjE5IDMuMzUtOS40NyAzLjM1bC0uMjctNC4xMWMzLTAgNi4zMi0yLjg5IDYuNTMtMi44OS45NSAwIDEuMDguODUuOTIgMi4xNiAwIDUuOTUtOS40MiA2LjIxLTkuNDIgOS42NyAwIC41NS4xMi44Mi43Ni44MiAyLjkyIDAgNy43OC0zLjIzIDkuOTItMy4yM3ptLTguOTQtOS4yNmMtMS45OCAwLTQuNTcgMS4zNi02LjYgMi44MiAxLjkyLTMuNzggNi42OC03LjA4IDkuNDItNy4wOCAyLjM1IDAgMy4yNyAxLjIzIDMuMjcgMi40OSAwIDEuODMtLjA3IDQuNDUtNi4wOSA0LjQ1eiIvPgogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik05Mi45NCAxOC4zNWMuMjktMS43NC0uMTYtMy4zNy0yLjA3LTQuNDEtMS4yNy0uNzItMy4wMi0uOTYtNC42My0uOTYtMi44MSAwLTQuOTIgMS40Ny01LjMyIDMuMTZoLS4xOHYtMi44N2gtNC4zMXYyMi4xMmg0LjMxdjguMjVoNC4wN3YtOC4yNWg1LjY1YzMuNzYgMCA1Ljc4LTMuMDEgNS43OC02LjkgMC0zLjg1LTIuNDctNi40OC01LjQ4LTcuMmwuNDEtMS44M3ptLTYuMzkgNC42NmMzLjM2IDAgNC4yMiAyLjYxIDQuMjIgMy40OCAwIC43Ny0uOTggMy4wNS00LjUyIDMuMDUtMy41MSAwLTQuMzYtMi42MS00LjM2LTMuNjUgMC0uNzUuOTctMi44OCA0LjY2LTIuODh6Ii8+CiAgPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTEyOC4yNyAxNi4yMWMtMy4xNC0xLjM3LTcuNDItMi4xMS0xMi42NC0yLjExLTYuMTIgMC0xMS43IDMtMTQuNTcgNi42Mi0xLjQxIDEuNzYtMi41NiA0LjA2LTIuNTYgNi43OSAwIDcuNTggNS44MyAxMi43NyAxMy4xMyAxMi43NyA1LjQ2IDAgOS43OS0yLjgzIDExLjk0LTQuNzhsLTIuNy00LjI5Yy0xLjMxIDEuMjMtMy4zNiAyLjU1LTYuNzUgMi41NS0zLjY5IDAtNi45NC0yLjI5LTcuMzYtNi42MmgyMy41di0xLjY3YzAtOS40OS02LjQyLTE2LjYzLTE2Ljk4LTE2LjYzem0tMi44NiAzLjU1Yy42MS0yLjc2LS45LTQuNjItMy4wOC00LjYyLTMuNjYgMC00LjI0IDMuNDUtNC42MyA1Ljc2aDcuNzF6Ii8+CiAgPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTE0Mi4wNyA1MC4xOGMtMi4xNCAuNzctNC40NC44NS02LjQuODUtMi43MSAwLTUuNDgtLjMyLTguMzctMS40Ny0yLjY5LTEuMDYtNS4xNS0yLjcxLTYuMDktMy4zM2wtNC40MyA0LjAxYzEuMDkgMS4zNyAyLjM4IDIuNzcgNC40IDMuNjcgMy4wOCAxLjQgNi44NiAxLjY4IDEwLjUxIDEuNjggNC44NiAwIDguNDctLjM5IDEyLjAxLTFsLS43My0zLjI5em0zLjYzLTkuNDBjLTUuNjcgMTQuNTYtMjYuMyAxNC41Ni0zMS45NiAwYy01LjY4LTE0LjU2IDE0LjYyLTE0LjU2IDMxLjk2IDB6Ii8+CiAgPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTE1Mi41NSAxOS4yOGMxLjc2LS40MSAzLjk4LS43IDUuODYtLjcgMi4zOCAwIDQuMjYuMjkgNC45NS42Ny41Ny4zNi43OS42OC43OSAxLjM2IDAgLjcyLS40MSAxLjI5LTEuMzIgMS44NmwtLjM5LjI0Yy0uODUuNTUtMS42OCAxLjE0LTIuMjMgMS44My0uNTMuNjgtLjc2IDEuNDMtLjc2IDIuNjIgMCAuOTIuMjkgMS42OCAxLjIgMi40Ny40MS4yOS45LjU3IDEuMjUuODEuNTYuMzYuOTguOCAxLjA5IDEuMzkuMi45OS0uNTYgMi4yLSxpdXNzLTIuNDgtMi45LS4xNy01LjgtLjk5LTIuMzQtMi44My0xLjU1LTcuNC03LjQtMTQuNTYtMTQuNTYtMjEuOTEzLTE2Ljg4IDMuOTktOC4zOCAxLjQ5LTE1LjctMi40OC0xMi40OS02LjUyLTYuODMtMTEuNzUtMy40OS0xNS43Mi04LjY5LTMuNDctNy4yLTEwLjI3LTE0LjYtMTEuNTUtMjAuMzkgNS4yNC40IDYuNDQuOTIgNi42OCAxLjg2LjM3IDEuNDctLjg0IDMuMDQtMi43NyA0LjgyLTMuMDkgMi45Mi05LjMzLS4zNi0xMi44My00LjE2LTguNzMtOS40Mi0xMi40My0xOS4yOC02LjgxLTI2LjYgNi45Ni05LjAyIDI3LjgxLTkuNzggMzQuNjIgNi45NGw0Ljk2LTguOTJjLTEuODMtMi45Ni00LjQ4LTUuMDktNy43Mi01Ljg0LTEuMDYtLjI3LTIuNDgtLjQxLTMuOTItLjQxLTMuNzUgMC03LjY3LjU4LTEyLjIxIDEuOTMtNC40MyAxLjM1LTguMzMgMy42LTExLjE4IDUuNzMtMi44NyAyLjE1LTQuNjIgNC45NS00LjYyIDguMjkgMCAtMy4yOSAxLjcyLTUuOTIgNC41OC04LjI1IDMuNDQtMi44NSAxMC41My00LjUgMTQuNDItMy42MiAxLjg5LjQ0IDQuMjcgMS4yIDcuMzkgMi4zYy02LjYzLTMuMDUtMTQuOTQtNC45Mi0yMy45OS00LjkyLTUuNzUgMC0xMC41MyAxLjU4LTE0LjIyIDQuNjYtMy43OCAzLjA4LTUuNjYgNi42Ni01LjY2IDEwLjY5IDAgNi42OSAzLjQyIDExLjEgOS43NSAxMy44OSAxLjA3LjQ2IDIuMjMuNzMgMy4xOC44OCAxLjU5LjI1IDMuNDkuMjIgNS4wOS0uMDcuNzctLjE1IDEuNjctLjMzIDIuNzItLjU2IDIuMTYtLjQ5IDQuMTQtLjg3IDYuMDktMS4xMiA1LjA1LS42MiAxMC43LjI4IDE0LjY3IDEuNjcgMi41OC44OSAzLjk5IDIuMDggMy44NyAyLjk2bC0uMjUgMS4wNWMtLjA1LjE5LS4wNS40LjA2LjU3bC4zNy40NmMuMjUuMy42MS4zNi45NC4xNyAxLjczLS45NiAyLjU0LTIuMTkgMi4zNy0yLjk0eiIvPgogPC9zdmc+Cg==" alt="Google Pay Icon" /> Pay with Google Pay
                     </a>
                     <a id="paytmAppBtn" href="#" target="_blank" class="app-button paytm-btn">
-                        <img src="https://cdn.iconscout.com/icon/free/png-256/free-paytm-226448.png" alt="Paytm Icon" /> Pay with Paytm
+                        <img src="data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMTU1IDU2IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0wIDExLjY5bDEuNDYtMy4zN2MuMzktLjg4Ljk1LTEuNDMgMS42Ni0xLjczIDEuNDQtLjYgMi4yNC0uNjQgMy4xMS0uMWE1LjM5IDUuMzkgMCAwIDEgMi4wNiAxLjIybDEuMTIgMS4xMy4yOS4xNWMuMjMuMTUuNDQuMjUuNjUuMjkuNDEuMDguNzYtLjE1Ljk3LS40MWwxLjc5LTEuOTZjLjQ4LS41Mi41Ni0xLjI1LjItMS43MWEuODYuODYgMCAwIDAtLjYtLjM1bC0uODktLjE1Yy0uMzUtLjA2LS43MS0uMDctMS4wNy0uMDIuMzUtLjQ2LjY1LS44NSAxLjQxLTEuMzkuNjUtLjQ2IDEuMzYtLjg4IDIuMDYtMS4xMi42NS0uMjMgMS4zNS0uMzQgMi4xMS0uMTEuOTYuMjkgMS42OCAxLjAyIDEuNzcgMi4wNmwuMDYuMzYuMDguNTQuMTUuNzdjLjAyLjA4LjAzLjE3LjA0LjI2LjA5LjU1LS4wMyAxLjEzLS4zNSAxLjYzbC01LjQ4IDcuMjNjLS4zNi40Ny0uNDYgMS4wNy0uMjUgMS42LjIzLjU4LjY3Ljk5IDEuMjEgMS4wOS4wOS4wMi4xOC4wNC4yNi4wNWwuNDQuMDZjLjY2LjA5IDEuMzQtLjE1IDEuODktLjYzLjQ5LS40MSAxLjEtLjczIDEuNjYtMS4wMi41NS0uMjkgMS4xNi0uNDcgMS42Ni0uNWE1LjM5IDUuMzkgMCAwIDEgMi4wNi0uMWwuNTktLjAyYy40Ni0uMDguNjQtLjMyLjU5LS43NmwtLjQyLTEuOTdjLS4xMi0uNDktLjQ2LS44My0uODctMS4wMmwtLjgyLS4zNmMtLjM1LS4xMy0uNzEtLjIyLTEuMDctLjI2LS42My0uMDctMS4yMi4xNS0xLjg0LjQ3LS40MS4yMS0uNzcuNDktMS4xMS44Ni0uMzUuMzctLjYxLjczLS43OSAxLjE0LS4xOC40MS0uMjcuODQtLjI0IDEuMjZsLjA3LjY0Yy4wNi41NS0uMjIgMS4wOC0uNjkgMS40Ni0uNDYuMzctMS4wOC42Mi0xLjczLjY0LS43My4wMi0xLjQ2LS4xMS0yLjA3LS40OC0uNjUtLjQxLTEuMjUtLjg3LTEuNjQtMS40MWE2LjQzIDYuNDMgMCAwIDEtLjkyLTEuNzVsLS41NS0uOTljLS4wNy0uMjgtLjA4LS42LjA1LS44Ny4xMi0uMjMuMjctLjQzLjQ1LS42LjE4LS4xNy4zOC0uMzEuNi0uNGwuNzYtLjI4YzEuMDktLjM4IDEuOTUtLjMyIDIuNTIuMzEuMzcuNDQuNTguOTQuNjUgMS41MS4wMi4yMi4wMi40MyAwIC42My0uMS41MS0uMjcuODItLjUxIDEuMDEtLjE1LjExLS4zLjIxLS40Ny4zYy0uMTcuMDktLjMuMTUtLjQ4LjE5LS4wNS4wMi0uMTEuMDItLjE2LjAzLS41OS4wMy0uNzYtLjMyLS42MS0uNzdsLS41Ny0yLjczYy0uMTItLjU2LS4zMS0xLjA4LS41Ny0xLjU0LS4yNS0uNDUtLjU0LS44Ny0uODctMS4xOS0uMzItLjM0LS42Ny0uNi0xLjA1LS44NC0uMzktLjIzLS44MS0uNDQtMS4yNi0uNjNhNi4xIDYuMSAwIDAgMC0xLjUxLS41MWMtMS4xNi0uMjQtMi41My4xNC0zLjU1Ljc2LS44Mi41LTEuNjMgMS4yMy0yLjEyIDIuMWwtLjUxLjc5Yy0uMjMuMzYtLjM4LjctLjQzIDEuMDctLjA1LjM4LS4wMi44LjA5IDEuMTEuMDcuMjMuMTYuNDMuMjcuNjMuMTEuMTkuMjMuMzYuMzYuNTEuMTQuMTYuMzEuMy40Ny40MmwxLjUzIDEuMTljLjguNiAxLjg4Ljk1IDIuOTEuOTMuOTItLjAyIDEuNjctLjQ5IDIuMDUtMS4xOS4zOC0uNy4zNC0xLjU1LS4wOC0yLjE5LS4yOS0uNDQtLjY1LS43Ni0xLjA3LTEtLjQyLS4yNS0uODYtLjQ2LTEuMzEtLjYxbC0xLjEzLS4zOWMtLjY5LS4yMy0xLjQ0LS4zNS0yLjItLjMyLTEuOTUuMDgtMy42MSAxLjA1LTQuNTIgMi41MS0uOTEuNDYtMi4xNi45Mi0zLjQ0IDEuMTUtMS4zLjIzLTIuNTYuMzQtMy42Ni0uMDQtMS4zNC0uNDctMi4wNC0uOTItMi4xNy0uNzMtLjQ3LS4zOC0uNy0uOC0uNjYtMS4zMi4wNS0uNTIuMi0xLjA1LjQ2LTEuMzYuMjctLjMyLjU1LS41Ny44Ni0uNzcuMzEtLjIxLjY0LS4zOS45OS0uNTRsMS40Mi0uNjVjMS44LS44MyAzLjEtMS45MSAzLjk4LTMuMWwuOTYtMS4yN2MuMjItLjI2LjMyLS41MS4yNi0uNzctLjA3LS4yNi0uMjQtLjQ4LS41MS0uNjQtLjI2LS4xNy0uNjItLjIzLTEuMDQtLjE1bC0yLjAyLjQxYy0uODcuMTgtMS42OS40Mi0yLjQ3LjctLjc5LjI4LTEuNTEuNjItMi4xNiAxLjE0LS43My42LS44MyAxLjUtLjI2IDIuMjMuNTYuNjcgMS40MiAxLjA3IDIuMjggMS4yNi4xLjAyLjEuMDQuMS4wNi4yNS4yMi41MS40LjY4LjU2LjE4LjE1LjM1LjI5LjUzLjQzbC43My41MmMuODcuNjIgMS42OCAxLjIzIDIuMzggMS43MSAxLjA1LjY4IDEuODMuMTQgMi4yOC0uOTcuMTMtLjMzLjEzLS42OSAwLTEuMDFaIi8+CiAgPHBhdGggZmlsbD0iI0ZGRkZGRiIgZD0iTTEwMi41MiA1MS4xMWMtMS45NS0yLjg5LTIuMzgtNC45My0yLjM4LTguMjkgMC02LjE2IDIuNDktMTAuNjkgNy44Ni0xMy42NCA0LjIyLTIuMzIgOS43NS0zLjYyIDE2Ljg1LTMuNjIgNy44NyAwIDEzLjgzIDEuODMgMTYuMDYgMi43NyAzLjc0IDEuNTkgNS40NyAzLjY2IDUuNDcgNS45OCAwIDIuMDYtMS42MSAzLjk4LTQuNzYgNi40MS0xLjczIDEuMzgtNC4yMyAyLjY1LTcuNjMgMy41NC0zLjQgLjktNi42NSAxLjQxLTkuMjMgMS40MS00LjM1IDAtNi44Ni0uNjUtOC4zOS0xLjc3eiIvPgogIDxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0xNDMuNzIgMzEuMjVjLTQuMTEgMi40Mi03LjU5IDMuMjgtMTAuNjcgMy4yOC02LjY0IDAtMTEuNDctMi44My0xMS40Ny04LjM4IDAtNS44NCA0LjI5LTcuMTkgNi40Mi03LjE5IDEuMDkgMCAxLjg1LjExIDIuNzIuMjkuMjguMDYgLjU1LjA3LjgyLjA2Ljg5LS4wMyAxLjY1LS4xNyAyLjIzLS4zNGE2Ljc4IDYuNzggMCAwIDEtLjAyLTEuMmMuNDctMi41MiAyLjItNC4zIDQuMDgtNC43MyAxLjA3LS4yNSAyLjI1LS4xOCAzLjM1LjA1IDMuMDguNjYgNi4xMyAzLjQyIDcuMDQgNC42NS0xLjMxIDEuMjItMy4zMyAzLjctNy43NiA1LjQzLS4zNS4xNC0uNzMuMjctMS4xMi4zNHptMS42My02Ljk3Yy01LjYyLTUuOTQtMTEuODctNS44My0xMi4wOC01Ljc0LS41Mi4yMS0uOTkuNTctMS4zNiAxLjA3LS4zNi41LS41NiAxLjE0LS41OSAxLjc5LS4xMyAyLjQ1IDEuOTMgNC4wNSAzLjkyIDQuNjcuMTcuMDYuMjkuMDguNDYuMDguMzcuMDEuNzQtLjA1IDEuMTItLjExLjQxLS4wOC44LS4xOCAxLjE4LS4yOS4zOS0uMTEuNzYtLjIzIDEuMTEtLjM4LjM1LS4xMy42OC0uMzEuOTktLjVjLjMuMjEuNDQuNTUuMzYuOTEtLjA4LjM1LS4zNi42Mi0uNzYuNzgtLjM5LjE2LS44MS4yMy0xLjIzLjIyLS41NC0uMDEtMS4wNS0uMTEtMS41Mi0uMzEtLjQ3LS4yLS44OS0uNDYtMS4yNy0uNzktLjM4LS4zMy0uNzEtLjcxLTEtMS4xLS40LS4zOS0uNzUtLjgyLTEuMDctMS4yOGEzLjg2IDMuODYgMCAwIDAtLjYtLjkyYy0uMTctLjIxLS4yNy0uNDUtLjI5LS43LS4wMS0uMjcuMDgtLjU1LjI4LS43OS4xOC0uMjEuNDItLjM5LjY4LS41MS4yNi0uMTMuNTMtLjIxLjguMjZsMS44My42M2MuODkuMzQgMS43Ny42MiAyLjY0Ljg2Ljg3LjIzIDEuNzYuNDIgMi42My41NmwuODkuMTRjLjU5LjEgMS4xOC4xMSAxLjc3LjAyLjYxLS4xLjY4LS4zOC4zOS0uNzZsLS43Mi0uOTZjLS41Ni0uNzctMS4yMS0xLjQ2LTEuOTctMi4wNmEzLjQ4IDMuNDggMCAwIDAtMS4yMy0uNzJjLS4zOS0uMTItLjc5LS4xNi0xLjE5LS4xMi0uNDEuMDMtLjc5LjE1LTEuMTQuMzItLjI1LjEzLS40Ny4zLS42Ni40OWEzLjU0IDMuNTQgMCAwIDAtLjY0Ljg1Yy0uMDkuMTgtLjE0LjM1LS4xNS41My0uMDcuNzEuMzcgMS4xNi45NyAxLjIzLjQ3LjA2Ljk0LS4wNCAxLjQxLS4zLjQ4LS4yNy45Mi0uNjUgMS4zMi0xLjE0YTMuNjQgMy42NCAwIDAgMCAuNzctMS4yNyAxLjYzIDEuNjMgMCAwIDAtLjAzLTEuOTJjLS4zNS0uNDktLjc0LS44Ny0xLjE4LTEuMTctLjQ1LS4zLS45NC0uNTEtMS40Ni0uNjlhNS44NiA1Ljg2IDAgMCAwLTEuNzItLjM4Yy0xLjI0LS4wNS0yLjU0LjA5LTMuNzUuNDUtMS4yMy4zOC0yLjQyLjczLTMuNTUgMS4wNy0xLjEuMzQtMi4wNS41Ni0yLjczLjU3LS41My4wMS0xLjA0LS4xNS0xLjQ2LS40Ny0uNDItLjMxLS43NC0uNzMtLjk1LTEuMjEtLjIyLS40Ny0uMzQtLjk4LS4zMi0xLjVsLjA2LS43OGMuMDItLjU0LjItMS4wNS40Ni0xLjUuMjUtLjQ0LjU1LS44NS45Mi0xLjIyLjM2LS4zNy43NS0uNzEgMS4xNy0xLjA0LjQzLS4zMS44OS0uNjEgMS4zOC0uODcuNTEtLjI2IDEuMDUtLjQ4IDEuNjItLjY1LjU3LS4xNyAxLjE5LS4zIDIuMDgtLjMyYy44OC0uMDEgMS43My4xOCAyLjU2LjU3LjU4LjI2IDEuMTQuNjcgMS42NSAxLjEyLjUxLjQ0Ljk1Ljk2IDEuMjggMS41NC4zNS42LjU0IDEuMjQuNTQgMS44NiAwIC44NC0uMjQgMS42OS0uNzMgMi40Ni0uNTcuODctMS4zIDEuNjQtMi4xOCAyLjMxLS43OS42OC0xLjczIDEuMjMtMi42NiAxLjUzLS45Mi4zLTIuMDIuNDctMy4yNS41NmwtMS4zNi4wN2MtMS4xLjA1LTIuMjEtLjAxLTMuMi0uMzItMS4wMS0uMy0xLjk3LS43Ni0yLjc5LTEuMzEtLjgyLS41Ni0xLjUxLTEuMjQtMi0yLjAzLS41LS43OC0uNzUtMS42NC0uNzQtMi41Mi4wMi0uODcuMjctMS42OC43My0yLjQxLjQ2LS43MyAxLjA5LTEuMzggMS43OS0xLjkxYy43LS41MyAxLjQ5LS45MyAyLjMyLTEuMjQuODMtLjMxIDEuNzMtLjQ3IDIuNzItLjQ5LjY1LS4wMSAxLjI4LjA2IDEuODcuMi41OS4xMiAxLjE4LjI4IDEuNzYuNDcuNTguMiAxLjE0LjQ0IDEuNjYuNzMuNTIuMyAxLjA0LjY0IDEuNTIuOTkuNDguMzUuOTMuNzYgMS4zMSAxLjIzbC43NS44OGMuNDQuNTEuODMuOTcgMS4xNSAxLjQ3LjMyLjUuNTMuOTQuNjIgMS40Mi4wNi41NS0uMDQgMS4xLS4zMSAxLjYxLS4yNy40OS0uNjEuOTUtMS4wMyAxLjM1LS40My40LS44OC43NC0xLjM3IDEuMDItLjQ5LjI3LTEuMDQuNDUtMS42Mi41OS0uNjEuMTQtMS4yNi4yNS0xLjk3LjE4LS44Mi0uMDctMS42Ny0uMzEtMi40OS0uNzFhMi44NSAyLjg1IDAgMCAxLS44Ni0uNTRjLS4yNi0uMTktLjQ4LS40Mi0uNjgtLjY3LS4xOS0uMjUtLjMyLS41MS0uNDEtLjc5bC0uMTktLjU1Yy0uMDUtLjE3LS4wNy0uMzYtLjA1LS41NC4wMi0uMTkuMDktLjM3LjIyLS41NC4xMi0uMTcuMjctLjMyLjQ0LS40Ny4xOC0uMTUuMzYtLjI4LjU2LS4zN2wuNjctLjI2Yy43OS0uMyAxLjU4LS40NCAyLjM3LS40MS43OS4wMyAxLjU0LjE5IDIuMjQuNDguNzEuMyAxLjM3LjcwNSAxLjg5IDEuMTUuNTIuNDQgLjg3Ljk5IDEuMDYgMS42MS4xOS42My4xMyAxLjI3LS4xOSAxLjgzYy0uMzIuNTYtLjc1Ljk2LTEuMjMgMS4yNy0uNDguMzItMS4wMS40OS0xLjU5LjVjLS42LjAxLTEuMTkuMTEtMS43Ny4xMi0uOTYuMDMtMS45LS4wOC0yLjczLS40LjkxLS4zMi0xLjc3LS43OC0yLjQ4LTEuMzQtLjc0LS41OC0xLjMzLTEuMjQtMS43MS0xLjk3LS4zOC0uNzItLjU3LTEuNTItLjU2LTIuMzMuMDItMS40LjY1LTIuNjYgMS43OC0zLjU1IDEuMTItLjg5IDIuNTctMS4zNiA0LjA2LTEuMzYuNjYgMCAxLjMyLjExIDEuOTMuMzNsMS4wNy4zOGMxLjY2LjU5IDIuOCAxLjA1IDMuMDcgMS40Ny4yNS4zNy4zNS42OS4zNSAxLjA4IDAgLjUzLS4yMS45Ny0uNjggMS4zLS40Ni4zMy0xLjA0LjUzLTEuNzUuNjItLjcuMDgtMS40MS4wNi0yLjA3LS4wNWwtLjU1LS4wMWMtLjU1LS4wMy0xLjEtLjE1LTEuNjUtLjMyLS4zOC0uMTEtLjc2LS4yNi0xLjEzLS40NGwtLjY5LS4yOWEzLjI1IDMuMjUgMCAwIDAtLjk4LS40NGMtLjQ2LS4xMS0uOTQtLjE1LTEuNDItLjExLS45LjA3LTEuNi4zOS0yLjA1LjguNjUtLjA2IDEuMjItLjAyIDEuNzQuMjYuODcuNDcgMS42NSAxLjEyIDIuMyAxLjk3eiIvPgogPC9zdmc+Cg==" alt="Paytm Icon" /> Pay with Paytm
                     </a>
                 </div>
             </div>
 
             <div id="qrCodeContainer" class="mt-4 payment-method-section">
                 <h3>Or Scan QR Code:</h3>
-                <img id="qrCodeImage" src="https://i.ibb.co/VYjq2vyd/qr1.jpg" alt="UPI QR Code" class="mx-auto mb-3 border border-gray-300 p-1 rounded-lg" style="max-width: 180px; height: auto;">
-                <p id="upiIdDisplay" class="text-gray-600 text-sm font-mono break-all mb-1"></p>
+                <img id="qrCodeImage" src="https://i.ibb.co/VYjq2vyd/qr1.jpg" alt="UPI QR Code" class="mx-auto mb-3" style="max-width: 160px;">
+                <p id="upiIdDisplay" class="text-sm font-mono break-all mb-1"></p>
                 <p class="text-gray-500 text-xs mt-1">Scan using any UPI app on your device.</p>
             </div>
 
-            <hr class="my-6 border-gray-300">
+            <hr class="my-5 border-gray-200">
 
-            <p class="text-gray-600 mb-4">Step 2: After payment, click below to enter details</p>
-            <button id="proceedBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-lg transition mb-4 shadow-lg">
+            <p class="text-gray-600 mb-4 text-sm">Step 2: After payment, click below to enter details</p>
+            <button id="proceedBtn" class="w-full text-white font-bold py-2 px-4 rounded-lg transition mb-4 shadow">
                 Proceed to Enter Details
             </button>
 
-            <p class="text-indigo-500 cursor-pointer mt-4 mb-2 text-sm hover:text-indigo-600 transition" onclick="openModal()">How will I get access?</p>
-            <p class="text-red-500 cursor-pointer mb-4 text-sm">
+            <p class="text-gray-700 cursor-pointer mt-3 mb-2 text-xs hover:underline" onclick="openModal()">How will I get access?</p>
+            <p class="text-red-500 cursor-pointer mb-4 text-xs">
                 <a href="https://wa.me/+919557338330?text=Payment%20error%20on%20Dexter%20Luxuries" target="_blank" class="hover:underline">Click here if payment error exists</a>
             </p>
 
             <div id="accessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-11/12">
-                   <h2 class="text-xl font-bold mb-4">How to Gain Access</h2>
+                   <h2 class="font-bold mb-4">How to Gain Access</h2>
                    <ol class="list-decimal list-inside text-left space-y-2 text-sm">
-                        <li>Complete the payment using UPI or QR Code for the <strong class="text-indigo-600">selected product's amount</strong>.</li>
+                        <li>Complete the payment using UPI or QR Code for the <strong class="text-green-600">selected product's amount</strong>.</li>
                         <li>Click 'Proceed to Enter Details'.</li>
                         <li>Enter the 12-digit UTR/Reference ID from your payment confirmation.</li>
                         <li>Enter your email and optionally a username.</li>
@@ -227,47 +360,47 @@
                         <li>Click 'Submit Payment'.</li>
                         <li>You will be redirected to WhatsApp for access confirmation.</li>
                    </ol>
-                   <button class="mt-4 bg-indigo-500 text-white py-2 px-4 rounded w-full hover:bg-indigo-600 transition" onclick="closeModal()">Close</button>
+                   <button class="mt-4 text-white py-2 px-4 rounded w-full hover:bg-gray-600 transition" onclick="closeModal()">Close</button>
                 </div>
             </div>
 
-            <form id="paymentForm" class="space-y-4 mt-6 hidden" enctype="multipart/form-data">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4 pt-4 border-t border-gray-300">Step 3: Submit Payment Details</h2>
+            <form id="paymentForm" class="space-y-4 mt-6 hidden payment-form-section" enctype="multipart/form-data">
+                <h2 class="font-semibold mb-4 pt-4 border-t border-gray-200">Step 3: Submit Payment Details</h2>
                 <input type="hidden" id="formAmount" name="amount" value="">
                 <input type="hidden" id="formProductName" name="productName" value="">
                 <input type="hidden" id="formProductId" name="productId" value="">
 
                <div class="text-left">
-                    <label for="utr" class="block text-sm font-medium text-gray-700">UTR / UPI Reference ID*</label>
-                    <input type="text" id="utr" name="utr" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2" placeholder="Enter 12 digit UTR / Ref ID" required inputmode="numeric" pattern="\d{12}">
+                    <label for="utr" class="block text-sm font-medium">UTR / UPI Reference ID*</label>
+                    <input type="text" id="utr" name="utr" class="mt-1 block w-full" placeholder="Enter 12 digit UTR / Ref ID" required inputmode="numeric" pattern="\d{12}">
                     <p class="text-xs text-gray-500 mt-1">Enter the 12-digit number found in your UPI app's transaction history.</p>
                </div>
 
                <div class="text-left">
-                    <label for="email" class="block text-sm font-medium text-gray-700">Email*</label>
-                    <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2" placeholder="Enter your email" required>
+                    <label for="email" class="block text-sm font-medium">Email*</label>
+                    <input type="email" id="email" name="email" class="mt-1 block w-full" placeholder="Enter your email" required>
                </div>
 
                <div class="text-left">
-                    <label for="username" class="block text-sm font-medium text-gray-700">Username (Optional)</label>
-                    <input type="text" id="username" name="username" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2" placeholder="Enter your username (if applicable)">
+                    <label for="username" class="block text-sm font-medium">Username (Optional)</label>
+                    <input type="text" id="username" name="username" class="mt-1 block w-full" placeholder="Enter your username (if applicable)">
                </div>
 
                <div class="text-left">
-                    <label for="paymentScreenshot" class="block text-sm font-medium text-gray-700">Upload Payment Screenshot*</label>
-                    <input type="file" id="paymentScreenshot" name="paymentScreenshot" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept="image/*" required>
+                    <label for="paymentScreenshot" class="block text-sm font-medium">Upload Payment Screenshot*</label>
+                    <input type="file" id="paymentScreenshot" name="paymentScreenshot" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="image/*" required>
                     <p class="text-xs text-gray-500 mt-1">Upload the screenshot showing the successful payment.</p>
                </div>
 
-               <button type="submit" id="submitPaymentBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 px-4 rounded-lg transition shadow-lg">Submit Payment</button>
+               <button type="submit" id="submitPaymentBtn" class="w-full text-white font-bold py-2.5 px-4 rounded-lg transition shadow">Submit Payment</button>
             </form>
 
 
             <div id="paymentSuccessModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg text-center w-11/12 max-w-sm">
-                   <h2 class="text-xl font-bold mb-4 text-green-600">Payment Details Submitted!</h2>
-                    <p class="mb-4">Your details are received. You will be redirected to WhatsApp for access confirmation in <span id="countdown" class="font-bold">5</span> seconds...</p>
-                    <button id="redirectNowBtn" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg w-full mb-2">Redirect Now</button>
+                   <h2 class="font-bold mb-4 text-green-600">Payment Details Submitted!</h2>
+                    <p class="mb-4 text-sm">Your details are received. You will be redirected to WhatsApp for access confirmation in <span id="countdown" class="font-bold">5</span> seconds...</p>
+                    <button id="redirectNowBtn" class="text-white font-bold py-2 px-4 rounded-lg w-full mb-2">Redirect Now</button>
                    <button id="closeModalBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg w-full">Close</button>
                 </div>
             </div>
@@ -287,9 +420,8 @@
             // --- Get Elements ---
             const fixedAmountDisplay = document.getElementById('fixedAmountDisplay');
             const productNameDisplay = document.getElementById('productNameDisplay');
-            const displayAmount = document.getElementById('displayAmount'); // New element to show amount prominently
+            const displayAmount = document.getElementById('displayAmount');
 
-            // Removed dropdown for direct app buttons
             const phonepeAppBtn = document.getElementById('phonepeAppBtn');
             const gpayAppBtn = document.getElementById('gpayAppBtn');
             const paytmAppBtn = document.getElementById('paytmAppBtn');
@@ -299,9 +431,9 @@
 
             const proceedBtn = document.getElementById('proceedBtn');
             const paymentForm = document.getElementById('paymentForm');
-            const formAmountInput = document.getElementById('formAmount'); // Hidden input in form for amount
-            const formProductNameInput = document.getElementById('formProductName'); // Hidden input in form for product name
-            const formProductIdInput = document.getElementById('formProductId'); // Hidden input in form for product ID
+            const formAmountInput = document.getElementById('formAmount');
+            const formProductNameInput = document.getElementById('formProductName');
+            const formProductIdInput = document.getElementById('formProductId');
 
             const submitPaymentBtn = document.getElementById('submitPaymentBtn');
             const successModal = document.getElementById('paymentSuccessModal');
@@ -328,7 +460,6 @@
                         paymentTimerElement.textContent = "Expired!";
                         // Optionally, disable payment options or show an expiry message
                         alert("Your payment window has expired. Please refresh the page to try again.");
-                        // You might want to disable buttons or redirect here
                     }
                     timeRemaining--;
                 }, 1000);
@@ -366,34 +497,29 @@
             function updateUpiLinks(amount) {
                 if (!UPI_ID || UPI_ID === "YOUR_UPI_ID_HERE") {
                     console.warn("UPI ID not set. UPI links may not work.");
-                    // Optionally disable links if UPI_ID is not set
                     return;
                 }
                 if (!amount || parseFloat(amount) <= 0) {
                     console.warn("Invalid amount for UPI link:", amount);
-                    // Disable links if amount is invalid
                     [phonepeAppBtn, gpayAppBtn, paytmAppBtn].forEach(btn => {
                         if (btn) btn.href = '#';
-                        btn.classList.add('opacity-50', 'pointer-events-none'); // Visually disable
+                        btn.classList.add('opacity-50', 'pointer-events-none');
                     });
                     return;
                 }
 
-                // Construct a base UPI URL
                 const baseUpiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`;
 
-                // Set href for direct app buttons
                 if (phonepeAppBtn) phonepeAppBtn.href = `https://phonepe.com/send-request/${encodeURIComponent(UPI_ID)}/${amount}/?${new URLSearchParams({
                     amount: amount,
                     pa: UPI_ID,
                     pn: PAYEE_NAME,
                     tn: TRANSACTION_NOTE
-                }).toString()}`; // PhonePe often has a specific deep link scheme
+                }).toString()}`;
 
-                if (gpayAppBtn) gpayAppBtn.href = baseUpiUrl; // Google Pay generally works with the standard UPI deep link
-                if (paytmAppBtn) paytmAppBtn.href = `paytmmp://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`; // Paytm also has a specific scheme
+                if (gpayAppBtn) gpayAppBtn.href = baseUpiUrl;
+                if (paytmAppBtn) paytmAppBtn.href = `paytmmp://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`;
 
-                // Ensure buttons are enabled if links are valid
                 [phonepeAppBtn, gpayAppBtn, paytmAppBtn].forEach(btn => {
                     if (btn) btn.classList.remove('opacity-50', 'pointer-events-none');
                 });
@@ -403,17 +529,14 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const { amount, productName, productId } = getProductDetailsFromURL();
 
-                // Display fixed amount and product name
                 fixedAmountDisplay.textContent = parseFloat(amount).toFixed(2);
-                displayAmount.textContent = parseFloat(amount).toFixed(2); // Also update the larger display amount
+                displayAmount.textContent = parseFloat(amount).toFixed(2);
                 productNameDisplay.textContent = productName;
 
-                // Set hidden form fields
                 formAmountInput.value = amount;
                 formProductNameInput.value = productName;
                 formProductIdInput.value = productId;
 
-                // Set QR Code and display UPI ID
                 if (QR_CODE_URL && QR_CODE_URL !== "YOUR_QR_CODE_IMAGE_URL_HERE") {
                     qrCodeImage.src = QR_CODE_URL;
                 } else {
@@ -427,25 +550,21 @@
                     upiIdDisplay.classList.add('text-red-500');
                 }
 
-                // Update UPI deep links with the fixed amount
                 updateUpiLinks(amount);
-
-                // Start the payment timer
                 startPaymentTimer();
             });
 
             // --- Event Listener for Proceed Button ---
             proceedBtn.addEventListener('click', function() {
-                paymentForm.classList.remove('hidden'); // Show the form
-                proceedBtn.classList.add('hidden'); // Hide the proceed button
-                paymentForm.scrollIntoView({ behavior: 'smooth', block: 'start' }); // Scroll to the form smoothly
+                paymentForm.classList.remove('hidden');
+                proceedBtn.classList.add('hidden');
+                paymentForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
 
             // --- Form Submission Event Listener (Attached to the form) ---
             paymentForm.addEventListener('submit', async function(event) {
                 event.preventDefault();
 
-                // Basic UTR validation
                 const utrValue = utrInput.value.trim();
                 if (!/^\d{12}$/.test(utrValue)) {
                     alert("Please enter a valid 12-digit UTR/Reference ID.");
@@ -456,9 +575,8 @@
                 submitPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
                 submitPaymentBtn.disabled = true;
 
-                const formData = new FormData(paymentForm); // This captures all form fields
+                const formData = new FormData(paymentForm);
 
-                // Values from hidden inputs (pre-filled from URL)
                 const selectedAmount = formData.get('amount');
                 const pName = formData.get('productName');
                 const pId = formData.get('productId');
@@ -471,7 +589,7 @@
                     return;
                 }
 
-                console.log("Submitting form with Amount:", selectedAmount, "Product:", pName, "ID:", pId); // Debug log
+                console.log("Submitting form with Amount:", selectedAmount, "Product:", pName, "ID:", pId);
 
                 // --- Facebook Pixel & CAPI Tracking ---
                 try {
@@ -504,10 +622,7 @@
                         },
                         user_data: { client_user_agent: userAgent }
                     };
-                    // Add email if present (consider hashing implications for production)
-                    // if (emailValue) capiData.user_data.em = emailValue;
 
-                    // Send CAPI event
                     const capiResponse = await fetch('https://backend-cmfshop.onrender.com/track-event', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -577,7 +692,7 @@
             });
 
             // --- Manual Modal Trigger ---
-            document.querySelector('.text-indigo-500.cursor-pointer').onclick = openModal; // Updated selector for new color
+            document.querySelector('.text-gray-700.cursor-pointer').onclick = openModal;
 
         </script>
         </div>
