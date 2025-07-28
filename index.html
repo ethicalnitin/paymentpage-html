@@ -7,72 +7,130 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Optional: Add slight margin below icons if needed */
-        .payment-icons a {
-            text-decoration: none;
-            color: inherit;
+        /* Base styles for a modern, clean look */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5; /* Lighter background */
+            color: #333;
         }
-        .payment-icons img {
-            max-height: 40px; /* Adjust icon size as needed */
-            object-fit: contain;
-        }
-        /* Ensure form elements are easily tappable on mobile */
-        input, select, button {
-            min-height: 44px;
-        }
-        html {
-            scroll-behavior: smooth; /* Enable smooth scrolling */
-        }
+
         /* Custom styles for app buttons */
         .app-button {
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 15px;
-            border-radius: 8px;
-            font-weight: 600;
+            padding: 14px 20px; /* Increased padding for better tap target */
+            border-radius: 12px; /* More rounded corners */
+            font-weight: 700; /* Bolder font */
             color: white;
-            transition: all 0.2s ease-in-out;
+            transition: all 0.3s ease-in-out;
             cursor: pointer;
             text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 100%; /* Make buttons full width in their container */
-            max-width: 250px; /* Limit max width for larger screens */
-            margin: 0 auto; /* Center buttons */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15); /* More pronounced shadow */
+            width: 100%;
+            max-width: 280px; /* Slightly wider buttons */
+            margin: 0 auto;
+            position: relative; /* For the subtle animation */
+            overflow: hidden; /* Hide overflow for animation */
         }
         .app-button img {
-            height: 28px; /* Adjust icon size within button */
-            margin-right: 10px;
-            filter: brightness(0) invert(1); /* Make icons white for dark backgrounds */
+            height: 32px; /* Larger icons within button */
+            margin-right: 12px;
+            filter: brightness(0) invert(1);
         }
         .app-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+            transform: translateY(-3px); /* More pronounced lift effect */
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
-        /* Specific colors for each app */
-        .phonepe-btn { background-color: #6739B7; }
-        .phonepe-btn:hover { background-color: #5b32a2; }
-        .gpay-btn { background-color: #4285F4; }
+        .app-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: skewX(-30deg);
+            transition: all 0.7s ease;
+        }
+        .app-button:hover::before {
+            left: 100%;
+        }
+
+        /* Specific colors for each app - Brighter, more modern shades */
+        .phonepe-btn { background-color: #5d2b86; } /* Darker purple */
+        .phonepe-btn:hover { background-color: #4a226c; }
+        .gpay-btn { background-color: #4285F4; } /* Standard Google Blue */
         .gpay-btn:hover { background-color: #357ae8; }
-        .paytm-btn { background-color: #00B9F1; }
-        .paytm-btn:hover { background-color: #00a4d8; }
+        .paytm-btn { background-color: #00baf2; } /* Brighter Paytm Blue */
+        .paytm-btn:hover { background-color: #00a0d8; }
 
         /* Styles for dropdown and QR section */
         .payment-method-section {
             border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-            background-color: #f8fafc;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 12px; /* More rounded */
+            padding: 25px; /* More padding */
+            margin-bottom: 25px;
+            background-color: #ffffff; /* White background for sections */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); /* Stronger shadow */
         }
         .payment-method-section h3 {
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #edf2f7;
-            padding-bottom: 10px;
+            font-weight: 700; /* Bolder heading */
+            color: #1a202c; /* Darker text */
+            margin-bottom: 18px;
+            border-bottom: 2px solid #edf2f7; /* Thicker border */
+            padding-bottom: 12px;
+            font-size: 1.25rem; /* Larger font size */
         }
+
+        /* Animated background for the main card */
+        .animated-bg {
+            background: linear-gradient(135deg, #e0f7fa 0%, #e8eaf6 100%);
+            background-size: 200% 200%;
+            animation: gradientAnimation 10s ease infinite alternate;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Timer specific styles */
+        .timer-container {
+            background-color: #ffdddd; /* Soft red for urgency */
+            border: 1px solid #ffaaaa;
+            color: #d80000; /* Darker red text */
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        .timer-container i {
+            color: #d80000;
+        }
+
+        /* Verified Badge */
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            background-color: #e6ffed; /* Light green */
+            color: #2f855a; /* Dark green */
+            padding: 4px 10px;
+            border-radius: 9999px; /* Pill shape */
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        .verified-badge i {
+            margin-right: 5px;
+        }
+
     </style>
 </head>
 <body class="bg-gray-100">
@@ -82,6 +140,9 @@
             <div class="flex items-center">
                 <img src="logo.jpeg" alt="Dexter Luxuries Logo" class="w-10 h-10 md:w-12 md:h-12 rounded-full mr-3">
                 <h1 class="text-xl font-bold text-gray-800 uppercase tracking-wide">Dexter Luxuries</h1>
+                <span class="verified-badge hidden sm:inline-flex">
+                    <i class="fas fa-check-circle"></i> Payment Verified
+                </span>
             </div>
             <div class="flex space-x-4">
                 <a href="https://wa.me/9557338330" id="whatsappBtn" target="_blank" class="text-green-500 text-2xl hover:text-green-600 transition">
@@ -95,10 +156,20 @@
     </header>
 
    <div class="flex flex-col items-center justify-center min-h-screen py-16 px-4 sm:px-6 lg:px-8 mt-16">
-        <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg text-center">
-            <h1 class="text-2xl font-bold mb-4">Dexter Luxuries - Secure Payment</h1>
-            <p class="text-gray-600 mb-6">Complete your payment for: <strong id="productNameDisplay">Product Name</strong></p>
-            <p class="text-3xl font-extrabold text-green-600 mb-8">₹ <span id="displayAmount">0.00</span></p>
+        <div class="w-full max-w-md bg-white p-6 rounded-lg shadow-lg text-center animated-bg">
+            <h1 class="text-2xl font-bold mb-4 flex items-center justify-center">
+                Dexter Luxuries - Secure Payment
+                <span class="verified-badge ml-3">
+                    <i class="fas fa-check-circle"></i> Verified
+                </span>
+            </h1>
+            <p class="text-gray-600 mb-3">Complete your payment for: <strong id="productNameDisplay">Product Name</strong></p>
+            <p class="text-3xl font-extrabold text-indigo-600 mb-6">₹ <span id="displayAmount">0.00</span></p>
+
+            <div class="timer-container">
+                <i class="far fa-clock"></i>
+                <span id="paymentTimer">20:00</span> remaining to complete payment
+            </div>
 
             <div class="text-left mb-6 bg-blue-50 p-4 rounded-md border border-blue-200">
                 <p class="block text-sm font-medium text-blue-800 mb-1">Your Selected Amount:</p>
@@ -111,24 +182,15 @@
             <p class="text-gray-700 font-semibold mb-4">Step 1: Choose your preferred UPI app or Scan QR Code</p>
 
             <div class="mb-6 payment-method-section">
-                <h3>Pay Directly with UPI App:</h3>
-                <div class="relative mb-4">
-                    <label for="upiAppSelect" class="sr-only">Select UPI App</label>
-                    <select id="upiAppSelect" class="block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2 bg-white text-gray-700">
-                        <option value="">Select UPI App</option>
-                        <option value="phonepe">PhonePe</option>
-                        <option value="gpay">Google Pay</option>
-                        <option value="paytm">Paytm</option>
-                        </select>
-                </div>
-                <div id="upiAppButtons" class="space-y-4">
-                    <a id="phonepeAppBtn" href="#" target="_blank" class="app-button phonepe-btn hidden">
+                <h3>Click to Pay:</h3>
+                <div class="space-y-4">
+                    <a id="phonepeAppBtn" href="#" target="_blank" class="app-button phonepe-btn">
                         <img src="https://i.ibb.co/Q70drskJ/image.png" alt="PhonePe Icon" /> Pay with PhonePe
                     </a>
-                    <a id="gpayAppBtn" href="#" target="_blank" class="app-button gpay-btn hidden">
+                    <a id="gpayAppBtn" href="#" target="_blank" class="app-button gpay-btn">
                         <img src="https://cdn.iconscout.com/icon/free/png-256/free-google-pay-2038779-1721670.png" alt="Google Pay Icon" /> Pay with Google Pay
                     </a>
-                    <a id="paytmAppBtn" href="#" target="_blank" class="app-button paytm-btn hidden">
+                    <a id="paytmAppBtn" href="#" target="_blank" class="app-button paytm-btn">
                         <img src="https://cdn.iconscout.com/icon/free/png-256/free-paytm-226448.png" alt="Paytm Icon" /> Pay with Paytm
                     </a>
                 </div>
@@ -144,20 +206,20 @@
             <hr class="my-6 border-gray-300">
 
             <p class="text-gray-600 mb-4">Step 2: After payment, click below to enter details</p>
-            <button id="proceedBtn" class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2.5 px-4 rounded-lg transition mb-4">
+            <button id="proceedBtn" class="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-2.5 px-4 rounded-lg transition mb-4 shadow-lg">
                 Proceed to Enter Details
             </button>
 
-            <p class="text-blue-500 cursor-pointer mt-4 mb-2 text-sm" onclick="openModal()">How will I get access?</p>
+            <p class="text-indigo-500 cursor-pointer mt-4 mb-2 text-sm hover:text-indigo-600 transition" onclick="openModal()">How will I get access?</p>
             <p class="text-red-500 cursor-pointer mb-4 text-sm">
-                <a href="https://wa.me/+919557338330?text=Payment%20error%20on%20Dexter%20Luxuries" target="_blank">Click here if payment error exists</a>
+                <a href="https://wa.me/+919557338330?text=Payment%20error%20on%20Dexter%20Luxuries" target="_blank" class="hover:underline">Click here if payment error exists</a>
             </p>
 
             <div id="accessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
                 <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-11/12">
                    <h2 class="text-xl font-bold mb-4">How to Gain Access</h2>
                    <ol class="list-decimal list-inside text-left space-y-2 text-sm">
-                        <li>Complete the payment using UPI or QR Code for the <strong class="text-green-600">selected product's amount</strong>.</li>
+                        <li>Complete the payment using UPI or QR Code for the <strong class="text-indigo-600">selected product's amount</strong>.</li>
                         <li>Click 'Proceed to Enter Details'.</li>
                         <li>Enter the 12-digit UTR/Reference ID from your payment confirmation.</li>
                         <li>Enter your email and optionally a username.</li>
@@ -165,7 +227,7 @@
                         <li>Click 'Submit Payment'.</li>
                         <li>You will be redirected to WhatsApp for access confirmation.</li>
                    </ol>
-                   <button class="mt-4 bg-green-500 text-white py-2 px-4 rounded w-full" onclick="closeModal()">Close</button>
+                   <button class="mt-4 bg-indigo-500 text-white py-2 px-4 rounded w-full hover:bg-indigo-600 transition" onclick="closeModal()">Close</button>
                 </div>
             </div>
 
@@ -176,28 +238,28 @@
                 <input type="hidden" id="formProductId" name="productId" value="">
 
                <div class="text-left">
-                   <label for="utr" class="block text-sm font-medium text-gray-700">UTR / UPI Reference ID*</label>
-                   <input type="text" id="utr" name="utr" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter 12 digit UTR / Ref ID" required inputmode="numeric" pattern="\d{12}">
-                   <p class="text-xs text-gray-500 mt-1">Enter the 12-digit number found in your UPI app's transaction history.</p>
+                    <label for="utr" class="block text-sm font-medium text-gray-700">UTR / UPI Reference ID*</label>
+                    <input type="text" id="utr" name="utr" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2" placeholder="Enter 12 digit UTR / Ref ID" required inputmode="numeric" pattern="\d{12}">
+                    <p class="text-xs text-gray-500 mt-1">Enter the 12-digit number found in your UPI app's transaction history.</p>
                </div>
 
                <div class="text-left">
-                   <label for="email" class="block text-sm font-medium text-gray-700">Email*</label>
-                   <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your email" required>
+                    <label for="email" class="block text-sm font-medium text-gray-700">Email*</label>
+                    <input type="email" id="email" name="email" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2" placeholder="Enter your email" required>
                </div>
 
                <div class="text-left">
-                   <label for="username" class="block text-sm font-medium text-gray-700">Username (Optional)</label>
-                   <input type="text" id="username" name="username" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-green-500 focus:border-green-500 sm:text-sm p-2" placeholder="Enter your username (if applicable)">
+                    <label for="username" class="block text-sm font-medium text-gray-700">Username (Optional)</label>
+                    <input type="text" id="username" name="username" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm p-2" placeholder="Enter your username (if applicable)">
                </div>
 
                <div class="text-left">
-                   <label for="paymentScreenshot" class="block text-sm font-medium text-gray-700">Upload Payment Screenshot*</label>
-                   <input type="file" id="paymentScreenshot" name="paymentScreenshot" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" accept="image/*" required>
-                   <p class="text-xs text-gray-500 mt-1">Upload the screenshot showing the successful payment.</p>
+                    <label for="paymentScreenshot" class="block text-sm font-medium text-gray-700">Upload Payment Screenshot*</label>
+                    <input type="file" id="paymentScreenshot" name="paymentScreenshot" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100" accept="image/*" required>
+                    <p class="text-xs text-gray-500 mt-1">Upload the screenshot showing the successful payment.</p>
                </div>
 
-               <button type="submit" id="submitPaymentBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 px-4 rounded-lg transition">Submit Payment</button>
+               <button type="submit" id="submitPaymentBtn" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-2.5 px-4 rounded-lg transition shadow-lg">Submit Payment</button>
             </form>
 
 
@@ -213,21 +275,21 @@
         <script>
             // --- Configuration ---
             const UPI_ID = "BHARATPE.8WOQON5G1054747@fbpe"; // <--- *** REPLACE WITH YOUR UPI ID ***
-            const PAYEE_NAME = "Digital Duniya"; // Or your registered business name
+            const PAYEE_NAME = "Dexter Luxuries"; // Changed to Dexter Luxuries
             const TRANSACTION_NOTE = "Payment for Dexter Luxuries Order";
             const QR_CODE_URL = "https://i.ibb.co/VYjq2vyd/qr1.jpg"; // <--- *** REPLACE WITH YOUR QR CODE IMAGE URL ***
             const WHATSAPP_REDIRECT_URL = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details.'; // Base URL for redirection
             const DEFAULT_AMOUNT = '399'; // Default amount if no 'amount' parameter is provided
             const DEFAULT_PRODUCT_NAME = 'Selected Product';
             const DEFAULT_PRODUCT_ID = 'N/A';
+            const PAYMENT_TIMER_DURATION = 20 * 60; // 20 minutes in seconds
 
             // --- Get Elements ---
             const fixedAmountDisplay = document.getElementById('fixedAmountDisplay');
             const productNameDisplay = document.getElementById('productNameDisplay');
             const displayAmount = document.getElementById('displayAmount'); // New element to show amount prominently
 
-            const upiAppSelect = document.getElementById('upiAppSelect');
-            const upiAppButtons = document.getElementById('upiAppButtons');
+            // Removed dropdown for direct app buttons
             const phonepeAppBtn = document.getElementById('phonepeAppBtn');
             const gpayAppBtn = document.getElementById('gpayAppBtn');
             const paytmAppBtn = document.getElementById('paytmAppBtn');
@@ -248,7 +310,29 @@
             const redirectNowBtn = document.getElementById('redirectNowBtn');
             const accessModal = document.getElementById('accessModal');
             const utrInput = document.getElementById('utr');
+            const paymentTimerElement = document.getElementById('paymentTimer');
 
+
+            // --- Timer Functionality ---
+            let timerInterval;
+            let timeRemaining = PAYMENT_TIMER_DURATION;
+
+            function startPaymentTimer() {
+                timerInterval = setInterval(() => {
+                    const minutes = Math.floor(timeRemaining / 60);
+                    const seconds = timeRemaining % 60;
+                    paymentTimerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+                    if (timeRemaining <= 0) {
+                        clearInterval(timerInterval);
+                        paymentTimerElement.textContent = "Expired!";
+                        // Optionally, disable payment options or show an expiry message
+                        alert("Your payment window has expired. Please refresh the page to try again.");
+                        // You might want to disable buttons or redirect here
+                    }
+                    timeRemaining--;
+                }, 1000);
+            }
 
             // --- Modal Functions ---
             function openModal() {
@@ -315,22 +399,6 @@
                 });
             }
 
-            // --- Event Listener for UPI App Dropdown ---
-            upiAppSelect.addEventListener('change', function() {
-                // Hide all buttons first
-                [phonepeAppBtn, gpayAppBtn, paytmAppBtn].forEach(btn => btn.classList.add('hidden'));
-
-                const selectedApp = this.value;
-                if (selectedApp === 'phonepe') {
-                    phonepeAppBtn.classList.remove('hidden');
-                } else if (selectedApp === 'gpay') {
-                    gpayAppBtn.classList.remove('hidden');
-                } else if (selectedApp === 'paytm') {
-                    paytmAppBtn.classList.remove('hidden');
-                }
-            });
-
-
             // --- Initialization on DOM Content Loaded ---
             document.addEventListener('DOMContentLoaded', function() {
                 const { amount, productName, productId } = getProductDetailsFromURL();
@@ -361,6 +429,9 @@
 
                 // Update UPI deep links with the fixed amount
                 updateUpiLinks(amount);
+
+                // Start the payment timer
+                startPaymentTimer();
             });
 
             // --- Event Listener for Proceed Button ---
@@ -506,7 +577,7 @@
             });
 
             // --- Manual Modal Trigger ---
-            document.querySelector('.text-blue-500.cursor-pointer').onclick = openModal;
+            document.querySelector('.text-indigo-500.cursor-pointer').onclick = openModal; // Updated selector for new color
 
         </script>
         </div>
