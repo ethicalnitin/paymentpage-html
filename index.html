@@ -3,679 +3,773 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dexter Luxuries - Secure UPI Payment</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Dexter Luxuries - Secure Payment</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
-        /* Base styles for a clean, compact look */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --gold:       #c9a84c;
+            --gold-light: #e8c97a;
+            --gold-dark:  #a07830;
+            --ink:        #0d0d0d;
+            --ink-soft:   #1a1a2e;
+            --surface:    #f7f4ef;
+            --card:       #ffffff;
+            --muted:      #6b6b6b;
+            --green:      #16a34a;
+            --green-bg:   #dcfce7;
+            --red:        #dc2626;
+            --border:     rgba(0,0,0,0.08);
+            --shadow:     0 4px 32px rgba(0,0,0,0.09);
+            --radius:     16px;
+            --font-d:     'Playfair Display', Georgia, serif;
+            --font-b:     'DM Sans', sans-serif;
+        }
+
         body {
-            font-family: 'Inter', sans-serif; /* A more modern, clean font */
-            background-color: #f8f9fa; /* Very light gray */
-            color: #343a40; /* Darker text for better contrast */
+            font-family: var(--font-b);
+            background: var(--surface);
+            color: var(--ink);
+            min-height: 100vh;
         }
 
-        /* Main card styling */
-        .payment-card {
-            background-color: #ffffff; /* Pure white background */
-            border-radius: 12px; /* Nicely rounded corners */
-            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); /* Subtle, clear shadow */
-            padding: 25px;
-            max-width: 400px; /* More compact overall width */
-            margin: auto; /* Center the card */
-            border: 1px solid #e9ecef; /* Light border */
+        /* ── Navbar ── */
+        .navbar {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            z-index: 100;
+            background: #0d0d0d;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            height: 60px;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
         }
-
-        /* Heading styles */
-        h1 {
-            font-size: 1.8rem; /* Slightly smaller for compactness */
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+        }
+        .navbar-logo img {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--gold);
+            object-fit: cover;
+        }
+        .navbar-brand {
+            font-family: var(--font-d);
+            font-size: 1rem;
             font-weight: 700;
-            color: #212529; /* Very dark heading */
-            margin-bottom: 1rem;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
         }
-
-        /* Verified Badge */
         .verified-badge {
             display: inline-flex;
             align-items: center;
-            background-color: #d4edda; /* Light green */
-            color: #155724; /* Dark green */
-            padding: 3px 9px; /* Smaller padding */
-            border-radius: 9999px; /* Pill shape */
-            font-size: 0.8rem; /* Smaller font */
+            gap: 4px;
+            background: rgba(201,168,76,0.15);
+            color: var(--gold-light);
+            border: 1px solid rgba(201,168,76,0.3);
+            padding: 2px 10px;
+            border-radius: 50px;
+            font-size: 0.68rem;
             font-weight: 600;
-            margin-left: 8px; /* Reduced margin */
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
         }
-        .verified-badge i {
-            margin-right: 4px; /* Reduced margin */
+        .navbar-icons { display: flex; gap: 1rem; align-items: center; }
+        .navbar-icons a {
+            color: rgba(255,255,255,0.6);
+            font-size: 1.2rem;
+            transition: color 0.2s;
+        }
+        .navbar-icons a:hover { color: var(--gold-light); }
+
+        /* ── Page wrapper ── */
+        .page {
+            padding: 80px 1rem 3rem;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
         }
 
-        /* Amount display */
-        #displayAmount {
-            font-size: 2.5rem; /* Slightly smaller, still prominent */
-            font-weight: 800; /* Extra bold */
-            color: #4c4d7e; /* A rich, deep purple-blue */
-            margin-bottom: 1.5rem;
+        /* ── Card ── */
+        .card {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
+            width: 100%;
+            max-width: 460px;
+            overflow: hidden;
         }
 
-        /* Timer specific styles */
-        .timer-container {
-            background-color: #fff3cd; /* Light orange-yellow for warning */
-            border: 1px solid #ffeeba;
-            color: #856404; /* Darker yellow-orange text */
-            padding: 8px 12px; /* More compact padding */
-            border-radius: 8px;
-            margin-bottom: 18px;
-            font-size: 0.95rem; /* Slightly smaller font */
-            font-weight: 600;
+        /* Card header strip */
+        .card-header {
+            background: var(--ink);
+            padding: 1.6rem 1.75rem 1.4rem;
+            text-align: center;
+        }
+        .card-header h1 {
+            font-family: var(--font-d);
+            font-size: 1.35rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.3rem;
+        }
+        .card-header p {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.55);
+        }
+        .card-header p strong {
+            color: var(--gold-light);
+        }
+        .amount-display {
+            font-family: var(--font-d);
+            font-size: 2.6rem;
+            font-weight: 900;
+            color: var(--gold-light);
+            margin: 0.6rem 0 0;
+            letter-spacing: -0.01em;
+        }
+
+        /* Card body */
+        .card-body { padding: 1.5rem 1.75rem; }
+
+        /* ── Timer ── */
+        .timer-bar {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px; /* Reduced gap */
-        }
-        .timer-container i {
-            color: #856404;
-        }
-
-        /* Selected amount section */
-        .selected-amount-section {
-            background-color: #e6f7ff; /* Very light blue */
-            padding: 15px; /* Reduced padding */
-            border-radius: 8px;
-            border: 1px solid #b3e0ff; /* Light blue border */
-            margin-bottom: 20px;
-        }
-        .selected-amount-section p {
-            font-size: 1rem; /* Standard text size */
-            color: #004085; /* Dark blue text */
-        }
-        .selected-amount-section strong {
-            font-size: 1.5rem; /* Prominent amount */
-            color: #0056b3; /* Slightly darker blue */
-        }
-
-        /* Payment method sections */
-        .payment-method-section {
-            border: 1px solid #dee2e6; /* Clear, light gray border */
-            border-radius: 10px; /* Nicely rounded */
-            padding: 20px; /* Reduced padding */
-            margin-bottom: 20px;
-            background-color: #fefefe; /* Off-white for sections */
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05); /* Lighter shadow */
-        }
-        .payment-method-section h3 {
+            gap: 0.5rem;
+            background: #fff8e6;
+            border: 1px solid #f5d97a;
+            color: #92650a;
+            font-size: 0.82rem;
             font-weight: 600;
-            color: #495057; /* Darker grey */
-            margin-bottom: 15px;
-            border-bottom: 1px solid #e9ecef; /* Lighter border */
-            padding-bottom: 10px;
-            font-size: 1.15rem; /* Slightly smaller heading */
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.25rem;
         }
+        #paymentTimer { font-variant-numeric: tabular-nums; }
 
-       /* App buttons - Modified for icon-only */
-        .app-button {
+        /* ── Amount pill ── */
+        .amount-pill {
             display: flex;
             align-items: center;
-            justify-content: center; /* Center the icon horizontally */
-            padding: 12px 18px; /* More compact button size */
-            border-radius: 10px; /* Slightly less rounded */
-            font-weight: 600; /* Standard font weight */
-            color: white; /* Text color (though no text now) */
-            transition: all 0.2s ease-in-out;
+            justify-content: space-between;
+            background: var(--green-bg);
+            border: 1px solid #86efac;
+            border-radius: 10px;
+            padding: 0.75rem 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+        .amount-pill span { font-size: 0.78rem; color: #166534; font-weight: 500; }
+        .amount-pill strong { font-size: 1.2rem; color: var(--green); font-weight: 800; }
+
+        /* ── Section heading ── */
+        .section-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.9rem;
+        }
+
+        /* ── Pay button (Paytm) ── */
+        .pay-method-section { margin-bottom: 1.5rem; }
+
+        .paytm-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.85rem 1.5rem;
+            background: #fff;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
             cursor: pointer;
             text-decoration: none;
-            /* Removed box-shadow */
-            width: 100%;
-            max-width: 250px; /* Slightly narrower buttons */
-            margin: 0 auto;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid #ced4da; /* Added a light gray border */
-            background-color: transparent; /* Make background transparent */
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        .app-button img {
-            height: 26px; /* Smaller icons within button */
-            width: auto; /* Maintain aspect ratio */
-            margin-right: 0; /* Remove margin as there's no text next to it */
-            /* Removed filter: brightness(0) invert(1); to display original logo colors */
+        .paytm-btn img { height: 28px; width: auto; }
+        .paytm-btn span {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--ink);
         }
-        .app-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Keep a subtle shadow on hover */
-            border-color: #a0aec0; /* Darker border on hover */
+        .paytm-btn:hover {
+            border-color: var(--gold);
+            box-shadow: 0 4px 16px rgba(201,168,76,0.2);
+            transform: translateY(-1px);
         }
-        .app-button::before {
+
+        /* ── Divider ── */
+        .or-divider {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin: 1.25rem 0;
+            color: var(--muted);
+            font-size: 0.78rem;
+        }
+        .or-divider::before,
+        .or-divider::after {
             content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        /* ── QR section ── */
+        .qr-section {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .qr-wrap {
+            display: inline-block;
+            padding: 0.6rem;
+            border: 1.5px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 0.6rem;
+            background: #fff;
+        }
+        .qr-wrap img {
+            width: 160px;
+            height: 160px;
+            display: block;
+            border-radius: 6px;
+        }
+        .upi-id {
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-family: monospace;
+            word-break: break-all;
+        }
+        .qr-note {
+            font-size: 0.72rem;
+            color: var(--muted);
+            margin-top: 0.25rem;
+        }
+
+        hr.divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 1.25rem 0;
+        }
+
+        /* ── Proceed button ── */
+        .proceed-btn {
             width: 100%;
-            height: 100%;
-            background: rgba(255, 255, 255, 0.1); /* More subtle shine */
-            transform: skewX(-30deg);
-            transition: all 0.5s ease; /* Faster shine */
-        }
-        .app-button:hover::before {
-            left: 100%;
-        }
-
-        /* Specific colors for each app - REMOVED background-color */
-        .phonepe-btn { /* background-color: transparent; already set by .app-button */ }
-        .phonepe-btn:hover { /* background-color: transparent; */ }
-        .gpay-btn { /* background-color: transparent; */ }
-        .gpay-btn:hover { /* background-color: transparent; */ }
-        .paytm-btn { /* background-color: transparent; */ }
-        .paytm-btn:hover { /* background-color: transparent; */ }
-
-        /* QR Code section */
-        #qrCodeImage {
-            max-width: 160px; /* Smaller QR code */
-            height: auto;
-            border: 1px solid #ced4da; /* Subtle border */
-            padding: 3px;
-            border-radius: 6px;
-        }
-        #upiIdDisplay {
-            font-size: 0.9rem; /* Smaller font for UPI ID */
-            color: #6c757d; /* Muted grey */
-        }
-
-        /* Proceed button */
-        #proceedBtn {
-            background-color: #28a745; /* Vibrant green for action */
-            border-radius: 8px;
-            font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        #proceedBtn:hover {
-            background-color: #218838;
-        }
-
-        /* Form elements */
-        input, select, button {
-            min-height: 40px; /* Slightly smaller minimum height */
-        }
-        .payment-form-section h2 {
-            font-size: 1.3rem; /* Adjusted form heading size */
-            color: #495057;
-        }
-        .payment-form-section label {
-            font-weight: 500;
-            color: #495057;
-        }
-        .payment-form-section input[type="file"] {
-            padding: 8px; /* Adjust padding for file input */
-        }
-        .payment-form-section input {
-            border: 1px solid #ced4da; /* Clear input borders */
-            border-radius: 6px;
-            padding: 8px 12px;
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-b);
             font-size: 0.95rem;
-        }
-        .payment-form-section input:focus {
-            border-color: #80bdff; /* Clear focus outline */
-            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        }
-        #submitPaymentBtn {
-            background-color: #007bff; /* Primary blue for final submit */
-            border-radius: 8px;
             font-weight: 700;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.85rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 18px rgba(201,168,76,0.35);
+            letter-spacing: 0.02em;
+            margin-bottom: 1rem;
         }
-        #submitPaymentBtn:hover {
-            background-color: #0069d9;
+        .proceed-btn:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(201,168,76,0.45);
         }
 
-        /* Modal styles */
-        #accessModal h2, #paymentSuccessModal h2 {
-            font-size: 1.5rem;
-            color: #212529;
+        .help-links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.74rem;
         }
-        #accessModal button {
-            background-color: #6c757d; /* Muted grey for close */
+        .help-links a, .help-links span {
+            color: var(--muted);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.2s;
         }
-        #accessModal button:hover {
-            background-color: #5a6268;
+        .help-links a:hover, .help-links span:hover { color: var(--gold-dark); text-decoration: underline; }
+        .help-links .error-link { color: var(--red); }
+        .help-links .error-link:hover { color: #b91c1c; }
+
+        /* ── Payment form ── */
+        .payment-form { display: none; margin-top: 1.5rem; }
+        .payment-form.visible { display: block; }
+
+        .form-sep {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            font-family: var(--font-d);
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--ink);
         }
-        #paymentSuccessModal button#redirectNowBtn {
-            background-color: #28a745; /* Success green */
+        .form-sep::before {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
         }
-        #paymentSuccessModal button#redirectNowBtn:hover {
-            background-color: #218838;
+        .form-sep::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
         }
-        #paymentSuccessModal button#closeModalBtn {
-            background-color: #6c757d;
+
+        .field { margin-bottom: 1rem; }
+        .field label {
+            display: block;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--ink-soft);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.02em;
         }
-        #paymentSuccessModal button#closeModalBtn:hover {
-            background-color: #5a6268;
+        .field input {
+            width: 100%;
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            padding: 0.65rem 0.9rem;
+            font-family: var(--font-b);
+            font-size: 0.9rem;
+            color: var(--ink);
+            background: #fafaf8;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+        }
+        .field input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.15);
+            background: #fff;
+        }
+        .field .hint {
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 0.3rem;
+        }
+        .field input[type="file"] {
+            padding: 0.5rem;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--ink);
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-b);
+            font-size: 0.95rem;
+            font-weight: 700;
+            padding: 0.85rem 1.5rem;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+            margin-top: 0.5rem;
+            letter-spacing: 0.02em;
+        }
+        .submit-btn:hover:not(:disabled) {
+            background: var(--ink-soft);
+            transform: translateY(-1px);
+        }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* ── Modals ── */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+        .modal-backdrop.show { display: flex; }
+
+        .modal-box {
+            background: var(--card);
+            border-radius: var(--radius);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            width: 100%;
+            max-width: 380px;
+            padding: 2rem 1.75rem;
+            animation: modal-in 0.25s ease;
+        }
+        @keyframes modal-in {
+            from { transform: translateY(20px); opacity: 0; }
+            to   { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-box h2 {
+            font-family: var(--font-d);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--ink);
+            margin-bottom: 1rem;
+        }
+        .modal-box.success h2 { color: var(--green); }
+
+        .modal-box ol {
+            padding-left: 1.2rem;
+            font-size: 0.85rem;
+            color: #444;
+            line-height: 1.7;
+        }
+        .modal-box ol strong { color: var(--green); }
+
+        .modal-box p { font-size: 0.88rem; color: #444; line-height: 1.6; }
+        .modal-box p span { font-weight: 700; color: var(--ink); }
+
+        .modal-btn {
+            width: 100%;
+            border: none;
+            border-radius: 50px;
+            font-family: var(--font-b);
+            font-size: 0.9rem;
+            font-weight: 700;
+            padding: 0.75rem 1.25rem;
+            cursor: pointer;
+            margin-top: 0.75rem;
+            transition: opacity 0.2s, transform 0.2s;
+        }
+        .modal-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+        .modal-btn.dark   { background: var(--ink); color: #fff; }
+        .modal-btn.green  { background: var(--green); color: #fff; }
+        .modal-btn.ghost  { background: #f0f0f0; color: var(--ink); }
+
+        .success-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+            text-align: center;
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body>
 
-    <header class="w-full bg-white shadow-sm py-3 fixed top-0 left-0 z-10 border-b border-gray-200">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-            <div class="flex items-center">
-                <img src="logo.jpeg" alt="Dexter Luxuries Logo" class="w-9 h-9 md:w-10 md:h-10 rounded-full mr-2">
-                <h1 class="text-lg font-bold text-gray-800 uppercase tracking-wide">Dexter Luxuries</h1>
-                <span class="verified-badge hidden sm:inline-flex">
-                    <i class="fas fa-check-circle"></i> Verified
-                </span>
-            </div>
-            <div class="flex space-x-3">
-                <a href="https://wa.me/9557338330" id="whatsappBtn" target="_blank" class="text-green-500 text-xl hover:text-green-600 transition">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-                <a href="https://t.me/dextersenior" target="_blank" class="text-blue-500 text-xl hover:text-blue-600 transition">
-                    <i class="fab fa-telegram"></i>
-                </a>
-            </div>
+    <!-- Navbar -->
+    <header class="navbar">
+        <a class="navbar-logo" href="#">
+            <img src="logo.jpeg" alt="Dexter Luxuries Logo">
+            <span class="navbar-brand">Dexter Luxuries</span>
+            <span class="verified-badge"><i class="fas fa-check-circle"></i> Verified</span>
+        </a>
+        <div class="navbar-icons">
+            <a href="https://wa.me/9557338330" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+            <a href="https://t.me/dextersenior" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
         </div>
     </header>
 
-   <div class="flex flex-col items-center justify-center min-h-screen py-16 px-4 sm:px-6 lg:px-8 mt-16">
-        <div class="payment-card text-center">
-            <h1 class="flex items-center justify-center">
-                Dexter Luxuries - Secure Payment
-                <span class="verified-badge">
-                    <i class="fas fa-check-circle"></i> Verified
-                </span>
-            </h1>
-            <p class="text-gray-600 mb-2 text-sm">Complete your payment for: <strong id="productNameDisplay">Product Name</strong></p>
-            <p class="font-extrabold" id="displayAmount">₹ 0.00</p>
+    <div class="page">
+        <div class="card">
 
-            <div class="timer-container">
-                <i class="far fa-clock"></i>
-                <span id="paymentTimer">20:00</span> remaining to complete payment
+            <!-- Header -->
+            <div class="card-header">
+                <h1>Secure Payment</h1>
+                <p>Completing purchase for: <strong id="productNameDisplay">—</strong></p>
+                <div class="amount-display">₹<span id="displayAmount">0.00</span></div>
             </div>
 
-            <div class="text-left selected-amount-section">
-                <p class="block text-sm font-medium">Your Selected Amount:</p>
-                <p class="font-bold">₹ <span id="fixedAmountDisplay">0.00</span></p>
-                <input type="hidden" id="finalAmount" name="amount" value="0">
-                <input type="hidden" id="finalProductName" name="productName" value="">
-                <input type="hidden" id="finalProductId" name="productId" value="">
-            </div>
+            <div class="card-body">
 
-            <p class="text-gray-700 font-semibold mb-4 text-sm">Step 1: Choose your preferred UPI app or Scan QR Code</p>
+                <!-- Timer -->
+                <div class="timer-bar">
+                    <i class="far fa-clock"></i>
+                    <span id="paymentTimer">20:00</span> remaining to complete payment
+                </div>
 
-            <div class="payment-method-section">
-                <h3>Click to Pay:</h3>
-                <div class="space-y-3">
-                   
-                    <a id="paytmAppBtn" href="#" target="_blank" class="app-button paytm-btn">
-                        <img src="https://i.ibb.co/7JHHt2qz/image.png" alt="Paytm Logo" />
+                <!-- Amount pill -->
+                <div class="amount-pill">
+                    <span>Selected Amount</span>
+                    <strong>₹<span id="fixedAmountDisplay">0.00</span></strong>
+                </div>
+
+                <!-- Hidden fields -->
+                <input type="hidden" id="finalAmount" value="0">
+                <input type="hidden" id="finalProductName" value="">
+                <input type="hidden" id="finalProductId" value="">
+
+                <!-- Step 1 -->
+                <p class="section-label">Step 1 — Choose payment method</p>
+
+                <!-- Paytm button -->
+                <div class="pay-method-section">
+                    <a id="paytmAppBtn" href="#" target="_blank" class="paytm-btn">
+                        <img src="https://i.ibb.co/7JHHt2qz/image.png" alt="Paytm">
+                        <span>Pay with Paytm</span>
                     </a>
                 </div>
-            </div>
 
-            <div id="qrCodeContainer" class="mt-4 payment-method-section">
-                <h3>Or Scan QR Code:</h3>
-                <img id="qrCodeImage" src="https://i.ibb.co/VYjq2vyd/qr1.jpg" alt="UPI QR Code" class="mx-auto mb-3" style="max-width: 160px;">
-                <p id="upiIdDisplay" class="text-sm font-mono break-all mb-1"></p>
-                <p class="text-gray-500 text-xs mt-1">Scan using any UPI app on your device.</p>
-            </div>
+                <!-- OR divider -->
+                <div class="or-divider">or scan QR code</div>
 
-            <hr class="my-5 border-gray-200">
-
-            <p class="text-gray-600 mb-4 text-sm">Step 2: After payment, click below to enter details</p>
-            <button id="proceedBtn" class="w-full text-white font-bold py-2 px-4 rounded-lg transition mb-4 shadow">
-                Proceed to Enter Details
-            </button>
-
-            <p class="text-gray-700 cursor-pointer mt-3 mb-2 text-xs hover:underline" onclick="openModal()">How will I get access?</p>
-            <p class="text-red-500 cursor-pointer mb-4 text-xs">
-                <a href="https://wa.me/+919557338330?text=Payment%20error%20on%20Dexter%20Luxuries" target="_blank" class="hover:underline">Click here if payment error exists</a>
-            </p>
-
-            <div id="accessModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50">
-                <div class="bg-white p-6 rounded-lg shadow-lg max-w-sm w-11/12">
-                   <h2 class="font-bold mb-4">How to Gain Access</h2>
-                   <ol class="list-decimal list-inside text-left space-y-2 text-sm">
-                        <li>Complete the payment using UPI or QR Code for the <strong class="text-green-600">selected product's amount</strong>.</li>
-                        <li>Click 'Proceed to Enter Details'.</li>
-                        <li>Enter the 12-digit UTR/Reference ID from your payment confirmation.</li>
-                        <li>Enter your email and optionally a username.</li>
-                        <li>Upload the payment screenshot.</li>
-                        <li>Click 'Submit Payment'.</li>
-                        <li>You will be redirected to WhatsApp for access confirmation.</li>
-                   </ol>
-                   <button class="mt-4 text-white py-2 px-4 rounded w-full hover:bg-gray-600 transition" onclick="closeModal()">Close</button>
+                <!-- QR -->
+                <div class="qr-section">
+                    <div class="qr-wrap">
+                        <img id="qrCodeImage" src="https://i.ibb.co/VYjq2vyd/qr1.jpg" alt="UPI QR Code">
+                    </div>
+                    <p id="upiIdDisplay" class="upi-id"></p>
+                    <p class="qr-note">Scan with any UPI app on your device</p>
                 </div>
-            </div>
 
-            <form id="paymentForm" class="space-y-4 mt-6 hidden payment-form-section" enctype="multipart/form-data">
-                <h2 class="font-semibold mb-4 pt-4 border-t border-gray-200">Step 3: Submit Payment Details</h2>
-                <input type="hidden" id="formAmount" name="amount" value="">
-                <input type="hidden" id="formProductName" name="productName" value="">
-                <input type="hidden" id="formProductId" name="productId" value="">
+                <hr class="divider">
 
-               <div class="text-left">
-                    <label for="utr" class="block text-sm font-medium">UTR / UPI Reference ID*</label>
-                    <input type="text" id="utr" name="utr" class="mt-1 block w-full" placeholder="Enter 12 digit UTR / Ref ID" required inputmode="numeric" pattern="\d{12}">
-                    <p class="text-xs text-gray-500 mt-1">Enter the 12-digit number found in your UPI app's transaction history.</p>
-               </div>
+                <!-- Step 2 -->
+                <p class="section-label">Step 2 — Confirm your payment</p>
+                <button id="proceedBtn" class="proceed-btn">I've Paid — Enter Details →</button>
 
-               <div class="text-left">
-                    <label for="email" class="block text-sm font-medium">Email*</label>
-                    <input type="email" id="email" name="email" class="mt-1 block w-full" placeholder="Enter your email" required>
-               </div>
-
-               <div class="text-left">
-                    <label for="username" class="block text-sm font-medium">Username (Optional)</label>
-                    <input type="text" id="username" name="username" class="mt-1 block w-full" placeholder="Enter your username (if applicable)">
-               </div>
-
-               <div class="text-left">
-                    <label for="paymentScreenshot" class="block text-sm font-medium">Upload Payment Screenshot*</label>
-                    <input type="file" id="paymentScreenshot" name="paymentScreenshot" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-3 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" accept="image/*" required>
-                    <p class="text-xs text-gray-500 mt-1">Upload the screenshot showing the successful payment.</p>
-               </div>
-
-               <button type="submit" id="submitPaymentBtn" class="w-full text-white font-bold py-2.5 px-4 rounded-lg transition shadow">Submit Payment</button>
-            </form>
-
-
-            <div id="paymentSuccessModal" class="hidden fixed inset-0 bg-gray-900 bg-opacity-75 flex justify-center items-center z-50">
-                <div class="bg-white p-6 rounded-lg shadow-lg text-center w-11/12 max-w-sm">
-                   <h2 class="font-bold mb-4 text-green-600">Payment Details Submitted!</h2>
-                    <p class="mb-4 text-sm">Your details are received. You will be redirected to WhatsApp for access confirmation in <span id="countdown" class="font-bold">5</span> seconds...</p>
-                    <button id="redirectNowBtn" class="text-white font-bold py-2 px-4 rounded-lg w-full mb-2">Redirect Now</button>
-                   <button id="closeModalBtn" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg w-full">Close</button>
+                <div class="help-links">
+                    <span onclick="openModal()">How will I get access?</span>
+                    <a href="https://wa.me/+919557338330?text=Payment%20error%20on%20Dexter%20Luxuries" target="_blank" class="error-link">Payment error? Contact us</a>
                 </div>
-            </div>
 
-        <script>
-            // --- Configuration ---
-            const UPI_ID = "BHARATPE.8WOQON5G1054747@fbpe"; // <--- *** REPLACE WITH YOUR UPI ID ***
-            const PAYEE_NAME = "Dexter Luxuries"; // Changed to Dexter Luxuries
-            const TRANSACTION_NOTE = "Payment for Dexter Luxuries Order";
-            const QR_CODE_URL = "https://i.ibb.co/VYjq2vyd/qr1.jpg"; // <--- *** REPLACE WITH YOUR QR CODE IMAGE URL ***
-            const WHATSAPP_REDIRECT_URL = 'https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details.'; // Base URL for redirection
-            const DEFAULT_AMOUNT = '399'; // Default amount if no 'amount' parameter is provided
-            const DEFAULT_PRODUCT_NAME = 'Selected Product';
-            const DEFAULT_PRODUCT_ID = 'N/A';
-            const PAYMENT_TIMER_DURATION = 20 * 60; // 20 minutes in seconds
+                <!-- Step 3 Form -->
+                <form id="paymentForm" class="payment-form" enctype="multipart/form-data">
+                    <div class="form-sep">Step 3 — Submit Details</div>
 
-            // --- Get Elements ---
-            const fixedAmountDisplay = document.getElementById('fixedAmountDisplay');
-            const productNameDisplay = document.getElementById('productNameDisplay');
-            const displayAmount = document.getElementById('displayAmount');
+                    <input type="hidden" id="formAmount" name="amount" value="">
+                    <input type="hidden" id="formProductName" name="productName" value="">
+                    <input type="hidden" id="formProductId" name="productId" value="">
 
-            const phonepeAppBtn = document.getElementById('phonepeAppBtn');
-            const gpayAppBtn = document.getElementById('gpayAppBtn');
-            const paytmAppBtn = document.getElementById('paytmAppBtn');
+                    <div class="field">
+                        <label for="utr">UTR / UPI Reference ID *</label>
+                        <input type="text" id="utr" name="utr" placeholder="Enter 12-digit UTR / Ref ID" required inputmode="numeric" pattern="\d{12}">
+                        <p class="hint">Find this in your UPI app's transaction history.</p>
+                    </div>
 
-            const qrCodeImage = document.getElementById('qrCodeImage');
-            const upiIdDisplay = document.getElementById('upiIdDisplay');
+                    <div class="field">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                    </div>
 
-            const proceedBtn = document.getElementById('proceedBtn');
-            const paymentForm = document.getElementById('paymentForm');
-            const formAmountInput = document.getElementById('formAmount');
-            const formProductNameInput = document.getElementById('formProductName');
-            const formProductIdInput = document.getElementById('formProductId');
+                    <div class="field">
+                        <label for="username">Username <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+                        <input type="text" id="username" name="username" placeholder="Your username if applicable">
+                    </div>
 
-            const submitPaymentBtn = document.getElementById('submitPaymentBtn');
-            const successModal = document.getElementById('paymentSuccessModal');
-            const countdownElement = document.getElementById('countdown');
-            const closeModalBtn = document.getElementById('closeModalBtn');
-            const redirectNowBtn = document.getElementById('redirectNowBtn');
-            const accessModal = document.getElementById('accessModal');
-            const utrInput = document.getElementById('utr');
-            const paymentTimerElement = document.getElementById('paymentTimer');
+                    <div class="field">
+                        <label for="paymentScreenshot">Payment Screenshot *</label>
+                        <input type="file" id="paymentScreenshot" name="paymentScreenshot" accept="image/*" required>
+                        <p class="hint">Upload a screenshot showing the successful payment.</p>
+                    </div>
 
+                    <button type="submit" id="submitPaymentBtn" class="submit-btn">Submit Payment Details</button>
+                </form>
 
-            // --- Timer Functionality ---
-            let timerInterval;
-            let timeRemaining = PAYMENT_TIMER_DURATION;
+            </div><!-- /card-body -->
+        </div><!-- /card -->
+    </div><!-- /page -->
 
-            function startPaymentTimer() {
-                timerInterval = setInterval(() => {
-                    const minutes = Math.floor(timeRemaining / 60);
-                    const seconds = timeRemaining % 60;
-                    paymentTimerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-                    if (timeRemaining <= 0) {
-                        clearInterval(timerInterval);
-                        paymentTimerElement.textContent = "Expired!";
-                        // Optionally, disable payment options or show an expiry message
-                        alert("Your payment window has expired. Please refresh the page to try again.");
-                    }
-                    timeRemaining--;
-                }, 1000);
-            }
-
-            // --- Modal Functions ---
-            function openModal() {
-                accessModal.classList.remove('hidden');
-            }
-            function closeModal() {
-                accessModal.classList.add('hidden');
-            }
-            accessModal.addEventListener('click', function(event) {
-                if (event.target === accessModal) closeModal();
-            });
-            successModal.addEventListener('click', function(event) {
-                // Prevent closing success modal by clicking outside for now
-            });
-
-
-            // --- Helper Functions ---
-            function getUrlParameter(name) {
-                const urlParams = new URLSearchParams(window.location.search);
-                return urlParams.get(name);
-            }
-
-            function getProductDetailsFromURL() {
-                const amount = getUrlParameter('amount') || DEFAULT_AMOUNT;
-                const productName = decodeURIComponent(getUrlParameter('productName') || DEFAULT_PRODUCT_NAME);
-                const productId = getUrlParameter('productId') || DEFAULT_PRODUCT_ID;
-                return { amount, productName, productId };
-            }
-
-            // --- Function to Update UPI Deep Links ---
-            function updateUpiLinks(amount) {
-                if (!UPI_ID || UPI_ID === "YOUR_UPI_ID_HERE") {
-                    console.warn("UPI ID not set. UPI links may not work.");
-                    return;
-                }
-                if (!amount || parseFloat(amount) <= 0) {
-                    console.warn("Invalid amount for UPI link:", amount);
-                    [phonepeAppBtn, gpayAppBtn, paytmAppBtn].forEach(btn => {
-                        if (btn) btn.href = '#';
-                        btn.classList.add('opacity-50', 'pointer-events-none');
-                    });
-                    return;
-                }
-
-                const baseUpiUrl = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`;
-
-                if (phonepeAppBtn) phonepeAppBtn.href = `https://phonepe.com/send-request/${encodeURIComponent(UPI_ID)}/${amount}/?${new URLSearchParams({
-                    amount: amount,
-                    pa: UPI_ID,
-                    pn: PAYEE_NAME,
-                    tn: TRANSACTION_NOTE
-                }).toString()}`;
-
-                if (gpayAppBtn) gpayAppBtn.href = baseUpiUrl;
-                if (paytmAppBtn) paytmAppBtn.href = `paytmmp://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`;
-
-                [phonepeAppBtn, gpayAppBtn, paytmAppBtn].forEach(btn => {
-                    if (btn) btn.classList.remove('opacity-50', 'pointer-events-none');
-                });
-            }
-
-            // --- Initialization on DOM Content Loaded ---
-            document.addEventListener('DOMContentLoaded', function() {
-                const { amount, productName, productId } = getProductDetailsFromURL();
-
-                fixedAmountDisplay.textContent = parseFloat(amount).toFixed(2);
-                displayAmount.textContent = parseFloat(amount).toFixed(2);
-                productNameDisplay.textContent = productName;
-
-                formAmountInput.value = amount;
-                formProductNameInput.value = productName;
-                formProductIdInput.value = productId;
-
-                if (QR_CODE_URL && QR_CODE_URL !== "YOUR_QR_CODE_IMAGE_URL_HERE") {
-                    qrCodeImage.src = QR_CODE_URL;
-                } else {
-                    console.warn("QR Code URL not set.");
-                    qrCodeImage.alt = "QR Code Missing";
-                }
-                if (UPI_ID && UPI_ID !== "YOUR_UPI_ID_HERE") {
-                    upiIdDisplay.textContent = `UPI ID: ${UPI_ID}`;
-                } else {
-                    upiIdDisplay.textContent = "UPI ID Not Configured";
-                    upiIdDisplay.classList.add('text-red-500');
-                }
-
-                updateUpiLinks(amount);
-                startPaymentTimer();
-            });
-
-            // --- Event Listener for Proceed Button ---
-            proceedBtn.addEventListener('click', function() {
-                paymentForm.classList.remove('hidden');
-                proceedBtn.classList.add('hidden');
-                paymentForm.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            });
-
-            // --- Form Submission Event Listener (Attached to the form) ---
-            paymentForm.addEventListener('submit', async function(event) {
-                event.preventDefault();
-
-                const utrValue = utrInput.value.trim();
-                if (!/^\d{12}$/.test(utrValue)) {
-                    alert("Please enter a valid 12-digit UTR/Reference ID.");
-                    utrInput.focus();
-                    return;
-                }
-
-                submitPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
-                submitPaymentBtn.disabled = true;
-
-                const formData = new FormData(paymentForm);
-
-                const selectedAmount = formData.get('amount');
-                const pName = formData.get('productName');
-                const pId = formData.get('productId');
-
-                if (!selectedAmount || parseFloat(selectedAmount) <= 0) {
-                    console.error("Submission Error: Invalid amount detected in hidden field.", selectedAmount);
-                    alert("An error occurred with the amount. Please refresh and try again.");
-                    submitPaymentBtn.innerHTML = 'Submit Payment';
-                    submitPaymentBtn.disabled = false;
-                    return;
-                }
-
-                console.log("Submitting form with Amount:", selectedAmount, "Product:", pName, "ID:", pId);
-
-                // --- Facebook Pixel & CAPI Tracking ---
-                try {
-                    if (window.fbq) {
-                        window.fbq('track', 'Purchase', {
-                            value: parseFloat(selectedAmount),
-                            currency: 'INR',
-                            content_name: pName,
-                            content_ids: [pId],
-                            content_type: 'product'
-                        });
-                        console.log('FB Pixel Purchase tracked:', selectedAmount, pName);
-                    }
-
-                    const userAgent = navigator.userAgent;
-                    const emailInput = document.getElementById('email');
-                    const emailValue = emailInput ? emailInput.value.trim().toLowerCase() : null;
-
-                    const capiData = {
-                        event_name: 'Purchase',
-                        event_time: Math.floor(Date.now() / 1000),
-                        action_source: 'website',
-                        event_source_url: window.location.href,
-                        custom_data: {
-                            value: parseFloat(selectedAmount),
-                            currency: 'INR',
-                            content_name: pName,
-                            content_ids: [pId],
-                            content_type: 'product'
-                        },
-                        user_data: { client_user_agent: userAgent }
-                    };
-
-                    const capiResponse = await fetch('https://backend-cmfshop.onrender.com/track-event', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(capiData),
-                    });
-                    if (!capiResponse.ok) console.error("CAPI Fetch Error:", capiResponse.statusText);
-                    else console.log('Purchase event sent via CAPI:', await capiResponse.json());
-
-                } catch (error) {
-                    console.error('Error during FB Tracking:', error);
-                }
-
-
-                // --- Send Form data to backend (Telegram) ---
-                try {
-                    const telegramResponse = await fetch('https://backend-cmfshop.onrender.com/submit', {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    if (!telegramResponse.ok) {
-                        let errorMsg = "Failed to submit payment details.";
-                        try { errorMsg = (await telegramResponse.json()).message || errorMsg; }
-                        catch (parseError) { errorMsg = await telegramResponse.text() || errorMsg; }
-                        console.error('Error sending form data:', errorMsg);
-                        alert(errorMsg + " Please check details or contact support.");
-                        submitPaymentBtn.innerHTML = 'Submit Payment';
-                        submitPaymentBtn.disabled = false;
-                        return;
-                    }
-
-                    console.log('Form data submitted successfully to backend.');
-
-                    // --- Display Success Modal and Redirect ---
-                    successModal.classList.remove('hidden');
-                    let countdown = 5;
-                    countdownElement.textContent = countdown;
-                    let countdownInterval = null;
-                    const utrSubmitted = formData.get('utr') || '';
-                    const redirectUrl = `${WHATSAPP_REDIRECT_URL} UTR: ${encodeURIComponent(utrSubmitted)}`;
-
-                    const startCountdown = () => {
-                        countdownInterval = setInterval(() => {
-                            countdown -= 1;
-                            countdownElement.textContent = countdown;
-                            if (countdown <= 0) {
-                                clearInterval(countdownInterval);
-                                window.location.href = redirectUrl;
-                            }
-                        }, 1000);
-                    };
-                    const stopCountdownAndRedirect = (shouldRedirect = true) => {
-                        clearInterval(countdownInterval);
-                        successModal.classList.add('hidden');
-                        if (shouldRedirect) window.location.href = redirectUrl;
-                    };
-                    closeModalBtn.onclick = () => stopCountdownAndRedirect(false);
-                    redirectNowBtn.onclick = () => stopCountdownAndRedirect(true);
-                    startCountdown();
-
-                } catch (error) {
-                    console.error('Error processing form submission/success modal:', error);
-                    alert("An unexpected error occurred. Please contact support.");
-                    submitPaymentBtn.innerHTML = 'Submit Payment';
-                    submitPaymentBtn.disabled = false;
-                }
-            });
-
-            // --- Manual Modal Trigger ---
-            document.querySelector('.text-gray-700.cursor-pointer').onclick = openModal;
-
-        </script>
+    <!-- Access Modal -->
+    <div id="accessModal" class="modal-backdrop">
+        <div class="modal-box">
+            <h2>How to Get Access</h2>
+            <ol>
+                <li>Pay the <strong>exact amount</strong> via Paytm or QR Code.</li>
+                <li>Click "I've Paid — Enter Details".</li>
+                <li>Enter the 12-digit UTR/Reference ID.</li>
+                <li>Enter your email and optional username.</li>
+                <li>Upload your payment screenshot.</li>
+                <li>Click "Submit Payment Details".</li>
+                <li>You'll be redirected to WhatsApp for access confirmation.</li>
+            </ol>
+            <button class="modal-btn dark" onclick="closeModal()">Got it</button>
         </div>
     </div>
 
+    <!-- Success Modal -->
+    <div id="paymentSuccessModal" class="modal-backdrop">
+        <div class="modal-box success">
+            <span class="success-icon">🎉</span>
+            <h2>Details Submitted!</h2>
+            <p>Redirecting to WhatsApp for access confirmation in <span id="countdown">5</span> seconds…</p>
+            <button id="redirectNowBtn" class="modal-btn green">Redirect Now →</button>
+            <button id="closeModalBtn" class="modal-btn ghost">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // ─── Config ────────────────────────────────────────────────────────
+        const UPI_ID             = "BHARATPE.8WOQON5G1054747@fbpe";
+        const PAYEE_NAME         = "Dexter Luxuries";
+        const TRANSACTION_NOTE   = "Payment for Dexter Luxuries Order";
+        const QR_CODE_URL        = "https://i.ibb.co/VYjq2vyd/qr1.jpg";
+        const WHATSAPP_REDIRECT  = "https://wa.me/+919557338330?text=I%20have%20submitted%20my%20payment%20details.";
+        const DEFAULT_AMOUNT     = "399";
+        const DEFAULT_PRODUCT    = "Selected Product";
+        const DEFAULT_ID         = "N/A";
+        const TIMER_DURATION     = 20 * 60;
+
+        // ─── Elements ──────────────────────────────────────────────────────
+        const $ = id => document.getElementById(id);
+        const fixedAmountDisplay  = $("fixedAmountDisplay");
+        const displayAmount       = $("displayAmount");
+        const productNameDisplay  = $("productNameDisplay");
+        const paytmAppBtn         = $("paytmAppBtn");
+        const qrCodeImage         = $("qrCodeImage");
+        const upiIdDisplay        = $("upiIdDisplay");
+        const proceedBtn          = $("proceedBtn");
+        const paymentForm         = $("paymentForm");
+        const formAmountInput     = $("formAmount");
+        const formProductNameInput= $("formProductName");
+        const formProductIdInput  = $("formProductId");
+        const submitPaymentBtn    = $("submitPaymentBtn");
+        const successModal        = $("paymentSuccessModal");
+        const accessModal         = $("accessModal");
+        const countdownEl         = $("countdown");
+        const paymentTimerEl      = $("paymentTimer");
+        const utrInput            = $("utr");
+
+        // ─── Timer ─────────────────────────────────────────────────────────
+        let timeRemaining = TIMER_DURATION;
+        const timerInterval = setInterval(() => {
+            const m = Math.floor(timeRemaining / 60).toString().padStart(2, "0");
+            const s = (timeRemaining % 60).toString().padStart(2, "0");
+            paymentTimerEl.textContent = `${m}:${s}`;
+            if (timeRemaining-- <= 0) {
+                clearInterval(timerInterval);
+                paymentTimerEl.textContent = "Expired!";
+                alert("Your payment window has expired. Please refresh the page to try again.");
+            }
+        }, 1000);
+
+        // ─── Modals ────────────────────────────────────────────────────────
+        function openModal()  { accessModal.classList.add("show"); }
+        function closeModal() { accessModal.classList.remove("show"); }
+        accessModal.addEventListener("click", e => { if (e.target === accessModal) closeModal(); });
+
+        // ─── URL helpers ───────────────────────────────────────────────────
+        function getParam(name) { return new URLSearchParams(window.location.search).get(name); }
+
+        // ─── UPI links ─────────────────────────────────────────────────────
+        function updateUpiLinks(amount) {
+            const upiBase = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`;
+            if (paytmAppBtn) paytmAppBtn.href = `paytmmp://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${amount}&cu=INR&tn=${encodeURIComponent(TRANSACTION_NOTE)}`;
+        }
+
+        // ─── Init ──────────────────────────────────────────────────────────
+        document.addEventListener("DOMContentLoaded", () => {
+            const amount      = getParam("amount")      || DEFAULT_AMOUNT;
+            const productName = decodeURIComponent(getParam("productName") || DEFAULT_PRODUCT);
+            const productId   = getParam("productId")   || DEFAULT_ID;
+            const formatted   = parseFloat(amount).toFixed(2);
+
+            displayAmount.textContent      = formatted;
+            fixedAmountDisplay.textContent = formatted;
+            productNameDisplay.textContent = productName;
+
+            formAmountInput.value      = amount;
+            formProductNameInput.value = productName;
+            formProductIdInput.value   = productId;
+
+            qrCodeImage.src        = QR_CODE_URL;
+            upiIdDisplay.textContent = `UPI ID: ${UPI_ID}`;
+
+            updateUpiLinks(amount);
+        });
+
+        // ─── Proceed button ────────────────────────────────────────────────
+        proceedBtn.addEventListener("click", () => {
+            paymentForm.classList.add("visible");
+            proceedBtn.style.display = "none";
+            paymentForm.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+
+        // ─── Form submit ───────────────────────────────────────────────────
+        paymentForm.addEventListener("submit", async e => {
+            e.preventDefault();
+
+            if (!/^\d{12}$/.test(utrInput.value.trim())) {
+                alert("Please enter a valid 12-digit UTR/Reference ID.");
+                utrInput.focus();
+                return;
+            }
+
+            submitPaymentBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing…';
+            submitPaymentBtn.disabled = true;
+
+            const formData = new FormData(paymentForm);
+            const amount   = formData.get("amount");
+            const pName    = formData.get("productName");
+            const pId      = formData.get("productId");
+
+            // FB Pixel
+            try {
+                if (window.fbq) {
+                    window.fbq("track", "Purchase", {
+                        value: parseFloat(amount), currency: "INR",
+                        content_name: pName, content_ids: [pId], content_type: "product"
+                    });
+                }
+
+                await fetch("https://backend-cmfshop.onrender.com/track-event", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        event_name: "Purchase", event_time: Math.floor(Date.now() / 1000),
+                        action_source: "website", event_source_url: window.location.href,
+                        custom_data: { value: parseFloat(amount), currency: "INR", content_name: pName, content_ids: [pId], content_type: "product" },
+                        user_data: { client_user_agent: navigator.userAgent }
+                    })
+                });
+            } catch(err) { console.error("Tracking error:", err); }
+
+            // Submit
+            try {
+                const res = await fetch("https://backend-cmfshop.onrender.com/submit", {
+                    method: "POST", body: formData
+                });
+
+                if (!res.ok) {
+                    let msg = "Failed to submit. Please contact support.";
+                    try { msg = (await res.json()).message || msg; } catch {}
+                    alert(msg);
+                    submitPaymentBtn.innerHTML = "Submit Payment Details";
+                    submitPaymentBtn.disabled = false;
+                    return;
+                }
+
+                // Success
+                const utr = formData.get("utr") || "";
+                const redirectUrl = `${WHATSAPP_REDIRECT} UTR: ${encodeURIComponent(utr)}`;
+
+                successModal.classList.add("show");
+                let cd = 5;
+                countdownEl.textContent = cd;
+                const cdInterval = setInterval(() => {
+                    countdownEl.textContent = --cd;
+                    if (cd <= 0) { clearInterval(cdInterval); window.location.href = redirectUrl; }
+                }, 1000);
+
+                $("redirectNowBtn").onclick = () => { clearInterval(cdInterval); window.location.href = redirectUrl; };
+                $("closeModalBtn").onclick  = () => { clearInterval(cdInterval); successModal.classList.remove("show"); };
+
+            } catch(err) {
+                console.error(err);
+                alert("An unexpected error occurred. Please contact support.");
+                submitPaymentBtn.innerHTML = "Submit Payment Details";
+                submitPaymentBtn.disabled = false;
+            }
+        });
+    </script>
 </body>
 </html>
